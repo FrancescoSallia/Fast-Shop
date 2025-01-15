@@ -8,11 +8,73 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    @State var selected = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            
+            Text("Willkommen, Username")
+                .bold()
+            Divider()
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(1...6, id: \.self) { test in
+                        Text("Kategorie \(test)")
+                            .padding()
+                            .bold()
+                            .underline()
+                    }
+                }
+                .fixedSize(horizontal: true, vertical: true)
+            }
+            
+            ScrollView {
+                ForEach(0...10, id: \.self) { option in
+                    VStack {
+                        HStack {
+                            Spacer()
+                            VStack {
+                                Image("tshirt")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .clipShape(.rect(cornerRadius: 15))
+                                Text("Hier kommt Beschreibung")
+                                Text("22,50€")
+                            }
+                            Spacer()
+                            Spacer()
+                            VStack {
+                                Image("ring")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .clipShape(.rect(cornerRadius: 15))
+                                Text("Hier kommt Beschreibung")
+                                Text("102,90€")
+
+
+                            }
+                            Spacer()
+
+                        }
+                    }
+                    .padding()
+
+                        
+                }
+                .background(Color.orange.opacity(0.1))
+//                .padding(.horizontal)
+
+            }
+            
+            Text("Hier kommen weitere artikeln etc.")
+                
+            
+           
+        }
     }
 }
-
 #Preview {
     HomeView()
 }
