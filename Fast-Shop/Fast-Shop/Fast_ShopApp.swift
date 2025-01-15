@@ -11,7 +11,14 @@ import SwiftUI
 struct Fast_ShopApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            
+            TabView {
+                HomeView()
+                    .tabItem {
+                        Label("Home", systemImage: "house")
+                    }
+                
+            }
         }
     }
 }
