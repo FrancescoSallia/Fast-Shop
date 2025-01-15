@@ -9,142 +9,134 @@ import SwiftUI
 
 struct LogInView: View {
     var body: some View {
-        VStack(alignment: .leading) {
-            
-            Spacer()
-            
+        
+        VStack {
             Group {
                 //Hier kommt das logo als Bild
                 Image(systemName: "house")
                     .resizable()
                     .frame(width: 70, height: 70)
                 
-                Text("Einloggen oder registrieren")
-                    .font(.title)
+                Text("Jetzt einloggen")
+                    .frame(maxWidth: .infinity)
+                    .font(.title2)
                     .bold()
                 Text("Im Handumdrehen")
-                    .font(.title)
+                    .font(.title3)
             }
             .padding(.horizontal)
             
-            
-            Group {
-                Text("E-Mail")
-                    .font(.callout)
-                    .padding(.horizontal)
-                    .padding(.vertical, -4)
-                TextField("Email", text: .constant(""))
-                    .padding()
-                    .border(Color.black)
-                    .padding(.horizontal)
-                
-                Text("Passwort")
-                    .font(.callout)
-                    .padding(.horizontal)
-                    .padding(.vertical, -0.1)
-                ZStack {
-                    SecureField("Passwort", text: .constant(""))
-                        .padding()
-                        .border(Color.black)
-                        .padding(.horizontal)
-                    
-                    Image(systemName: "eye.slash")// und "eye" wenn es aktiviert ist
-                        .offset(x: 140)
-                }
-                
-                Button("Passwort vergessen?"){
-                    
-                }
-                .padding(.leading, 20)
-                    
-                
-                Button("Weiter") {
-                    //
-                }
-                .frame(width: 338, height: 18)
-                .padding()
-                .background(Color.black)
-                .foregroundStyle(.white)
-                .padding(.horizontal)
-                .padding(.vertical)
-                .bold()
-            }
+                  
+            TextField("E-Mail", text: .constant(""))
+                      .padding()
+                      .background(Color(.secondarySystemBackground))
+                      .cornerRadius(10)
+                      .keyboardType(.emailAddress)
+                      .autocapitalization(.none)
+                      .padding(.top, 30)
+                  
+            SecureField("Passwort", text: .constant(""))
+                      .padding()
+                      .background(Color(.secondarySystemBackground))
+                      .cornerRadius(10)
             
             HStack {
-                Text("Kein Konto?")
-                Button("Konto erstellen"){
-                    
-                }
+                Text("Passwort vergessen?")
+                    .underline()
+                    .foregroundStyle(.blue)
+                    .font(.subheadline)
+                    .padding(.bottom, 20)
+                    .padding(.leading, 8)
+                    Spacer()
             }
-            .padding(.leading, 20)
+                  
+                  Button(action: {
+                    //placeholder
+                  }) {
+                      Text("Anmelden")
+                          .foregroundColor(.white)
+                          .frame(maxWidth: .infinity)
+                          .padding()
+                          .background(Color.green)
+                          .cornerRadius(10)
+                  }
+                  
+                  // OR Divider
+                  HStack {
+                      Rectangle()
+                          .frame(height: 1)
+                          .foregroundColor(Color.gray)
+                      Text("ODER")
+                          .foregroundColor(.gray)
+                      Rectangle()
+                          .frame(height: 1)
+                          .foregroundColor(Color.gray)
+                  }
+                  .padding(.vertical, 10)
+                  
+                  HStack(spacing: 10) {
+                      Button(action: {
+                          //placeholder
+                      }) {
+                          HStack {
+                              Image("Google")
+                                  .resizable()
+                                  .frame(width: 20, height: 20)
+                                  .padding(2)
+                                  .background(Color.white)
+                              Text("Google")
+                          }
+                          .foregroundColor(.white)
+                          .frame(maxWidth: .infinity)
+                          .padding()
+                          .background(Color.blue.opacity(0.9))
+                          .bold()
+                          .border(.black, width: 1)
 
-            
-            Spacer()
-            
-            Group {
-                
-                //FIXME: man kann nur auf dem Text klicken. Ich will das der ganze rechteck anklickbar ist!
-                HStack {
-                    Image("Google")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .offset(x: 10)
-                    Button {
-                        // mit Google anmelden
-                    }label: {
-                        Text("Weiter mit Google")
-                            .bold()
-                            .foregroundStyle(.black)
-                    }
-                    .padding()
-                }
-                .padding(.horizontal)
-                .frame(width: 338, height: 18)
-                .padding()
-                
-                HStack {
-                    Image("Apple")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .offset(x: 10)
-                    Button {
-                        // mit Google anmelden
-                    }label: {
-                        Text("Weiter mit Apple")
-                            .bold()
-                            .foregroundStyle(.black)
-                    }
-                    .padding()
-                }
-                .padding(.horizontal)
-                .frame(width: 338, height: 18)
-                .padding()
-                
-                HStack {
-                    Image("Facebook")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .offset(x: 10)
-                    Button {
-                        // mit Google anmelden
-                    }label: {
-                        Text("Weiter mit Facebook")
-                            .bold()
-                            .foregroundStyle(.black)
-                    }
-                    .padding()
-                    
-                }
-                .padding(.horizontal)
-                .frame(width: 338, height: 18)
-                .padding()
-                
-            }
-            .border(Color.black,width: 2)
-            .padding(.horizontal)
-            
-            Spacer()
-           
+                      }
+                      
+                      Button(action: {
+                          print("Mit Facebook anmelden")
+                      }) {
+                          HStack {
+                              Image("Facebook")
+                                  .resizable()
+                                  .frame(width: 20, height: 20)
+                              Text("Facebook")
+                          }
+                          .foregroundColor(.white)
+                          .frame(maxWidth: .infinity)
+                          .padding()
+                          .background(Color.blue)
+                          .bold()
+                          .border(.black, width: 1)
+                      }
+                  }
+                  
+                  Button(action: {
+                      //placeholder
+                  }) {
+                      HStack {
+                          Image(systemName: "applelogo")
+                          Text("Apple")
+                      }
+                      .foregroundColor(.white)
+                      .frame(maxWidth: .infinity)
+                      .padding()
+                      .background(Color.black)
+                      .bold()
+                      .border(.black, width: 1)
+                  }
+              }
+              .padding()
+        
+        Text("Du hast noch kein Konto?")
+            .padding(.top, 20)
+        Button {
+            //Placeholder
+        } label: {
+            Text("Neues Konto erstellen")
+                .foregroundStyle(.green)
         }
     }
 }
