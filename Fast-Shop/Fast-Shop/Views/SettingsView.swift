@@ -9,15 +9,33 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    let randomList = ["text1", "text2", "text3", "text4", "text5"]
+    let randomList = ["Meine Marken", "Push-Mitteilung", "Customer-Service", "Email schreiben", "Problem melden", "Datenschutzerklärung", "Datenschutzeinstellungen", "Impressum & AGB"]
 
     var body: some View {
         NavigationStack {
             
             VStack {
+            
+                
+                HStack {
+                    Image(systemName: "person")
+                    Text("test@mail.com")
+                        .tint(.secondary)
+                    Spacer()
+                    
+                    Text("Abmelden")
+                        .foregroundStyle(.primary)
+                        .underline()
+                        .opacity(0.8)
+                    
+                    
+                }
+                .padding()
+                .foregroundStyle(.secondary)
                 
                 Text("Ich shoppe für")
                     .opacity(0.8)
+                    .padding(.top, 20)
                 
                 HStack {
                     Button("DAMEN"){
@@ -29,7 +47,7 @@ struct SettingsView: View {
                     .foregroundStyle(.black) // white oder black
                     .border(Color.black, width: 1)
                     .bold()
-                    .padding(.vertical)
+                    .padding(.horizontal, 5)
                     
                     Button("HERREN"){
                         //placeholder
@@ -47,9 +65,67 @@ struct SettingsView: View {
                 
                 List(randomList, id: \.self) { item in
                     
-                    Text(item)
+                    HStack {
+                        Image(systemName: "bookmark.fill")
+                        NavigationLink(item){
+                            //
+                        }
+                    }
                 }
                 .listStyle(.plain)
+                .scrollIndicators(.visible)
+                .padding()
+                
+                HStack {
+                    VStack {
+                        Text("Bewerte")
+                            .font(.title3)
+                            .fontDesign(.serif)
+                        Text("unsere App")
+                            .font(.title3)
+                            .fontDesign(.serif)
+                        HStack {
+                            Image(systemName: "star.fill")
+                                .resizable()
+                                .frame(width: 10, height: 10)
+                            Image(systemName: "star.fill")
+                                .resizable()
+                                .frame(width: 10, height: 10)
+                            Image(systemName: "star.fill")
+                                .resizable()
+                                .frame(width: 10, height: 10)
+                            Image(systemName: "star.fill")
+                                .resizable()
+                                .frame(width: 10, height: 10)
+                            Image(systemName: "star.fill")
+                                .resizable()
+                                .frame(width: 10, height: 10)
+                        }
+                        .foregroundStyle(.pink)
+                    }
+                    .frame(maxWidth: 150)
+
+                    Divider()
+
+                    VStack {
+                        Text("App weiter empfehlen")
+                            .font(.title3)
+                            .fontDesign(.serif)
+                        Image(systemName: "square.and.arrow.up")
+                            .foregroundStyle(.secondary)
+                            .padding(.top, -5)
+                    }
+                    .frame(maxWidth: 150)
+
+
+                }
+                
+                NavigationLink("Account löschen >"){
+                    
+                }
+                .tint(.secondary)
+                .padding(.top)
+                    
                 
             
             }
@@ -60,27 +136,26 @@ struct SettingsView: View {
             
             
             
-                .toolbar {
-                    ToolbarItem(placement: ToolbarItemPlacement.topBarLeading) {
-                        HStack {
-                            Image(systemName: "person")
-                            Text("test@mail.com")
-                                .tint(.secondary)
-                        }
-                        .foregroundStyle(.secondary)
-                    }
-                    ToolbarItem(placement: ToolbarItemPlacement.topBarTrailing) {
-                        
-                            Text("Abmelden")
-                            .foregroundStyle(.primary)
-                            .underline()
-                            .opacity(0.8)
-                    }
-                }
+//                .toolbar {
+//                    ToolbarItem(placement: ToolbarItemPlacement.topBarLeading) {
+//                        HStack {
+//                            Image(systemName: "person")
+//                            Text("test@mail.com")
+//                                .tint(.secondary)
+//                        }
+//                        .foregroundStyle(.secondary)
+//                    }
+//                    ToolbarItem(placement: ToolbarItemPlacement.topBarTrailing) {
+//                        
+//                            Text("Abmelden")
+//                            .foregroundStyle(.primary)
+//                            .underline()
+//                            .opacity(0.8)
+//                    }
+//                }
+                .navigationTitle("Konto")
+                .navigationBarTitleDisplayMode(NavigationBarItem.TitleDisplayMode.inline)
         }
-        
-        
-       
     }
 }
 
