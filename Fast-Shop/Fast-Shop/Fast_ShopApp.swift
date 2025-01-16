@@ -17,7 +17,6 @@ struct Fast_ShopApp: App {
                     .tabItem {
                         Label("Home", systemImage: "house")
                     }
-                
             }
         }
     }

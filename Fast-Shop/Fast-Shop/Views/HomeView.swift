@@ -9,69 +9,80 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @State var selected = ""
-    
+    @State var search = ""
+    var randomList = ["text1", "text2", "text3", "text4", "text5"]
+
     var body: some View {
+        
+        
+        NavigationStack {
         VStack {
+//            Text("Fast Shop")
+//                .fontDesign(.monospaced)
+//                .padding()
             
-            HStack(alignment: .firstTextBaseline){
-                Text("Willkommen, Username")
-                    .bold()
-                Spacer()
+            Text("Ihre Lieblingsmarken \n in einer App!")
+                .font(.title)
+                .fontDesign(.serif)
+                .frame(height: 100)
+        }
+     
+            
+            VStack {
+                Text("TOP BRANDS")
+                    .fontDesign(.default)
+                    .font(.title3)
             }
-            .padding(.horizontal)
-            Divider()
-            
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(1...6, id: \.self) { test in
-                        Text("Kategorie \(test)")
-                            .padding()
-                            .bold()
-                            .underline()
-                    }
-                }
-                .fixedSize(horizontal: true, vertical: true)
-            }
-            
-            ScrollView {
-                ForEach(0...10, id: \.self) { option in
-                    VStack {
-                        HStack {
-                            Spacer()
-                            VStack {
-                                Image("tshirt")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 150, height: 130)
-                                    .clipShape(.rect(cornerRadius: 15))
-                                Text("Hier kommt Beschreibung")
-                                Text("22,50€")
-                            }
-                            Spacer()
-                            Spacer()
-                            VStack {
-                                Image("ring")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 150, height: 130)
-                                    .clipShape(.rect(cornerRadius: 15))
-                                Text("Hier kommt Beschreibung")
-                                Text("102,90€")
-                            }
-                            Spacer()
+                    ForEach(randomList, id: \.self) { item in
+                        VStack {
+                            Image("tshirt")
+                                .resizable()
+                                .scaledToFit()
+                                .clipShape(.circle)
+                                .frame(width: 100, height: 100)
+                                .shadow(radius: 2, x: 2, y: 2)
+
+                            Text("Title")
+                                .fontDesign(.serif)
+                                .font(.footnote)
                         }
                     }
-                    .padding()
                 }
-//                .background(Color.orange.opacity(0.1))
-//                .padding(.horizontal)
             }
-            
-            Text("Hier kommen weitere artikeln etc.")
+            TabView {
+                Image("tasche")
+                    .resizable()
+                    .scaledToFit()
+                    .padding()
+                Image("ring")
+                    .resizable()
+                    .scaledToFit()
+                    .padding()
+                Image("tshirt")
+                    .resizable()
+                    .scaledToFit()
+                    .padding()
+            }
+            .tabViewStyle(.page)
+            .indexViewStyle(.page(backgroundDisplayMode: .always))
+            .frame(width: 400, height: 300)
+            .padding()
+
+            VStack {
+                List(randomList, id: \.self) { item in
+                    Image("ring")
+                        .resizable()
+                        .scaledToFit()
+                        .padding()
+                }
+                .listStyle(.inset)
                 
-            
-           
+            }
+            .navigationTitle("Fast Shop")
+            .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: $search, prompt: "Suche...")
         }
     }
 }
