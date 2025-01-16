@@ -14,8 +14,12 @@ struct HomeView: View {
     var body: some View {
         VStack {
             
-            Text("Willkommen, Username")
-                .bold()
+            HStack(alignment: .firstTextBaseline){
+                Text("Willkommen, Username")
+                    .bold()
+                Spacer()
+            }
+            .padding(.horizontal)
             Divider()
             
             ScrollView(.horizontal, showsIndicators: false) {
@@ -39,6 +43,7 @@ struct HomeView: View {
                                 Image("tshirt")
                                     .resizable()
                                     .scaledToFit()
+                                    .frame(width: 150, height: 130)
                                     .clipShape(.rect(cornerRadius: 15))
                                 Text("Hier kommt Beschreibung")
                                 Text("22,50€")
@@ -49,23 +54,18 @@ struct HomeView: View {
                                 Image("ring")
                                     .resizable()
                                     .scaledToFit()
+                                    .frame(width: 150, height: 130)
                                     .clipShape(.rect(cornerRadius: 15))
                                 Text("Hier kommt Beschreibung")
                                 Text("102,90€")
-
-
                             }
                             Spacer()
-
                         }
                     }
                     .padding()
-
-                        
                 }
-                .background(Color.orange.opacity(0.1))
+//                .background(Color.orange.opacity(0.1))
 //                .padding(.horizontal)
-
             }
             
             Text("Hier kommen weitere artikeln etc.")
