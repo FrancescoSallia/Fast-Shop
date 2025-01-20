@@ -11,9 +11,8 @@ struct Product: Identifiable, Codable {
     
     let id: Int
     let title: String
-    let price: Double
+    let price: Int
     let description: String
-    let category: String
-    let image: String
-    let rating: Rating
+    let images: [String]
+    let category: Category
 }
