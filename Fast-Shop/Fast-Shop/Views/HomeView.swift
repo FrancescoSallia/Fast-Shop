@@ -112,7 +112,7 @@ struct HomeView: View {
                 .padding()
                 .navigationTitle("Fast Shop")
                 .navigationBarTitleDisplayMode(.inline)
-                .searchable(text: $search, placement: .navigationBarDrawer(displayMode:.always), prompt: "Suche...")
+//                .searchable(text: $search, placement: .navigationBarDrawer(displayMode:.always), prompt: "Suche...")
             }
 //            .scrollTargetBehavior(.paging)
         }
