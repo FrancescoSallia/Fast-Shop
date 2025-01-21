@@ -13,11 +13,32 @@ struct APITestView: View {
     
     var body: some View {
         
+        
         List(products ?? []) { item in
            
             Text("Title: \(item.title)")
+                .listRowSeparator(.hidden)
             Text("Category: \(item.category.name)")
+                .listRowSeparator(.hidden)
+
             Text("ImageUrl: \(item.category.image)")
+                .listRowSeparator(.hidden)
+
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(item.images, id: \.self) { image in
+                        AsyncImage(url: URL(string: image)) { test in
+                            test
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    }
+                }
+            }
+            
             
             AsyncImage(url: URL(string: item.category.image)) { image in
                 image
@@ -27,36 +48,13 @@ struct APITestView: View {
             } placeholder: {
                 ProgressView()
             }
-                
-//            HStack {
-//                AsyncImage(url: URL(string: item.images[0])) { image in
-//                    image
-//                        .resizable()
-//                        .scaledToFit()
-//                        .clipShape(RoundedRectangle(cornerRadius: 10))
-//                } placeholder: {
-//                    ProgressView()
-//                }
-//                AsyncImage(url: URL(string: item.images[1])) { image in
-//                    image
-//                        .resizable()
-//                        .scaledToFit()
-//                        .clipShape(RoundedRectangle(cornerRadius: 10))
-//                } placeholder: {
-//                    ProgressView()
-//                }
-//                AsyncImage(url: URL(string: item.images[2])) { image in
-//                    image
-//                        .resizable()
-//                        .scaledToFit()
-//                        .clipShape(RoundedRectangle(cornerRadius: 10))
-//                } placeholder: {
-//                    ProgressView()
-//                }
-//            }
             
             
         }
+        
+        
+        
+        
         .onAppear {
             Task{
                  try await getProducts()

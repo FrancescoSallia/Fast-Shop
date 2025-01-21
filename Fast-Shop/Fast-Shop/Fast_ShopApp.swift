@@ -17,6 +17,14 @@ struct Fast_ShopApp: App {
                     .tabItem {
                         Label("Home", systemImage: "house")
                     }
+                SearchView()
+                    .tabItem {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+                APITestView()
+                    .tabItem {
+                        Label("API Test", systemImage: "arrowshape.turn.up.right.fill")
+                    }
                 SettingsView()
                     .tabItem {
                         Label("Settings", systemImage: "person")
