@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct Fast_ShopApp: App {
+    @StateObject var viewModel = ProductViewModel()
+
     var body: some Scene {
         WindowGroup {
             

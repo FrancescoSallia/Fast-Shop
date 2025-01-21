@@ -30,7 +30,7 @@ struct APITestView: View {
                         AsyncImage(url: URL(string: image)) { test in
                             test
                                 .resizable()
-                                .frame(width: 100, height: 100)
+                                .frame(width: 150, height: 150)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                         } placeholder: {
                             ProgressView()
@@ -38,16 +38,7 @@ struct APITestView: View {
                     }
                 }
             }
-            
-            
-            AsyncImage(url: URL(string: item.category.image)) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-            } placeholder: {
-                ProgressView()
-            }
+          
             
             
         }
@@ -82,8 +73,4 @@ struct APITestView: View {
 }
 
 
-enum errorEnum: Error {
-    case invalidURL
-    case networkError(Error)
-    case decodingError(Error)
-}
+
