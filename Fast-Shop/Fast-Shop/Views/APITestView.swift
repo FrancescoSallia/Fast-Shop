@@ -15,28 +15,30 @@ struct APITestView: View {
         
         
         List(products ?? []) { item in
-           
-            Text("Title: \(item.title)")
-                .listRowSeparator(.hidden)
-            Text("Category: \(item.category.name)")
-                .listRowSeparator(.hidden)
+            ScrollView(.vertical) {
+                AsyncImage(url: URL(string: item.images[0])) { pic in
+                     pic
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .frame(width: 150, height: 150)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
 
-            Text("ImageUrl: \(item.category.image)")
-                .listRowSeparator(.hidden)
-
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(item.images, id: \.self) { image in
-                        AsyncImage(url: URL(string: image)) { test in
-                            test
-                                .resizable()
-                                .frame(width: 150, height: 150)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                        } placeholder: {
-                            ProgressView()
-                        }
-                    }
+                } placeholder: {
+                    ProgressView()
                 }
+
+//                HStack {
+//                    ForEach(item.images, id: \.self) { image in
+//                        AsyncImage(url: URL(string: image)) { test in
+//                            test
+//                                .resizable()
+//                                .frame(width: 150, height: 150)
+//                                .clipShape(RoundedRectangle(cornerRadius: 10))
+//                        } placeholder: {
+//                            ProgressView()
+//                        }
+//                    }
+//                }
             }
           
             
