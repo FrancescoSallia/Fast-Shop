@@ -13,7 +13,7 @@ class HttpClient {
     
     
     func getProducts() async throws -> [Product] {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products") else {
+        guard let url = URL(string: "https://fakestoreapi.com/products") else {
             throw errorEnum.invalidURL
         }
         do {
@@ -21,7 +21,7 @@ class HttpClient {
             let products = try JSONDecoder().decode([Product].self, from: data)
             return products
         } catch {
-            print(error.localizedDescription)
+            print(error)
         }
             return []
     }

@@ -16,7 +16,17 @@ struct APITestView: View {
         
         List(products ?? []) { item in
             ScrollView(.vertical) {
-                AsyncImage(url: URL(string: item.images[0])) { pic in
+//                AsyncImage(url: URL(string: item.images[0])) { pic in
+//                     pic
+//                    .resizable()
+//                    .frame(width: 150, height: 150)
+//                    .frame(width: 150, height: 150)
+//                    .clipShape(RoundedRectangle(cornerRadius: 10))
+//
+//                } placeholder: {
+//                    ProgressView()
+//                }
+                AsyncImage(url: URL(string: item.image)) { pic in
                      pic
                     .resizable()
                     .frame(width: 150, height: 150)
@@ -50,7 +60,7 @@ struct APITestView: View {
         
         .onAppear {
             Task{
-                 try await getProducts()
+//                 try await getProducts()
             }
         }
     }

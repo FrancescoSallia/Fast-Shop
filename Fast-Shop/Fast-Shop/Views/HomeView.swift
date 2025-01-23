@@ -33,14 +33,13 @@ struct HomeView: View {
                         ForEach(viewModel.products) { item in
                             ZStack {
                                 
-                                AsyncImage(url: URL(string: item.images[0])) { pic in
+                                AsyncImage(url: URL(string: item.image)) { pic in
                                      pic
                                     .resizable()
-                                    .frame(width: 400, height: 690)
+                                    .frame(width: .infinity, height: 600)
                                     .onScrollVisibilityChange { isVisible in
                                         if isVisible {
-                                            categorieText = item.category.name
-                                        }
+                                            categorieText = item.category                                        }
                                     }
                                 } placeholder: {
                                     ProgressView()
@@ -52,7 +51,7 @@ struct HomeView: View {
                                     .foregroundColor(.black)
                                     .padding()
                                     .offset(y: 140)
-                                Text(item.category.name)
+                                Text(item.category)
                                     .font(.largeTitle)
                                     .fontDesign(.serif)
                                     .foregroundColor(.black)
