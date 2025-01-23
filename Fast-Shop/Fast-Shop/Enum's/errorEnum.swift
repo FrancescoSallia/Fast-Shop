@@ -12,4 +12,5 @@ enum errorEnum: Error {
     case networkError(Error)
     case decodingError(Error)
     case noProducts
+    case localizedDescription(Error)
 }

@@ -9,12 +9,11 @@ import Foundation
 
 class ProductViewModel: ObservableObject {
     
-    @Published var products: [Product]?
+    private let client = HttpClient()
+    
+    @Published var products: [Product] = []
     
     func getProductsFromAPI() async throws -> [Product] {
-        guard products != nil else {
-            throw errorEnum.noProducts
-        }
-        return products ?? []
+        try await client.getProducts(product: products)
     }
 }
