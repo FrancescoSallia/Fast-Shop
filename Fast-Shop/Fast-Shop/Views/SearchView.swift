@@ -12,6 +12,7 @@ struct SearchView: View {
     @State var searchNumber: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     @State var categoriesStrings: [String] = ["Damen", "Herren", "Kinder", "Home", "Beauty"]
     @State var categories: [Category] = []
+    @StateObject var viewModel = ProductViewModel()
        
 
     var body: some View {
@@ -19,9 +20,9 @@ struct SearchView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(categories) { index in
+                    ForEach(viewModel.categories) { index in
                         Button("\(index.name)"){
-                         //
+                          //
                         }
                         .font(.title3)
                         .padding()
@@ -32,49 +33,49 @@ struct SearchView: View {
                     
                     
             }
-            List(categories) { categorie in
+            List(viewModel.categories) { categorie in
                 Text("\(categorie.name)")
             }
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always) ,prompt: "Search")
         .onAppear {
             Task{
-                try await getCategories()
+                try await viewModel.getCategoriesFromAPI()
             }
         }
     }
     
     
     
-    func getCategories() async throws {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
-           throw errorEnum.invalidURL
-        }
-        
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let categoriesData = try JSONDecoder().decode([Category].self, from: data)
-            self.categories = categoriesData
-        } catch {
-            print(errorEnum.localizedDescription)
-        }
-        
-    }
+//    func getCategories() async throws {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
+//           throw errorEnum.invalidURL
+//        }
+//        
+//        do {
+//            let (data, _) = try await URLSession.shared.data(from: url)
+//            let categoriesData = try JSONDecoder().decode([Category].self, from: data)
+//            self.categories = categoriesData
+//        } catch {
+//            print(errorEnum.localizedDescription)
+//        }
+//        
+//    }
     
-    func getCategorieFiltered(id: Int) async throws {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?categoryId=\(id)") else {
-           throw errorEnum.invalidURL
-        }
-        
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let categoriesData = try JSONDecoder().decode([Category].self, from: data)
-            self.categories = categoriesData
-        } catch {
-            print(errorEnum.localizedDescription)
-        }
-        
-    }
+//    func getCategorieFiltered(id: Int) async throws {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?categoryId=\(id)") else {
+//           throw errorEnum.invalidURL
+//        }
+//        
+//        do {
+//            let (data, _) = try await URLSession.shared.data(from: url)
+//            let categoriesData = try JSONDecoder().decode([Category].self, from: data)
+//            self.categories = categoriesData
+//        } catch {
+//            print(errorEnum.localizedDescription)
+//        }
+//        
+//    }
 }
 #Preview {
     SearchView()

@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     
     @State var products: [Product] = []
-    var viewModel = ProductViewModel()
+    @StateObject var viewModel = ProductViewModel()
     @State var isLoading: Bool = false
 //    @State var search = ""
     @State var scrollPosition = ScrollPosition()
@@ -100,6 +100,7 @@ struct HomeView: View {
         }
         .onAppear {
             Task {
+//                try await viewModel.getProductsFromAPI()
                 try await getProducts()
             }
         }
