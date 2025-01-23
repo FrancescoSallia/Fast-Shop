@@ -9,7 +9,6 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @State var products: [Product] = []
     @StateObject var viewModel = ProductViewModel()
     @State var isLoading: Bool = false
 //    @State var search = ""
@@ -31,7 +30,7 @@ struct HomeView: View {
 //                    .opacity(0.0)
                     
                     VStack {
-                        ForEach(products) { item in
+                        ForEach(viewModel.products) { item in
                             ZStack {
                                 
                                 AsyncImage(url: URL(string: item.images[0])) { pic in
@@ -43,14 +42,10 @@ struct HomeView: View {
                                             categorieText = item.category.name
                                         }
                                     }
-//                                    .scaledToFit()
-//                                    .frame(width: .infinity)
-//                                    .padding()
-    //                                .opacity(0.9)
-
                                 } placeholder: {
                                     ProgressView()
                                 }
+                                
                                 Text("Nie aus der Mode")
                                     .font(.title3)
                                     .fontDesign(.monospaced)
@@ -100,25 +95,11 @@ struct HomeView: View {
         }
         .onAppear {
             Task {
-//                try await viewModel.getProductsFromAPI()
-                try await getProducts()
+                try await viewModel.getProductsFromAPI()
             }
         }
     }
      
-    func getProducts() async throws -> [Product] {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products") else {
-            throw errorEnum.invalidURL
-        }
-       
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            products = try JSONDecoder().decode([Product].self, from: data)
-        } catch {
-            print(error)
-        }
-        return []
-    }
     
 }
 #Preview {
