@@ -13,53 +13,51 @@ struct APITestView: View {
     
     var body: some View {
         
+        
         List(products ?? []) { item in
-           
-            Text("Title: \(item.title)")
-            Text("Category: \(item.category.name)")
-            Text("ImageUrl: \(item.category.image)")
-            
-            AsyncImage(url: URL(string: item.category.image)) { image in
-                image
+            ScrollView(.vertical) {
+//                AsyncImage(url: URL(string: item.images[0])) { pic in
+//                     pic
+//                    .resizable()
+//                    .frame(width: 150, height: 150)
+//                    .frame(width: 150, height: 150)
+//                    .clipShape(RoundedRectangle(cornerRadius: 10))
+//
+//                } placeholder: {
+//                    ProgressView()
+//                }
+                AsyncImage(url: URL(string: item.images[0])) { pic in
+                     pic
                     .resizable()
-                    .scaledToFit()
+                    .frame(width: 150, height: 150)
+                    .frame(width: 150, height: 150)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-            } placeholder: {
-                ProgressView()
+
+                } placeholder: {
+                    ProgressView()
+                }
+
+//                HStack {
+//                    ForEach(item.images, id: \.self) { image in
+//                        AsyncImage(url: URL(string: image)) { test in
+//                            test
+//                                .resizable()
+//                                .frame(width: 150, height: 150)
+//                                .clipShape(RoundedRectangle(cornerRadius: 10))
+//                        } placeholder: {
+//                            ProgressView()
+//                        }
+//                    }
+//                }
             }
-                
-//            HStack {
-//                AsyncImage(url: URL(string: item.images[0])) { image in
-//                    image
-//                        .resizable()
-//                        .scaledToFit()
-//                        .clipShape(RoundedRectangle(cornerRadius: 10))
-//                } placeholder: {
-//                    ProgressView()
-//                }
-//                AsyncImage(url: URL(string: item.images[1])) { image in
-//                    image
-//                        .resizable()
-//                        .scaledToFit()
-//                        .clipShape(RoundedRectangle(cornerRadius: 10))
-//                } placeholder: {
-//                    ProgressView()
-//                }
-//                AsyncImage(url: URL(string: item.images[2])) { image in
-//                    image
-//                        .resizable()
-//                        .scaledToFit()
-//                        .clipShape(RoundedRectangle(cornerRadius: 10))
-//                } placeholder: {
-//                    ProgressView()
-//                }
-//            }
+          
             
             
         }
+        
         .onAppear {
             Task{
-                 try await getProducts()
+//                 try await getProducts()
             }
         }
     }
@@ -84,8 +82,4 @@ struct APITestView: View {
 }
 
 
-enum errorEnum: Error {
-    case invalidURL
-    case networkError(Error)
-    case decodingError(Error)
-}
+

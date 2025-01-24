@@ -57,7 +57,7 @@ struct LogInView: View {
                           .foregroundColor(.white)
                           .frame(maxWidth: .infinity)
                           .padding()
-                          .background(Color.green)
+                          .background(Color.orange)
                           .cornerRadius(10)
                   }
                   
@@ -136,7 +136,7 @@ struct LogInView: View {
             //Placeholder
         } label: {
             Text("Neues Konto erstellen")
-                .foregroundStyle(.green)
+                .foregroundStyle(.orange)
         }
     }
 }
