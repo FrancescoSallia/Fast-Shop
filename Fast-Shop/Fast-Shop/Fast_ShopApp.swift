@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct Fast_ShopApp: App {
+    @StateObject var viewModel = ProductViewModel()
+
     var body: some Scene {
         WindowGroup {
             
@@ -16,6 +18,14 @@ struct Fast_ShopApp: App {
                 HomeView()
                     .tabItem {
                         Label("Home", systemImage: "house")
+                    }
+                SearchView()
+                    .tabItem {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+                APITestView()
+                    .tabItem {
+                        Label("API Test", systemImage: "arrowshape.turn.up.right.fill")
                     }
                 SettingsView()
                     .tabItem {
