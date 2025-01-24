@@ -32,26 +32,24 @@ struct HomeView: View {
                     VStack {
                         ForEach(viewModel.products) { item in
                             ZStack {
-                                
-                                AsyncImage(url: URL(string: item.image)) { pic in
+                                AsyncImage(url: URL(string: item.images[0])) { pic in
                                      pic
                                     .resizable()
                                     .frame(width: .infinity, height: 600)
                                     .onScrollVisibilityChange { isVisible in
                                         if isVisible {
-                                            categorieText = item.category                                        }
+                                            categorieText = item.category.name                                        }
                                     }
                                 } placeholder: {
                                     ProgressView()
                                 }
-                                
                                 Text("Nie aus der Mode")
                                     .font(.title3)
                                     .fontDesign(.monospaced)
                                     .foregroundColor(.black)
                                     .padding()
                                     .offset(y: 140)
-                                Text(item.category)
+                                Text(item.category.name)
                                     .font(.largeTitle)
                                     .fontDesign(.serif)
                                     .foregroundColor(.black)
@@ -83,14 +81,13 @@ struct HomeView: View {
                     Text("\(categorieText)")//Ihre Lieblingsmarken \n in einer App!
                         .font(.title)
                         .fontDesign(.serif)
-                        .frame(height: 80)
+                        .frame(height: 90)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical)
                 .background(.thinMaterial)
     //            .scrollTargetBehavior(.paging)
             }
-
         }
         .onAppear {
             Task {

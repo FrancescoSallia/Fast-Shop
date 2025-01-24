@@ -9,21 +9,24 @@ import Foundation
 
 struct Product: Identifiable, Codable {
     
+   
     let id: Int
     let title: String
     let price: Double
     let description: String
-    let category: String
-    let image: String
-    let rating: Rating
+    let images: [String]
+    let category: Category
 }
+
+
 
 
 
 
 //let id: Int
 //let title: String
-//let price: Int
+//let price: Double
 //let description: String
-//let images: [String]
-//let category: Category
+//let category: String
+//let image: String
+//let rating: Rating

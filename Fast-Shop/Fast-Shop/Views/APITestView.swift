@@ -26,7 +26,7 @@ struct APITestView: View {
 //                } placeholder: {
 //                    ProgressView()
 //                }
-                AsyncImage(url: URL(string: item.image)) { pic in
+                AsyncImage(url: URL(string: item.images[0])) { pic in
                      pic
                     .resizable()
                     .frame(width: 150, height: 150)
@@ -54,9 +54,6 @@ struct APITestView: View {
             
             
         }
-        
-        
-        
         
         .onAppear {
             Task{
