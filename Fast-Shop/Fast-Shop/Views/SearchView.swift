@@ -35,6 +35,17 @@ struct SearchView: View {
             }
             List(viewModel.categories) { categorie in
                 Text("\(categorie.name)")
+                
+                AsyncImage(url: URL(string: categorie.image)) { pic in
+                     pic
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .frame(width: 150, height: 150)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+
+                } placeholder: {
+                    ProgressView()
+                }
             }
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always) ,prompt: "Search")

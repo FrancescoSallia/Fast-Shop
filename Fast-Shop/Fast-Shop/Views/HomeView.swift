@@ -35,10 +35,12 @@ struct HomeView: View {
                                 AsyncImage(url: URL(string: item.images[0])) { pic in
                                      pic
                                     .resizable()
-                                    .frame(width: .infinity, height: 600)
+                                    .frame(width: 420, height: 700)
                                     .onScrollVisibilityChange { isVisible in
                                         if isVisible {
-                                            categorieText = item.category.name                                        }
+                                            categorieText = item.category.name
+                                            
+                                        }
                                     }
                                 } placeholder: {
                                     ProgressView()
@@ -61,11 +63,12 @@ struct HomeView: View {
                         }
                         .listStyle(.inset)
                         .scrollTransition(.interactive, axis: .vertical) { view, phase in
-                            view.scaleEffect(phase.value < 1 ? 1.1 : 0)
-                                .offset(y: phase.value * -80)
+//                            view.scaleEffect(phase.value < 1 ? 1.1 : 0)
+//                                .offset(y: phase.value * -80)
 //                                .blur(radius: phase.value * 4)
 //                            view.brightness(phase.value < 1 ? 0 : 1)
 //                            .offset(y: phase.value * -50)
+                            view.offset(y: phase.value * -80)
 
                         }
     //                    .scrollTargetLayout()
