@@ -28,29 +28,44 @@ struct SearchView: View {
                         .font(.title3)
                         .padding()
                         .tint(.primary)
-                        
                     }
                 }
                 Divider()
             }
             ScrollView(showsIndicators: false) {
                 VStack {
+                    LazyVGrid(columns: columns) {
                     ForEach(viewModel.filteredCategory) { filteredProduct in
-                        LazyVGrid(columns: columns) {
                             
-                            AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
-                                pic
-                                    .resizable()
-                                    .frame(width: 150, height: 150)
-                                    .frame(width: 150, height: 150)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            VStack {
+                                AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
+                                    pic
+                                        .resizable()
+                                        .frame(maxWidth: 400, maxHeight: 250)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .padding(.horizontal,3)
                                 
-                            } placeholder: {
-                                ProgressView()
+                                VStack{
+                                    HStack {
+                                        Text("\(filteredProduct.title)")
+                                            .font(.footnote)
+                                        Image(systemName: "bookmark")
+                                    }
+
+                                    HStack {
+                                        Text("\(filteredProduct.price.formatted())€")
+                                            .font(.footnote)
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal)
+                                }
+                                .padding(.vertical)
+
                             }
-                            
-                            Text("\(filteredProduct.title)")
-                            
                         }
                     }
                 }
@@ -69,39 +84,12 @@ struct SearchView: View {
                 try await viewModel.searchTitle()
             }
         }
+        
+        
+        
+        
+        
     }
-
-    
-    
-//    func getCategories() async throws {
-//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
-//           throw errorEnum.invalidURL
-//        }
-//        
-//        do {
-//            let (data, _) = try await URLSession.shared.data(from: url)
-//            let categoriesData = try JSONDecoder().decode([Category].self, from: data)
-//            self.categories = categoriesData
-//        } catch {
-//            print(errorEnum.localizedDescription)
-//        }
-//        
-//    }
-    
-//    func getCategorieFiltered(id: Int) async throws {
-//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?categoryId=\(id)") else {
-//           throw errorEnum.invalidURL
-//        }
-//        
-//        do {
-//            let (data, _) = try await URLSession.shared.data(from: url)
-//            let categoriesData = try JSONDecoder().decode([Category].self, from: data)
-//            self.categories = categoriesData
-//        } catch {
-//            print(errorEnum.localizedDescription)
-//        }
-//        
-//    }
 }
 #Preview {
     SearchView()
