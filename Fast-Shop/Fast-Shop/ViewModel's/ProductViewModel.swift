@@ -7,15 +7,16 @@
 
 import Foundation
 
+@MainActor
 class ProductViewModel: ObservableObject {
     
     private let client = HttpClient()
     
     @Published var products: [Product] = []
     @Published var categories: [Category] = []
-    @Published var filteredCategory: [Category] = []
-    
-    
+    @Published var filteredCategory: [Product] = []
+    @Published var filteredID: String = "0"
+
     
     //MARK: API Calls
     func getProductsFromAPI() async throws {
@@ -24,8 +25,9 @@ class ProductViewModel: ObservableObject {
     func getCategoriesFromAPI() async throws {
         self.categories = try await client.getCategories()
     }
-    func getCategorieFilteredFromAPI(id: Int) async throws {
-        self.filteredCategory = try await client.getCategorieFiltered(id: id)
+    func getCategorieFilteredFromAPI() async throws {
+        self.filteredCategory = try await client.getCategorieFiltered(id: filteredID)
+        try await getCategorieFilteredFromAPI()
     }
     
 }
