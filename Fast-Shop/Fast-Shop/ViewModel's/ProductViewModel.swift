@@ -15,7 +15,10 @@ class ProductViewModel: ObservableObject {
     @Published var products: [Product] = []
     @Published var categories: [Category] = []
     @Published var filteredCategory: [Product] = []
+    @Published var searchedProducts: [Product] = []
     @Published var filteredID: String = "0"
+    @Published var searchedText: String = ""
+
 
     
     //MARK: API Calls
@@ -26,8 +29,17 @@ class ProductViewModel: ObservableObject {
         self.categories = try await client.getCategories()
     }
     func getCategorieFilteredFromAPI() async throws {
-        self.filteredCategory = try await client.getCategorieFiltered(id: filteredID)
-        try await getCategorieFilteredFromAPI()
+        if searchedText.isEmpty{
+            self.filteredCategory = try await client.getCategorieFiltered(id: filteredID)
+            try await getCategorieFilteredFromAPI()
+        } else {
+            try await searchTitle()
+        }
+    }
+    func searchTitle() async throws {
+        self.filteredCategory = try await client.searchTitle(title: searchedText)
+        try await searchTitle()
+
     }
     
 }

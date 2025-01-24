@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State var searchText = ""
     @State var searchNumber: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     @State var categoriesStrings: [String] = ["Damen", "Herren", "Kinder", "Home", "Beauty"]
     //    @State var categories: [Category] = []
@@ -62,11 +61,12 @@ struct SearchView: View {
                 }
             }
         }
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always) ,prompt: "Search")
+        .searchable(text: $viewModel.searchedText, placement: .navigationBarDrawer(displayMode: .always) ,prompt: "Search...")
         .onAppear {
             Task{
                 try await viewModel.getCategoriesFromAPI()
                 try await viewModel.getCategorieFilteredFromAPI()
+                try await viewModel.searchTitle()
             }
         }
     }

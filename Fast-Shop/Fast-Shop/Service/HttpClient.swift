@@ -50,4 +50,18 @@ class HttpClient {
         }
         return []
     }
+    
+    func searchTitle(title: String) async throws -> [Product] {
+        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?title=\(title)") else {
+            throw errorEnum.invalidURL
+        }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let titleSearched = try JSONDecoder().decode([Product].self, from: data)
+            return titleSearched
+        } catch {
+            print(errorEnum.localizedDescription)
+        }
+        return []
+    }
 }
