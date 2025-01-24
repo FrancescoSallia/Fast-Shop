@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class ProductViewModel: ObservableObject {
     
     private let client = HttpClient()
