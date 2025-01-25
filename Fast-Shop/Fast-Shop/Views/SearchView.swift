@@ -13,6 +13,7 @@ struct SearchView: View {
     //    @State var categories: [Category] = []
     @StateObject var viewModel = ProductViewModel()
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @State var showSheet: Bool = false
     
     
     
@@ -38,15 +39,27 @@ struct SearchView: View {
                             
                             VStack {
                                 HStack {
-                                    AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
-                                        pic
-                                            .resizable()
-                                            .frame(maxWidth: 400, maxHeight: 250)
-    //                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    
+                                    ZStack(alignment: .bottom) {
+                                        AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
+                                            pic
+                                                .resizable()
+                                                .frame(maxWidth: 400, maxHeight: 250)
+        //                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                            
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
+                                        Button {
+                                            showSheet.toggle()
+                                        }label: {
+                                            Image(systemName: "plus.circle.fill")
+                                                .padding(.bottom)
+                                                .foregroundStyle(.yellow)
+                                        }
                                         
-                                    } placeholder: {
-                                        ProgressView()
                                     }
+                                    
                                 }
                                 .padding(.horizontal,3)
                                 
@@ -79,6 +92,10 @@ struct SearchView: View {
                 }
             }
         }
+        .sheet(isPresented: $showSheet, content: {
+            SelectedItemSheetView()
+                .presentationDetents([.medium, .large])
+        })
         .searchable(text: $viewModel.searchedText, placement: .navigationBarDrawer(displayMode: .always) ,prompt: "Search...")
         .onAppear {
             Task{
