@@ -36,7 +36,7 @@ class ProductViewModel: ObservableObject {
             try await searchTitle()
         }
     }
-    func searchTitle() async throws {
+   private func searchTitle() async throws {
         self.filteredCategory = try await client.searchTitle(title: searchedText)
         try await searchTitle()
 

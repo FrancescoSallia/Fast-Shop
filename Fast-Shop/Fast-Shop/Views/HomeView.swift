@@ -50,10 +50,9 @@ struct HomeView: View {
                                     .italic()
                             }
                         }
-                      
                         .listStyle(.inset)
                         .scrollTransition(.interactive, axis: .vertical) { view, phase in
-                            view.offset(y: phase.value * -80)
+                            view.offset(y: phase.value * -70)
                         }
                     }
                     .padding()

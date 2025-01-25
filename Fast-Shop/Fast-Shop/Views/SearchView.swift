@@ -18,7 +18,6 @@ struct SearchView: View {
     
     var body: some View {
         NavigationStack {
-            
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(viewModel.categories) { index in
@@ -34,18 +33,20 @@ struct SearchView: View {
             }
             ScrollView(showsIndicators: false) {
                 VStack {
-                    LazyVGrid(columns: columns) {
+                    LazyVGrid(columns: columns, spacing: -10) {
                     ForEach(viewModel.filteredCategory) { filteredProduct in
                             
                             VStack {
-                                AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
-                                    pic
-                                        .resizable()
-                                        .frame(maxWidth: 400, maxHeight: 250)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    
-                                } placeholder: {
-                                    ProgressView()
+                                HStack {
+                                    AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
+                                        pic
+                                            .resizable()
+                                            .frame(maxWidth: 400, maxHeight: 250)
+    //                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
                                 }
                                 .padding(.horizontal,3)
                                 
@@ -53,18 +54,20 @@ struct SearchView: View {
                                     HStack {
                                         Text("\(filteredProduct.title)")
                                             .font(.footnote)
+                                            .frame(width: .infinity)
                                         Image(systemName: "bookmark")
                                     }
 
                                     HStack {
                                         Text("\(filteredProduct.price.formatted())€")
                                             .font(.footnote)
+                                            .frame(width: 150)
+                                            .padding(.bottom, 30)
+
                                         Spacer()
                                     }
                                     .padding(.horizontal)
                                 }
-                                .padding(.vertical)
-
                             }
                         }
                     }
@@ -81,7 +84,7 @@ struct SearchView: View {
             Task{
                 try await viewModel.getCategoriesFromAPI()
                 try await viewModel.getCategorieFilteredFromAPI()
-                try await viewModel.searchTitle()
+//                try await viewModel.searchTitle()
             }
         }
         
