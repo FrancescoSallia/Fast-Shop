@@ -9,48 +9,78 @@ import SwiftUI
 
 struct SelectedItemSheetView: View {
     
-    let sizes: [String] = ["S", "M", "L", "XL", "XXL"]
+    @ObservedObject var viewModel = ProductViewModel()
+    
+    let sizes: [String] = ["XS","S", "M", "L", "XL", "XXL"]
+    let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
+    let productSelected: Product
+    
     var body: some View {
-        Text("Title vom produkt")
-        Text("Preis vom produkt")
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(0..<5) { _ in
-                    Rectangle()
-                        .frame(width: 110, height: 180)
-                        .foregroundStyle(.red)
+        VStack {
+            Text(productSelected.title)
+                .font(.headline)
+            Text("\(productSelected.price.formatted())€")
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(productSelected.images, id: \.self) { product in
+                            AsyncImage(url: URL(string: product)) { pic in
+                            pic
+                                .resizable()
+                                .frame(width: 122, height: 180)
+                                .foregroundStyle(.red)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    }
                 }
             }
-        }
-        .padding(.leading)
-        
-        Text("Wählen Sie eine Größe aus")
-        
-        ForEach(sizes, id: \.self) { item in
-            HStack {
-                ZStack {
-                    Rectangle()
-                        .frame(width: 210, height: 80)
-                        .border(.black, width: 2)
-                        .foregroundStyle(.white)
-                        .offset(x:10)
-                    Text(item)
-                    
-                }
-                ZStack {
-                    Rectangle()
-                        .frame(width: 210, height: 80)
-                        .border(.black, width: 2)
-                        .foregroundStyle(.white)
-                    Text(item)
-                    
-                }
-            }
-        }
+            .padding(.leading)
             
+            Text("Wählen Sie eine Größe aus")
+            LazyVGrid(columns: columns) {
+                ForEach(sizes, id: \.self) { item in
+                    HStack {
+                        ZStack {
+                            Rectangle()
+                                .frame(width: 220, height: 50)
+                                .border(.black, width: 2)
+                                .foregroundStyle(.white)
+                                .offset(x:10)
+                            Text(item)
+                            
+                        }
+                    }
+                }
+            }
+                
+        }
+        .onAppear {
+            Task {
+               try await viewModel.getProductsFromAPI()
+            }
+        }
     }
 }
 
 #Preview {
-    SelectedItemSheetView()
+    let testProduct = Product(
+        id: 1,
+        title: "Classic Navy Blue Baseball Cap",
+        price: 20.0,
+        description: "Test Description",
+        images: [
+        "https://i.imgur.com/R3iobJA.jpeg",
+        "https://i.imgur.com/Wv2KTsf.jpeg",
+        "https://i.imgur.com/76HAxcA.jpeg"
+      ],
+        category: Category(
+            id: 1,
+            name: "Tools",
+            image: "tools.png",
+            creationAt: "2025-01-24T08:29:50.000Z",
+            updatedAt: "2025-01-24T09:42:00.000Z"
+        ))
+
+    SelectedItemSheetView(productSelected: testProduct)
+        
 }

@@ -18,6 +18,8 @@ class ProductViewModel: ObservableObject {
     @Published var searchedProducts: [Product] = []
     @Published var filteredID: String = "0"
     @Published var searchedText: String = ""
+    @Published var showSheet: Bool = false
+    @Published var selectedProduct: Product? = nil
 
 
     

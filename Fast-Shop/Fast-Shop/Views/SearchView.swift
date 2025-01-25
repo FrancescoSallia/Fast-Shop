@@ -8,15 +8,26 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State var searchNumber: [String] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-    @State var categoriesStrings: [String] = ["Damen", "Herren", "Kinder", "Home", "Beauty"]
-    //    @State var categories: [Category] = []
-    @StateObject var viewModel = ProductViewModel()
+    let testProduct = Product(
+        id: 1,
+        title: "Classic Navy Blue Baseball Cap",
+        price: 20.0,
+        description: "Test Description",
+        images: [
+        "https://i.imgur.com/R3iobJA.jpeg",
+        "https://i.imgur.com/Wv2KTsf.jpeg",
+        "https://i.imgur.com/76HAxcA.jpeg"
+      ],
+        category: Category(
+            id: 1,
+            name: "Tools",
+            image: "tools.png",
+            creationAt: "2025-01-24T08:29:50.000Z",
+            updatedAt: "2025-01-24T09:42:00.000Z"
+        ))
+    @ObservedObject var viewModel = ProductViewModel()
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
-    @State var showSheet: Bool = false
-    
-    
-    
+
     var body: some View {
         NavigationStack {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -36,22 +47,19 @@ struct SearchView: View {
                 VStack {
                     LazyVGrid(columns: columns, spacing: -10) {
                     ForEach(viewModel.filteredCategory) { filteredProduct in
-                            
                             VStack {
                                 HStack {
-                                    
                                     ZStack(alignment: .bottom) {
                                         AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
                                             pic
                                                 .resizable()
                                                 .frame(maxWidth: 400, maxHeight: 250)
-        //                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                            
                                         } placeholder: {
                                             ProgressView()
                                         }
                                         Button {
-                                            showSheet.toggle()
+                                            viewModel.selectedProduct = filteredProduct
+                                            viewModel.showSheet.toggle()
                                         }label: {
                                             Image(systemName: "plus.circle.fill")
                                                 .padding(.bottom)
@@ -67,7 +75,7 @@ struct SearchView: View {
                                     HStack {
                                         Text("\(filteredProduct.title)")
                                             .font(.footnote)
-                                            .frame(width: .infinity)
+                                            //frame machen
                                         Image(systemName: "bookmark")
                                     }
 
@@ -92,25 +100,21 @@ struct SearchView: View {
                 }
             }
         }
-        .sheet(isPresented: $showSheet, content: {
-            SelectedItemSheetView()
-                .presentationDetents([.medium, .large])
+        .sheet(isPresented: $viewModel.showSheet, content: {
+            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? testProduct )
+                .presentationDetents([.height(600)])
+//                .presentationDetents([.medium, .large])
         })
         .searchable(text: $viewModel.searchedText, placement: .navigationBarDrawer(displayMode: .always) ,prompt: "Search...")
         .onAppear {
             Task{
                 try await viewModel.getCategoriesFromAPI()
                 try await viewModel.getCategorieFilteredFromAPI()
-//                try await viewModel.searchTitle()
             }
         }
-        
-        
-        
-        
-        
     }
 }
 #Preview {
     SearchView()
 }
+

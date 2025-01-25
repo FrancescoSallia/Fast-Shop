@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject var viewModel = ProductViewModel()
+    @ObservedObject var viewModel = ProductViewModel()
     @State var isLoading: Bool = false
     @Binding var isScrolling: Bool
     @State var scrollPosition = ScrollPosition()

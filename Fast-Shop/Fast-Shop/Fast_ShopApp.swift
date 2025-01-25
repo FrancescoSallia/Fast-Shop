@@ -16,11 +16,11 @@ struct Fast_ShopApp: App {
         WindowGroup {
             
                 TabView {
-                    HomeView(isScrolling: $showTab)
+                    HomeView(viewModel: viewModel, isScrolling: $showTab)
                         .tabItem {
                             Label("Home", systemImage: "house")
                         }
-                    SearchView()
+                    SearchView(viewModel: viewModel)
                         .tabItem {
                             Label("Search", systemImage: "magnifyingglass")
                         }
