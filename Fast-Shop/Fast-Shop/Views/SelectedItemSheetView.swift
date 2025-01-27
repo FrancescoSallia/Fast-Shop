@@ -36,21 +36,34 @@ struct SelectedItemSheetView: View {
             }
             .padding(.leading)
             
-            Text("Wählen Sie eine Größe aus")
-            LazyVGrid(columns: columns) {
-                ForEach(sizes, id: \.self) { item in
-                    HStack {
-                        ZStack {
-                            Rectangle()
-                                .frame(width: 220, height: 50)
-                                .border(.black, width: 2)
-                                .foregroundStyle(.white)
-                                .offset(x:10)
-                            Text(item)
-                            
+            if productSelected.category.id == 1{
+                Text("Wählen Sie eine Größe aus")
+                LazyVGrid(columns: columns) {
+                    ForEach(sizes, id: \.self) { item in
+                        HStack {
+                            ZStack {
+                                Rectangle()
+                                    .frame(width: 220, height: 50)
+                                    .border(.black, width: 2)
+                                    .foregroundStyle(.white)
+                                    .offset(x:10)
+                                Text(item)
+                                
+                            }
                         }
                     }
                 }
+            } else if productSelected.category.id == 2{
+                Text("Electronik")
+            } else if productSelected.category.id == 3{
+                Text("Möbel")
+            } else if productSelected.category.id == 4{
+                Text("Schuhe")
+            } else if productSelected.category.id == 5{
+                Text("Miscellaneous")
+            } else {
+                Text("Andere Dinge")
+
             }
                 
         }

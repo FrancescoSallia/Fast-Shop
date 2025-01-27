@@ -46,3 +46,7 @@ struct Fast_ShopApp: App {
 //            }
 //        }
 //    }
+
+
+//
+//.toolbar(.hidden, for: .tabBar)
