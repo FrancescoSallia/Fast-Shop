@@ -24,10 +24,10 @@ class ProductViewModel: ObservableObject {
     //Filter sheet
     @Published var minPrice = 0.0
     @Published var maxPrice = 100.0
-    @Published var beispielArray: [CGFloat] = [0.0, 100.0]
+    @Published var minMaxValues: [CGFloat] = [0.0, 100.0]
     @Published var selectedCategory : FilteredEnum = .allCategories
     @Published var showFilterSheet: Bool = false
-//    @Published var filterIsActive: Bool = false
+    @Published var filterIsActive: Bool = false
     @Published var filteredMinMax: [Product] = []
 //    @Published var showMinMaxFilteredList: Bool = false
 
@@ -45,9 +45,9 @@ class ProductViewModel: ObservableObject {
             self.filteredCategory = try await client.getCategorieFiltered(id: filteredID)
             try await getCategorieFilteredFromAPI()
             
-        } else if !filteredMinMax.isEmpty {
+        } else if filterIsActive {
             
-            self.filteredMinMax = try await client.minMaxPriceFiltered(preisArray: beispielArray, selectedCategory: selectedCategory)
+            self.filteredMinMax = try await client.minMaxPriceFiltered(preisArray: minMaxValues, selectedCategory: selectedCategory)
             try await minMaxPriceFiltered()
             
         } else {
@@ -58,8 +58,8 @@ class ProductViewModel: ObservableObject {
         self.filteredCategory = try await client.searchTitle(title: searchedText)
         try await searchTitle()
     }
-    func minMaxPriceFiltered() async throws {
-        self.filteredMinMax = try await client.minMaxPriceFiltered(preisArray: beispielArray, selectedCategory: selectedCategory)
+   func minMaxPriceFiltered() async throws {
+        self.filteredMinMax = try await client.minMaxPriceFiltered(preisArray: minMaxValues, selectedCategory: selectedCategory)
     }
     
 }

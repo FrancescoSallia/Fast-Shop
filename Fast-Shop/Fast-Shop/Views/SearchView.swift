@@ -34,6 +34,7 @@ struct SearchView: View {
                 HStack {
                     ForEach(viewModel.categories) { index in
                         Button("\(index.name)") {
+                            viewModel.filterIsActive = false
                             viewModel.filteredID = String(index.id)
                         }
                         .font(.title3)
@@ -46,46 +47,92 @@ struct SearchView: View {
             ScrollView(showsIndicators: false) {
                 VStack {
                     LazyVGrid(columns: columns, spacing: -10) {
-                    ForEach(viewModel.filteredCategory) { filteredProduct in
-                            VStack {
-                                HStack {
-                                    ZStack(alignment: .bottom) {
-                                        AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
-                                            pic
-                                                .resizable()
-                                                .frame(maxWidth: 400, maxHeight: 250)
-                                        } placeholder: {
-                                            ProgressView()
+                        if !viewModel.filterIsActive {
+                        ForEach(viewModel.filteredCategory) { filteredProduct in
+                                VStack {
+                                    HStack {
+                                        ZStack(alignment: .bottom) {
+                                            AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
+                                                pic
+                                                    .resizable()
+                                                    .frame(maxWidth: 400, maxHeight: 250)
+                                            } placeholder: {
+                                                ProgressView()
+                                            }
+                                            Button {
+                                                viewModel.selectedProduct = filteredProduct
+                                                viewModel.showSheet.toggle()
+                                            }label: {
+                                                Image(systemName: "plus.circle.fill")
+                                                    .padding(.bottom)
+                                                    .foregroundStyle(.yellow)
+                                            }
                                         }
-                                        Button {
-                                            viewModel.selectedProduct = filteredProduct
-                                            viewModel.showSheet.toggle()
-                                        }label: {
-                                            Image(systemName: "plus.circle.fill")
-                                                .padding(.bottom)
-                                                .foregroundStyle(.yellow)
+                                    }
+                                    .padding(.horizontal,3)
+                                    
+                                    VStack{
+                                        HStack {
+                                            Text("\(filteredProduct.title)")
+                                                .font(.footnote)
+                                                //frame machen
+                                            Image(systemName: "bookmark")
                                         }
+
+                                        HStack {
+                                            Text("\(filteredProduct.price.formatted())€")
+                                                .font(.footnote)
+                                                .frame(width: 150)
+                                                .padding(.bottom, 30)
+
+                                            Spacer()
+                                        }
+                                        .padding(.horizontal)
                                     }
                                 }
-                                .padding(.horizontal,3)
-                                
-                                VStack{
+                            }
+                    } else {
+                        ForEach(viewModel.filteredMinMax) { filteredProduct in
+                                VStack {
                                     HStack {
-                                        Text("\(filteredProduct.title)")
-                                            .font(.footnote)
-                                            //frame machen
-                                        Image(systemName: "bookmark")
+                                        ZStack(alignment: .bottom) {
+                                            AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
+                                                pic
+                                                    .resizable()
+                                                    .frame(maxWidth: 400, maxHeight: 250)
+                                            } placeholder: {
+                                                ProgressView()
+                                            }
+                                            Button {
+                                                viewModel.selectedProduct = filteredProduct
+                                                viewModel.showSheet.toggle()
+                                            }label: {
+                                                Image(systemName: "plus.circle.fill")
+                                                    .padding(.bottom)
+                                                    .foregroundStyle(.yellow)
+                                            }
+                                        }
                                     }
+                                    .padding(.horizontal,3)
+                                    
+                                    VStack{
+                                        HStack {
+                                            Text("\(filteredProduct.title)")
+                                                .font(.footnote)
+                                                //frame machen
+                                            Image(systemName: "bookmark")
+                                        }
 
-                                    HStack {
-                                        Text("\(filteredProduct.price.formatted())€")
-                                            .font(.footnote)
-                                            .frame(width: 150)
-                                            .padding(.bottom, 30)
+                                        HStack {
+                                            Text("\(filteredProduct.price.formatted())€")
+                                                .font(.footnote)
+                                                .frame(width: 150)
+                                                .padding(.bottom, 30)
 
-                                        Spacer()
+                                            Spacer()
+                                        }
+                                        .padding(.horizontal)
                                     }
-                                    .padding(.horizontal)
                                 }
                             }
                         }
@@ -113,16 +160,15 @@ struct SearchView: View {
 //                .presentationDetents([.medium, .large])
         })
         .sheet(isPresented: $viewModel.showFilterSheet, content: {
-            FilterSheetView()
-                .presentationDetents([.height(600)])
-//                .presentationDetents([.medium, .large])
+            FilterSheetView(viewModel: viewModel)
+//                .presentationDetents([.height(600)])
+                .presentationDetents([.medium, .large])
         })
         .searchable(text: $viewModel.searchedText, placement: .navigationBarDrawer(displayMode: .always) ,prompt: "Search...")
         .onAppear {
             Task{
                 try await viewModel.getCategoriesFromAPI()
                 try await viewModel.getCategorieFilteredFromAPI()
-                try await viewModel.minMaxPriceFiltered()
             }
         }
     }

@@ -10,62 +10,54 @@ import MultiSlider
 import SweeterSwift
 
 struct FilterSheetView: View {
-    @State private var price = 50.0
     @ObservedObject var viewModel = ProductViewModel()
     var body: some View {
-        Text("min und max Preis EUR")
         
         VStack {
+            Text("min und max Preis EUR")
             HStack {
-//                Text("min: \(minPrice.formatted())")
-                Text("min: \(viewModel.beispielArray[0].formatted())")
+                Text("min: \(viewModel.minMaxValues[0].formatted())")
                 Spacer()
-                Text("max: \(viewModel.beispielArray[1].formatted())")
+                Text("max: \(viewModel.minMaxValues[1].formatted())")
             }
             .padding()
-            MultiValueSlider(value: $viewModel.beispielArray, minimumValue: viewModel.minPrice, maximumValue: viewModel.maxPrice, snapStepSize: 5 , outerTrackColor: .lightGray)
-                .orientation(.horizontal)
-                .padding()
-                .onChange(of: viewModel.beispielArray, { oldValue, newValue in
-                    Task {
-                        try await viewModel.minMaxPriceFiltered()
-                    }
-                })
-                .frame(height: 30)
-            Picker("Kategorie", selection: $viewModel.selectedCategory) {
-                Text("All Categories").tag(FilteredEnum.allCategories)
-                Text("Clothes").tag(FilteredEnum.clothes)
-                Text("Electronics").tag(FilteredEnum.electronics)
-                Text("Furniture").tag(FilteredEnum.furniture)
-                Text("Miscellaneous").tag(FilteredEnum.miscellaneous)
-            }
-            .onChange(of: viewModel.selectedCategory) { oldValue, newValue in
-                Task {
-                    try await viewModel.minMaxPriceFiltered()
+            HStack {
+                MultiValueSlider(value: $viewModel.minMaxValues, minimumValue: viewModel.minPrice, maximumValue: viewModel.maxPrice, snapStepSize: 5 , outerTrackColor: .lightGray)
+                    .orientation(.horizontal)
+                    .thumbTintColor(.orange)
+                    .tint(.primary)
+                    .padding()
+                    .frame(height: 30)
+                
+                Picker("Kategorie", selection: $viewModel.selectedCategory) {
+                    Text("All Categories").tag(FilteredEnum.allCategories)
+                    Text("Clothes").tag(FilteredEnum.clothes)
+                    Text("Electronics").tag(FilteredEnum.electronics)
+                    Text("Furniture").tag(FilteredEnum.furniture)
+                    Text("Shoes").tag(FilteredEnum.shoes)
+                    Text("Miscellaneous").tag(FilteredEnum.miscellaneous)
                 }
             }
-        }
-        List(viewModel.filteredCategory) { list in
-            Text(list.title)
-            Text(list.price.formatted())
         }
         HStack {
             Button {
                 viewModel.selectedCategory = .allCategories
-                viewModel.beispielArray = [0.0, 100.0]
-//                viewModel.filterIsActive = false
+                viewModel.minMaxValues = [0.0, 100.0]
+                viewModel.showFilterSheet.toggle()
+                viewModel.filterIsActive = false
             } label: {
                 Text("RESET FILTER")
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.white)
             }
             .buttonStyle(.borderedProminent)
-            .tint(.yellow)
+            .tint(.orange)
+            .disabled(!viewModel.filterIsActive)
             
             Button {
+                viewModel.filterIsActive = true
                 Task {
                     try await viewModel.minMaxPriceFiltered()
                 }
-//                viewModel.filterIsActive = true
                 viewModel.showFilterSheet.toggle()
                
             } label: {
@@ -76,8 +68,7 @@ struct FilterSheetView: View {
             .tint(.primary)
             
         }
-        
-        
+        .padding(.top, 100)
             .onAppear {
                 Task {
                     try await viewModel.minMaxPriceFiltered()
