@@ -27,7 +27,6 @@ struct SearchView: View {
         ))
     @ObservedObject var viewModel = ProductViewModel()
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
-    @State var showFilterSheet: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -66,9 +65,7 @@ struct SearchView: View {
                                                 .padding(.bottom)
                                                 .foregroundStyle(.yellow)
                                         }
-                                        
                                     }
-                                    
                                 }
                                 .padding(.horizontal,3)
                                 
@@ -103,7 +100,7 @@ struct SearchView: View {
             .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        showFilterSheet.toggle()
+                        viewModel.showFilterSheet.toggle()
                     } label:{
                         Image(systemName: "line.3.horizontal.decrease.circle")
                     }
@@ -115,7 +112,7 @@ struct SearchView: View {
                 .presentationDetents([.height(600)])
 //                .presentationDetents([.medium, .large])
         })
-        .sheet(isPresented: $showFilterSheet, content: {
+        .sheet(isPresented: $viewModel.showFilterSheet, content: {
             FilterSheetView()
                 .presentationDetents([.height(600)])
 //                .presentationDetents([.medium, .large])
@@ -125,6 +122,7 @@ struct SearchView: View {
             Task{
                 try await viewModel.getCategoriesFromAPI()
                 try await viewModel.getCategorieFilteredFromAPI()
+                try await viewModel.minMaxPriceFiltered()
             }
         }
     }

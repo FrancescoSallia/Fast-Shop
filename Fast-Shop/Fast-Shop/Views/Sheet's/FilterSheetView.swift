@@ -18,7 +18,7 @@ struct FilterSheetView: View {
         VStack {
             HStack {
 //                Text("min: \(minPrice.formatted())")
-                Text("min: \(viewModel.beispielArray[1].formatted())")
+                Text("min: \(viewModel.beispielArray[0].formatted())")
                 Spacer()
                 Text("max: \(viewModel.beispielArray[1].formatted())")
             }
@@ -49,15 +49,35 @@ struct FilterSheetView: View {
             Text(list.title)
             Text(list.price.formatted())
         }
-        Button {
-            viewModel.selectedCategory = .allCategories
-            viewModel.beispielArray = [0.0, 100.0]
-        } label: {
-            Text("RESET FILTER")
-                .foregroundStyle(.black)
+        HStack {
+            Button {
+                viewModel.selectedCategory = .allCategories
+                viewModel.beispielArray = [0.0, 100.0]
+//                viewModel.filterIsActive = false
+            } label: {
+                Text("RESET FILTER")
+                    .foregroundStyle(.black)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.yellow)
+            
+            Button {
+                Task {
+                    try await viewModel.minMaxPriceFiltered()
+                }
+//                viewModel.filterIsActive = true
+                viewModel.showFilterSheet.toggle()
+               
+            } label: {
+                Text("APPLY")
+                    .foregroundStyle(.white)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.primary)
+            
         }
-        .buttonStyle(.borderedProminent)
-        .tint(.yellow)
+        
+        
             .onAppear {
                 Task {
                     try await viewModel.minMaxPriceFiltered()
