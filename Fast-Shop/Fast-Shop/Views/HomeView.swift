@@ -9,36 +9,28 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject var viewModel = ProductViewModel()
+    @ObservedObject var viewModel = ProductViewModel()
     @State var isLoading: Bool = false
-//    @State var search = ""
+    @Binding var isScrolling: Bool
     @State var scrollPosition = ScrollPosition()
     @State var categorieText: String = ""
-    let randomList = ["text1", "text2", "text3", "text4", "text5"]
 
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
                 ScrollView {
-//                    VStack {
-//                        Text("\(categorieText)")//Ihre Lieblingsmarken \n in einer App!
-//                            .font(.title)
-//                            .fontDesign(.serif)
-//                            .frame(height:100)
-//                    }
-//                    .padding(.vertical,20)
-//                    .opacity(0.0)
-                    
                     VStack {
                         ForEach(viewModel.products) { item in
                             ZStack {
                                 AsyncImage(url: URL(string: item.images[0])) { pic in
                                      pic
                                     .resizable()
-                                    .frame(width: .infinity, height: 600)
+                                    .frame(width: 420, height: 700)
                                     .onScrollVisibilityChange { isVisible in
                                         if isVisible {
-                                            categorieText = item.category.name                                        }
+                                            categorieText = item.category.name
+                                            
+                                        }
                                     }
                                 } placeholder: {
                                     ProgressView()
@@ -57,36 +49,41 @@ struct HomeView: View {
                                     .offset(y: 180)
                                     .italic()
                             }
-                            
                         }
                         .listStyle(.inset)
                         .scrollTransition(.interactive, axis: .vertical) { view, phase in
-                            view.scaleEffect(phase.value < 1 ? 1.1 : 0)
-                                .offset(y: phase.value * -80)
-//                                .blur(radius: phase.value * 4)
-//                            view.brightness(phase.value < 1 ? 0 : 1)
-//                            .offset(y: phase.value * -50)
-
+                            view.offset(y: phase.value * -70)
                         }
-    //                    .scrollTargetLayout()
                     }
                     .padding()
-//                    .navigationTitle("Fast Shop")
                     .navigationBarTitleDisplayMode(.inline)
                     .ignoresSafeArea()
-
-    //                .searchable(text: $search, placement: .navigationBarDrawer(displayMode:.always), prompt: "Suche...")
                 }
-                VStack {
+                .onScrollGeometryChange(for: CGFloat.self, of: { geometry in
+                    geometry.contentOffset.y
+                }, action: { oldValue, newValue in
+                    if newValue > oldValue {
+                        withAnimation {
+                            isScrolling = false
+                        }
+                    }
+                    else {
+                        withAnimation {
+                            isScrolling = true
+                        }
+                    }
+                })
+                HStack(alignment: .firstTextBaseline) {
                     Text("\(categorieText)")//Ihre Lieblingsmarken \n in einer App!
-                        .font(.title)
+                        .font(.largeTitle)
                         .fontDesign(.serif)
                         .frame(height: 90)
+                        .padding(.horizontal,50)
+                    Spacer()
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical)
                 .background(.thinMaterial)
-    //            .scrollTargetBehavior(.paging)
             }
         }
         .onAppear {
@@ -95,9 +92,8 @@ struct HomeView: View {
             }
         }
     }
-     
-    
+
 }
 #Preview {
-    HomeView()
+    HomeView(isScrolling: .constant(true))
 }
