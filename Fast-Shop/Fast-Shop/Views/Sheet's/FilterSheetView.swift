@@ -50,7 +50,7 @@ struct FilterSheetView: View {
     }
     
      func minMaxPriceFiltered() async throws {
-         guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?price_min=\(String(price))&price_max=100&categoryId=1") else {throw errorEnum.invalidURL}
+         guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?price_min=0&price_max=\(String(price))&categoryId=1") else {throw errorEnum.invalidURL}
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
