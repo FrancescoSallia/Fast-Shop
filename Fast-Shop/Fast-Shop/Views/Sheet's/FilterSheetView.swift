@@ -11,56 +11,47 @@ import SweeterSwift
 
 struct FilterSheetView: View {
     @State private var price = 50.0
-    @State private var minPrice = 10.0
-    @State private var maxPrice = 100.0
-    @State private var beispielArray: [CGFloat] = [0.0, 100.0]
-    @State var selectedCategory : FilteredEnum = .allCategories
-     
-
-    @State private var isEditing = false
-    @State var showFilterSheetView: Bool = false
-    @State var productList: [Product] = []
-    
+    @ObservedObject var viewModel = ProductViewModel()
     var body: some View {
         Text("min und max Preis EUR")
         
         VStack {
             HStack {
 //                Text("min: \(minPrice.formatted())")
-                Text("min: \(beispielArray[0].formatted())")
+                Text("min: \(viewModel.beispielArray[1].formatted())")
                 Spacer()
-                Text("max: \(beispielArray[1].formatted())")
+                Text("max: \(viewModel.beispielArray[1].formatted())")
             }
             .padding()
-            MultiValueSlider(value: $beispielArray, minimumValue: minPrice, maximumValue: maxPrice, snapStepSize: 5 , outerTrackColor: .lightGray)
+            MultiValueSlider(value: $viewModel.beispielArray, minimumValue: viewModel.minPrice, maximumValue: viewModel.maxPrice, snapStepSize: 5 , outerTrackColor: .lightGray)
                 .orientation(.horizontal)
                 .padding()
-                .onChange(of: beispielArray, { oldValue, newValue in
+                .onChange(of: viewModel.beispielArray, { oldValue, newValue in
                     Task {
-                        try await minMaxPriceFiltered()
+                        try await viewModel.minMaxPriceFiltered()
                     }
                 })
                 .frame(height: 30)
-            Picker("Kategorie", selection: $selectedCategory) {
+            Picker("Kategorie", selection: $viewModel.selectedCategory) {
                 Text("All Categories").tag(FilteredEnum.allCategories)
                 Text("Clothes").tag(FilteredEnum.clothes)
                 Text("Electronics").tag(FilteredEnum.electronics)
                 Text("Furniture").tag(FilteredEnum.furniture)
                 Text("Miscellaneous").tag(FilteredEnum.miscellaneous)
             }
-            .onChange(of: selectedCategory) { oldValue, newValue in
+            .onChange(of: viewModel.selectedCategory) { oldValue, newValue in
                 Task {
-                    try await minMaxPriceFiltered()
+                    try await viewModel.minMaxPriceFiltered()
                 }
             }
         }
-        List(productList) { list in
+        List(viewModel.filteredCategory) { list in
             Text(list.title)
             Text(list.price.formatted())
         }
         Button {
-            selectedCategory = .allCategories
-            beispielArray = [0.0, 100.0]
+            viewModel.selectedCategory = .allCategories
+            viewModel.beispielArray = [0.0, 100.0]
         } label: {
             Text("RESET FILTER")
                 .foregroundStyle(.black)
@@ -69,25 +60,17 @@ struct FilterSheetView: View {
         .tint(.yellow)
             .onAppear {
                 Task {
-                    try await minMaxPriceFiltered()
+                    try await viewModel.minMaxPriceFiltered()
                 }
             }
-    }
-    
-     func minMaxPriceFiltered() async throws {
-         guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?price_min=\(String(format: "%.2f", beispielArray[0]))&price_max=\(String(format: "%.2f", beispielArray[1]))&categoryId=\(selectedCategory.caseCategorie)") else {throw errorEnum.invalidURL}
-        
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            productList = try JSONDecoder().decode([Product].self, from: data)
-        } catch {
-            print(error)
-        }
-        
     }
 }
 
 #Preview {
+    @Previewable @State var showFilterSheetView = true
+
     FilterSheetView()
-//        .sheet(isPresented: showFilterSheetView, content: <#T##() -> View#>)
+        .sheet(isPresented: $showFilterSheetView) {
+            FilterSheetView()
+        }
 }

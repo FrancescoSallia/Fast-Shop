@@ -64,4 +64,17 @@ class HttpClient {
         }
         return []
     }
+    
+    func minMaxPriceFiltered(preisArray: [CGFloat], selectedCategory: FilteredEnum) async throws -> [Product] {
+        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?price_min=\(String(format: "%.2f", preisArray[0]))&price_max=\(String(format: "%.2f", preisArray[1]))&categoryId=\(selectedCategory.caseCategorie)") else {throw errorEnum.invalidURL}
+       do {
+           let (data, _) = try await URLSession.shared.data(from: url)
+           let mixMaxFiltered = try JSONDecoder().decode([Product].self, from: data)
+           return mixMaxFiltered
+       } catch {
+           print(error)
+       }
+        return []
+       
+   }
 }

@@ -20,6 +20,12 @@ class ProductViewModel: ObservableObject {
     @Published var searchedText: String = ""
     @Published var showSheet: Bool = false
     @Published var selectedProduct: Product? = nil
+    
+    //Filter sheet
+    @Published var minPrice = 10.0
+    @Published var maxPrice = 100.0
+    @Published var beispielArray: [CGFloat] = [0.0, 100.0]
+    @Published var selectedCategory : FilteredEnum = .allCategories
 
 
     
@@ -41,7 +47,9 @@ class ProductViewModel: ObservableObject {
    private func searchTitle() async throws {
         self.filteredCategory = try await client.searchTitle(title: searchedText)
         try await searchTitle()
-
+    }
+    func minMaxPriceFiltered() async throws {
+        self.filteredCategory = try await client.minMaxPriceFiltered(preisArray: beispielArray, selectedCategory: selectedCategory)
     }
     
 }

@@ -27,6 +27,7 @@ struct SearchView: View {
         ))
     @ObservedObject var viewModel = ProductViewModel()
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @State var showFilterSheet: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -102,7 +103,7 @@ struct SearchView: View {
             .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-//                        viewModel.showSheet.toggle()
+                        showFilterSheet.toggle()
                     } label:{
                         Image(systemName: "line.3.horizontal.decrease.circle")
                     }
@@ -111,6 +112,11 @@ struct SearchView: View {
         }
         .sheet(isPresented: $viewModel.showSheet, content: {
             SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? testProduct )
+                .presentationDetents([.height(600)])
+//                .presentationDetents([.medium, .large])
+        })
+        .sheet(isPresented: $showFilterSheet, content: {
+            FilterSheetView()
                 .presentationDetents([.height(600)])
 //                .presentationDetents([.medium, .large])
         })
