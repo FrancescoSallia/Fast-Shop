@@ -99,6 +99,15 @@ struct SearchView: View {
                     try await viewModel.getCategorieFilteredFromAPI()
                 }
             }
+            .toolbar(content: {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+//                        viewModel.showSheet.toggle()
+                    } label:{
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                    }
+                }
+            })
         }
         .sheet(isPresented: $viewModel.showSheet, content: {
             SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? testProduct )
