@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		741B95302D479F1600A0C9D3 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 741B952F2D479F1600A0C9D3 /* MultiSlider */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		748DEC2E2D2EAA1100EE76D3 /* Fast-Shop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fast-Shop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				741B95302D479F1600A0C9D3 /* MultiSlider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "Fast-Shop";
 			packageProductDependencies = (
+				741B952F2D479F1600A0C9D3 /* MultiSlider */,
 			);
 			productName = "Fast-Shop";
 			productReference = 748DEC2E2D2EAA1100EE76D3 /* Fast-Shop.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 748DEC252D2EAA1100EE76D3;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				741B952E2D479F1600A0C9D3 /* XCRemoteSwiftPackageReference "MultiSlider" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 748DEC2F2D2EAA1100EE76D3 /* Products */;
 			projectDirPath = "";
@@ -332,6 +341,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		741B952E2D479F1600A0C9D3 /* XCRemoteSwiftPackageReference "MultiSlider" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yonat/MultiSlider";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		741B952F2D479F1600A0C9D3 /* MultiSlider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 741B952E2D479F1600A0C9D3 /* XCRemoteSwiftPackageReference "MultiSlider" */;
+			productName = MultiSlider;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 748DEC262D2EAA1100EE76D3 /* Project object */;
 }
