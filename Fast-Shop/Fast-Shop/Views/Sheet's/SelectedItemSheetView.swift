@@ -94,6 +94,6 @@ struct SelectedItemSheetView: View {
             updatedAt: "2025-01-24T09:42:00.000Z"
         ))
 
-    SelectedItemSheetView(productSelected: testProduct)
+    SelectedItemSheetView(viewModel: ProductViewModel(), productSelected: testProduct)
         
 }

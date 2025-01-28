@@ -33,6 +33,8 @@ struct Fast_ShopApp: App {
                             Label("Settings", systemImage: "person")
                         }
                 }
+            .toolbar(.hidden, for: .tabBar)
+
         }
     }
 }
@@ -48,5 +50,4 @@ struct Fast_ShopApp: App {
 //    }
 
 
-//
-//.toolbar(.hidden, for: .tabBar)
+
