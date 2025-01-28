@@ -8,21 +8,33 @@
 import SwiftUI
 
 struct ProductDetailView: View {
+    
+    let product: Product
+    @ObservedObject var viewModel: ProductViewModel
 
     var body: some View {
         NavigationStack {
             ScrollView() {
                 VStack(alignment: .leading) {
                     TabView {
-                        Image("pants")
-                            .resizable()
-                            .frame(width: .infinity, height: 600)
-                        Image("pants")
-                            .resizable()
-                            .frame(width: .infinity, height: 600)
-                        Image("pants")
-                            .resizable()
-                            .frame(width: .infinity, height: 600)
+                            AsyncImage(url: URL(string: product.images[0])) { image in
+                                image
+                                    .resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        AsyncImage(url: URL(string: product.images[1])) { image in
+                                image
+                                    .resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        AsyncImage(url: URL(string: product.images[2])) { image in
+                                image
+                                    .resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
                     }
                     .tabViewStyle(.page)
                     .indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -30,25 +42,16 @@ struct ProductDetailView: View {
                     
                     
                     VStack(alignment: .leading) {
-                        Text("SIKSILK")
+                        Text(product.title)
                         Text("GRAPHIC - Pants print - red")
                             .bold()
                         HStack {
-                            Text("ab 27,91€")
+                            Text("\(product.price.formatted())€")
                                 .bold()
                                 .padding(.bottom, 6)
                             Text("inkl.MwSt.")
                                 .foregroundStyle(.gray)
                         }
-                        Text("Letzter niedrigster Preis 25,77€")
-                        Text("Ursprünglich 42,95€")
-                        
-                        HStack {
-                            Text("Farbe:")
-                            Text("Black")
-                                .bold()
-                        }
-                        
                         HStack() {
                             Button("HINZUFÜGEN") {
                                 //
@@ -69,8 +72,9 @@ struct ProductDetailView: View {
                             .background(Color.primary)
                             .padding(.leading, 12)
                         }
+                        .padding(.top, 40)
                         
-                        Text("(BESCHREIBUNG) Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.")
+                        Text(product.description)
                             .padding()
                     }
                     .padding(.horizontal)
@@ -105,5 +109,5 @@ struct ProductDetailView: View {
     }
 }
 #Preview {
-    ProductDetailView()
+    ProductDetailView(product: ProductViewModel().testProduct, viewModel: ProductViewModel())
 }

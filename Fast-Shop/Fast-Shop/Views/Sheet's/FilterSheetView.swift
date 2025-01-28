@@ -29,13 +29,13 @@ struct FilterSheetView: View {
                     .padding()
                     .frame(height: 30)
                 
-                Picker("Kategorie", selection: $viewModel.selectedCategory) {
-                    Text("All Categories").tag(FilteredEnum.allCategories)
-                    Text("Clothes").tag(FilteredEnum.clothes)
-                    Text("Electronics").tag(FilteredEnum.electronics)
-                    Text("Furniture").tag(FilteredEnum.furniture)
-                    Text("Shoes").tag(FilteredEnum.shoes)
-                    Text("Miscellaneous").tag(FilteredEnum.miscellaneous)
+                Picker("Kategorie", selection: $viewModel.filteredID) {
+                    Text("All Categories").tag(FilteredEnum.allCategories.caseCategorie)
+                    Text("Clothes").tag(FilteredEnum.clothes.caseCategorie)
+                    Text("Electronics").tag(FilteredEnum.electronics.caseCategorie)
+                    Text("Furniture").tag(FilteredEnum.furniture.caseCategorie)
+                    Text("Shoes").tag(FilteredEnum.shoes.caseCategorie)
+                    Text("Miscellaneous").tag(FilteredEnum.miscellaneous.caseCategorie)
                 }
             }
         }
@@ -45,19 +45,17 @@ struct FilterSheetView: View {
                 viewModel.minMaxValues = [0.0, 100.0]
                 viewModel.filteredID = viewModel.selectedCategory.caseCategorie
                 viewModel.showFilterSheet.toggle()
-                viewModel.filterIsActive = false
+//                viewModel.filterIsActive = false
             } label: {
                 Text("RESET FILTER")
                     .foregroundStyle(.white)
             }
             .buttonStyle(.borderedProminent)
             .tint(.orange)
-            .disabled(!viewModel.filterIsActive)
-            
             Button {
-                viewModel.filterIsActive = true
+//                viewModel.filterIsActive = true
                 Task {
-                    try await viewModel.minMaxPriceFiltered()
+                    try await viewModel.getCategorieFilteredFromAPI()
                 }
                 viewModel.showFilterSheet.toggle()
             } label: {
@@ -71,7 +69,8 @@ struct FilterSheetView: View {
         .padding(.top, 100)
             .onAppear {
                 Task {
-                    try await viewModel.minMaxPriceFiltered()
+//                    try await viewModel.minMaxPriceFiltered()
+                    try await viewModel.getCategorieFilteredFromAPI()
                 }
             }
     }

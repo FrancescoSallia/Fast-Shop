@@ -17,7 +17,6 @@ enum FilteredEnum: CaseIterable {
     case miscellaneous
     
     var caseCategorie: String {
-        
         switch self {
         case .allCategories: "0"
         case .clothes: "1"

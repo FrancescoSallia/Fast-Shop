@@ -14,22 +14,35 @@ class ProductViewModel: ObservableObject {
     
     @Published var products: [Product] = []
     @Published var categories: [Category] = []
-    @Published var filteredCategory: [Product] = []
-    @Published var searchedProducts: [Product] = []
     @Published var filteredID: String = "0"
     @Published var searchedText: String = ""
     @Published var showSheet: Bool = false
     @Published var selectedProduct: Product? = nil
+    @Published var testProduct = Product(
+        id: 1,
+        title: "Classic Navy Blue Baseball Cap",
+        price: 20.0,
+        description: "Test Description",
+        images: [
+        "https://i.imgur.com/R3iobJA.jpeg",
+        "https://i.imgur.com/Wv2KTsf.jpeg",
+        "https://i.imgur.com/76HAxcA.jpeg"
+      ],
+        category: Category(
+            id: 1,
+            name: "Tools",
+            image: "tools.png",
+            creationAt: "2025-01-24T08:29:50.000Z",
+            updatedAt: "2025-01-24T09:42:00.000Z"
+        ))
     
-    //Filter sheet
+    //MARK: Filter sheet
     @Published var minPrice = 0.0
     @Published var maxPrice = 100.0
     @Published var minMaxValues: [CGFloat] = [0.0, 100.0]
     @Published var selectedCategory : FilteredEnum = .allCategories
     @Published var showFilterSheet: Bool = false
     @Published var filterIsActive: Bool = false
-    @Published var filteredMinMax: [Product] = []
-//    @Published var showMinMaxFilteredList: Bool = false
 
     
     //MARK: API Calls
@@ -41,23 +54,13 @@ class ProductViewModel: ObservableObject {
     }
     func getCategorieFilteredFromAPI() async throws {
         if searchedText.isEmpty {
-            self.filteredCategory = try await client.getCategorieFiltered(id: filteredID)
-            try await getCategorieFilteredFromAPI()
-            
-        } else if filterIsActive {
-            self.filteredMinMax = try await client.minMaxPriceFiltered(preisArray: minMaxValues, selectedCategory: selectedCategory)
-            try await minMaxPriceFiltered()
-            
+            self.products = try await client.getCategorieFiltered(id: filteredID)
         } else {
-            try await searchTitle()
+            self.products = try await client.searchTitle(title: searchedText)
         }
     }
-   private func searchTitle() async throws {
-        self.filteredCategory = try await client.searchTitle(title: searchedText)
-        try await searchTitle()
-    }
    func minMaxPriceFiltered() async throws {
-        self.filteredMinMax = try await client.minMaxPriceFiltered(preisArray: minMaxValues, selectedCategory: selectedCategory)
+       self.products = try await client.minMaxPriceFiltered(preisArray: minMaxValues, selectedCategory: filteredID)
     }
     
 }
