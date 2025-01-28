@@ -13,16 +13,17 @@ enum FilteredEnum: CaseIterable {
     case clothes
     case electronics
     case furniture
+    case shoes
     case miscellaneous
     
     var caseCategorie: String {
-        
         switch self {
         case .allCategories: "0"
         case .clothes: "1"
         case .electronics: "2"
         case .furniture: "3"
-        case .miscellaneous : "4"            
+        case .shoes : "4"
+        case .miscellaneous : "5"            
         }
     }
 }

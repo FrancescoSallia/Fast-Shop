@@ -8,55 +8,106 @@
 import SwiftUI
 
 struct ProductDetailView: View {
+    
+    let product: Product
+    @ObservedObject var viewModel: ProductViewModel
 
     var body: some View {
-        ScrollView() {
-            VStack(alignment: .leading) {
-                TabView {
-                    Image("pants")
-                        .resizable()
-                        .frame(width: .infinity, height: 600)
-                    Image("pants")
-                        .resizable()
-                        .frame(width: .infinity, height: 600)
-                    Image("pants")
-                        .resizable()
-                        .frame(width: .infinity, height: 600)
-                }
-                .tabViewStyle(.page)
-                .indexViewStyle(.page(backgroundDisplayMode: .always))
-                .frame(width: 400, height: 600)
-                
-                
+        NavigationStack {
+            ScrollView() {
                 VStack(alignment: .leading) {
-                    Text("SIKSILK")
-                    Text("GRAPHIC - Pants print - red")
-                        .bold()
-                    HStack {
-                        Text("ab 27,91€")
-                            .bold()
-                            .padding(.bottom, 6)
-                        Text("inkl.MwSt.")
-                            .foregroundStyle(.gray)
+                    TabView {
+                            AsyncImage(url: URL(string: product.images[0])) { image in
+                                image
+                                    .resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        AsyncImage(url: URL(string: product.images[1])) { image in
+                                image
+                                    .resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        AsyncImage(url: URL(string: product.images[2])) { image in
+                                image
+                                    .resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
                     }
-                    Text("Letzter niedrigster Preis 25,77€")
-                    Text("Ursprünglich 42,95€")
+                    .tabViewStyle(.page)
+                    .indexViewStyle(.page(backgroundDisplayMode: .always))
+                    .frame(width: 400, height: 600)
                     
-                    HStack {
-                        Text("Farbe:")
-                        Text("Black")
+                    
+                    VStack(alignment: .leading) {
+                        Text(product.title)
+                        Text("GRAPHIC - Pants print - red")
                             .bold()
+                        HStack {
+                            Text("\(product.price.formatted())€")
+                                .bold()
+                                .padding(.bottom, 6)
+                            Text("inkl.MwSt.")
+                                .foregroundStyle(.gray)
+                        }
+                        HStack() {
+                            Button("HINZUFÜGEN") {
+                                //
+                            }
+                            .frame(width: 280, height: 45)
+                            .border(Color.gray)
+                            .tint(.white)
+                            .background(Color.primary)
+                            
+                            Button {
+                                //
+                            } label: {
+                                Image(systemName: "bookmark")
+                            }
+                            .frame(width: 55, height: 45)
+                            .border(Color.gray)
+                            .tint(.white)
+                            .background(Color.primary)
+                            .padding(.leading, 12)
+                        }
+                        .padding(.top, 40)
+                        
+                        Text(product.description)
+                            .padding()
                     }
-                    
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
+            .toolbar(content: {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        //
+                    } label:{
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    .foregroundStyle(.primary)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    ZStack {
+                        Button {
+                            //
+                        } label:{
+                            Image(systemName: "bag")
+                        }
+                        .foregroundStyle(.primary)
+
+                        Text("2")
+                            .font(.footnote)
+                            .offset(x: 3, y: 1)
+                            .foregroundStyle(.primary)
+                    }
+                }
+            })
         }
-        
-        
-        
     }
 }
 #Preview {
-    ProductDetailView()
+    ProductDetailView(product: ProductViewModel().testProduct, viewModel: ProductViewModel())
 }
