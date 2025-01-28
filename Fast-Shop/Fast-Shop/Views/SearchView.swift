@@ -33,9 +33,18 @@ struct SearchView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(viewModel.categories) { index in
-                        Button("\(index.name)") {
+                        Button {
                             viewModel.filterIsActive = false
                             viewModel.filteredID = String(index.id)
+                        } label: {
+                            if viewModel.filteredID == "0" {
+                                Text("\(index.name)")
+                            } else if viewModel.filteredID == String(index.id) {
+                                Text("\(index.name)")
+                                    .underline()
+                            } else {
+                                Text("\(index.name)")
+                            }
                         }
                         .font(.title3)
                         .padding()

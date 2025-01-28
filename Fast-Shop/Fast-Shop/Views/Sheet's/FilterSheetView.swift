@@ -43,6 +43,7 @@ struct FilterSheetView: View {
             Button {
                 viewModel.selectedCategory = .allCategories
                 viewModel.minMaxValues = [0.0, 100.0]
+                viewModel.filteredID = viewModel.selectedCategory.caseCategorie
                 viewModel.showFilterSheet.toggle()
                 viewModel.filterIsActive = false
             } label: {
@@ -59,7 +60,6 @@ struct FilterSheetView: View {
                     try await viewModel.minMaxPriceFiltered()
                 }
                 viewModel.showFilterSheet.toggle()
-               
             } label: {
                 Text("APPLY")
                     .foregroundStyle(.white)
