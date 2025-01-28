@@ -36,7 +36,7 @@ class ProductViewModel: ObservableObject {
             updatedAt: "2025-01-24T09:42:00.000Z"
         ))
     
-    //MARK: Filter sheet
+    //MARK: Filter Sheet
     @Published var minPrice = 0.0
     @Published var maxPrice = 100.0
     @Published var minMaxValues: [CGFloat] = [0.0, 100.0]

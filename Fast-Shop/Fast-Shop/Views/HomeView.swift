@@ -10,9 +10,9 @@ import SwiftUI
 struct HomeView: View {
     
     @ObservedObject var viewModel = ProductViewModel()
-    @State var isLoading: Bool = false
+//    @State var isLoading: Bool = false
     @Binding var isScrolling: Bool
-    @State var scrollPosition = ScrollPosition()
+//    @State var scrollPosition = ScrollPosition()
     @State var categorieText: String = ""
 
     var body: some View {
@@ -25,8 +25,9 @@ struct HomeView: View {
                                 AsyncImage(url: URL(string: item.images[0])) { pic in
                                      pic
                                     .resizable()
-//                                    .scaledToFit()
-                                    .frame(width: 400, height: 620)
+//                                    .scaledToFill()
+//                                    .frame(width: 400, height: 620)
+                                    .frame(width: 400, height: 700)
                                     .onScrollVisibilityChange { isVisible in
                                         if isVisible {
                                             categorieText = item.category.name
@@ -51,10 +52,10 @@ struct HomeView: View {
                                     .italic()
                             }
                         }
-                        .listStyle(.inset)
-                        .scrollTransition(.interactive, axis: .vertical) { view, phase in
-                            view.offset(y: phase.value * -70)
-                        }
+//                        .listStyle(.inset)
+//                        .scrollTransition(.interactive, axis: .vertical) { view, phase in
+////                            view.offset(y: phase.value * -70)
+//                        }
                     }
                     .padding()
                     .navigationBarTitleDisplayMode(.inline)
@@ -83,7 +84,6 @@ struct HomeView: View {
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical)
                 .background(.thinMaterial)
             }
         }
