@@ -141,7 +141,8 @@ struct SearchView: View {
             })
         }
         .sheet(isPresented: $viewModel.showSheet, content: {
-            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? viewModel.testProduct )
+//            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? viewModel.testProduct )
+            SelectedItemSheetView(viewModel: viewModel)
                 .presentationDetents([.height(600)])
 //                .presentationDetents([.medium, .large])
         })

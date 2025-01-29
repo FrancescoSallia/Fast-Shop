@@ -43,6 +43,10 @@ class ProductViewModel: ObservableObject {
     @Published var selectedCategory : FilteredEnum = .allCategories
     @Published var showFilterSheet: Bool = false
     @Published var filterIsActive: Bool = false
+    
+    //MARK: User
+    @Published var user = User(name: "John")
+
 
     
     //MARK: API Calls
@@ -65,5 +69,9 @@ class ProductViewModel: ObservableObject {
    func minMaxPriceFiltered() async throws {
        self.products = try await client.minMaxPriceFiltered(searchText: searchedText, preisArray: minMaxValues, selectedCategory: filteredID)
     }
+    
+//    func userDataCart() async throws {
+//        self.user.cart = try await client.getProducts()
+//    }
     
 }

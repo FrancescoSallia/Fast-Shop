@@ -13,16 +13,16 @@ struct SelectedItemSheetView: View {
     
     let sizes: [String] = ["XS","S", "M", "L", "XL", "XXL"]
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
-    let productSelected: Product
+//    let productSelected: Product
     
     var body: some View {
         VStack {
-            Text(productSelected.title)
+            Text(viewModel.selectedProduct!.title)
                 .font(.headline)
-            Text("\(productSelected.price.formatted())€")
+            Text("\(viewModel.selectedProduct!.price.formatted())€")
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(productSelected.images, id: \.self) { product in
+                    ForEach(viewModel.selectedProduct!.images, id: \.self) { product in
                             AsyncImage(url: URL(string: product)) { pic in
                             pic
                                 .resizable()
@@ -35,8 +35,13 @@ struct SelectedItemSheetView: View {
                 }
             }
             .padding(.leading)
+            Button("HINZUFÜGEN"){
+                viewModel.user.cart.append(viewModel.selectedProduct ?? viewModel.testProduct)
+                print(viewModel.user.cart)
+                viewModel.showSheet = false
+            }
             
-            if productSelected.category.id == 1{
+            if viewModel.selectedProduct!.category.id == 1{
                 Text("Wählen Sie eine Größe aus")
                 LazyVGrid(columns: columns) {
                     ForEach(sizes, id: \.self) { item in
@@ -52,14 +57,28 @@ struct SelectedItemSheetView: View {
                             }
                         }
                     }
+                    Button("HINZUFÜGEN"){
+                        viewModel.user.cart.append(viewModel.selectedProduct!)
+                        Task {
+                            try await viewModel.getProductsFromAPI()
+                        }
+                        print("selected items: \(viewModel.user.cart)")
+                    }
                 }
-            } else if productSelected.category.id == 2{
+            } else if viewModel.selectedProduct!.category.id == 2{
                 Text("Electronik")
-            } else if productSelected.category.id == 3{
+                Button("HINZUFÜGEN"){
+                    viewModel.user.cart.append(viewModel.selectedProduct!)
+                    Task {
+                       try await viewModel.getProductsFromAPI()
+                    }
+                    print("selected items: \(viewModel.user.cart)")
+                }
+            } else if viewModel.selectedProduct!.category.id == 3{
                 Text("Möbel")
-            } else if productSelected.category.id == 4{
+            } else if viewModel.selectedProduct!.category.id == 4{
                 Text("Schuhe")
-            } else if productSelected.category.id == 5{
+            } else if viewModel.selectedProduct!.category.id == 5{
                 Text("Miscellaneous")
             } else {
                 Text("Andere Dinge")
@@ -94,6 +113,6 @@ struct SelectedItemSheetView: View {
             updatedAt: "2025-01-24T09:42:00.000Z"
         ))
 
-    SelectedItemSheetView(viewModel: ProductViewModel(), productSelected: testProduct)
+    SelectedItemSheetView(viewModel: ProductViewModel())
         
 }

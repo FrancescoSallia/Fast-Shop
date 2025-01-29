@@ -16,25 +16,20 @@ struct Fast_ShopApp: App {
         WindowGroup {
             
                 TabView {
-                    HomeView(viewModel: viewModel, isScrolling: $showTab)
-                        .tabItem {
-                            Label("Home", systemImage: "house")
-                        }
-                    SearchView(viewModel: viewModel)
-                        .tabItem {
-                            Label("Search", systemImage: "magnifyingglass")
-                        }
-                    APITestView()
-                        .tabItem {
-                            Label("API Test", systemImage: "arrowshape.turn.up.right.fill")
-                        }
-                    SettingsView()
-                        .tabItem {
-                            Label("Settings", systemImage: "person")
-                        }
+                    Tab("Home", systemImage: "house.fill"){
+                        HomeView(isScrolling: $showTab)
+                    }
+                    Tab("Search", systemImage: "magnifyingglass"){
+                        SearchView(viewModel: viewModel)
+                    }
+                    Tab("Cart", systemImage: "bag"){
+                        CartView(viewModel: viewModel)
+                    }
+                    Tab("Settings", systemImage: "person"){
+                        SettingsView()
+                    }
+                
                 }
-            .toolbar(.hidden, for: .tabBar)
-
         }
     }
 }
@@ -51,3 +46,19 @@ struct Fast_ShopApp: App {
 
 
 
+//HomeView(viewModel: viewModel, isScrolling: $showTab)
+//    .tabItem {
+//        Label("Home", systemImage: "house")
+//    }
+//SearchView(viewModel: viewModel)
+//    .tabItem {
+//        Label("Search", systemImage: "magnifyingglass")
+//    }
+//CardView(viewModel: viewModel)
+//    .tabItem {
+//        Label("Cart", systemImage: "bag")
+//    }
+//SettingsView()
+//    .tabItem {
+//        Label("Settings", systemImage: "person")
+//    }

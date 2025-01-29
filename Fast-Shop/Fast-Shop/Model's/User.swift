@@ -10,12 +10,12 @@ import Foundation
 class User: ObservableObject, Identifiable {
     let id: UUID = UUID()
     let name: String
-    @Published var card: [Product] // Markiere das Array als @Published
-    @Published var favorite: [Product] // Markiere das Array als @Published
+    @Published var cart: [Product] //Variablen die sich ändern können, werden mit Published markiert
+    @Published var favorite: [Product]
     
     init(name: String, card: [Product] = [], favorite: [Product] = []) {
         self.name = name
-        self.card = card
+        self.cart = card
         self.favorite = favorite
     }
 }

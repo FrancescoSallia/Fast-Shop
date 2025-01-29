@@ -16,7 +16,7 @@ struct APITestView: View {
         VStack {
             Text("User: \(user.name)")
             // Um die Favoriten zu sehen, wechsel von user.card zu user.favorite
-            List(user.card) { product in
+            List(user.cart) { product in
                 
                 Text("gekaufter produkt: \(product.title)")
                 Text("favorisiertes produkt: \(product)")
@@ -24,12 +24,12 @@ struct APITestView: View {
             }
             .frame(height: 200)
             Button("ADD TO CARD") {
-                user.card.append(product)
+                user.cart.append(product)
 
             }
             
             Button("Delete first Product from Card") {
-                user.card.remove(at: 0)
+                user.cart.remove(at: 0)
 //                user.warenkorb.removeAll(where: { $0.id == product.id }) //   LÖSCHT ALLE PRODUKTE MIT DER SELBEN ID
             }
             
