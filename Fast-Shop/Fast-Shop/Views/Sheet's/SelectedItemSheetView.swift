@@ -13,16 +13,16 @@ struct SelectedItemSheetView: View {
     
     let sizes: [String] = ["XS","S", "M", "L", "XL", "XXL"]
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
-    let productSelected: Product
+//    let productSelected: Product
     
     var body: some View {
         VStack {
-            Text(productSelected.title)
+            Text(viewModel.selectedProduct.title)
                 .font(.headline)
-            Text("\(productSelected.price.formatted())€")
+            Text("\(viewModel.selectedProduct.price.formatted())€")
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(productSelected.images, id: \.self) { product in
+                    ForEach(viewModel.selectedProduct.images, id: \.self) { product in
                             AsyncImage(url: URL(string: product)) { pic in
                             pic
                                 .resizable()
@@ -35,8 +35,13 @@ struct SelectedItemSheetView: View {
                 }
             }
             .padding(.leading)
+//            Button("HINZUFÜGEN"){
+//                viewModel.user.cart.append(viewModel.selectedProduct ?? viewModel.testProduct)
+//                print(viewModel.user.cart)
+//                viewModel.showSheet = false
+//            }
             
-            if productSelected.category.id == 1{
+            if viewModel.selectedProduct.category.id == 1{
                 Text("Wählen Sie eine Größe aus")
                 LazyVGrid(columns: columns) {
                     ForEach(sizes, id: \.self) { item in
@@ -53,19 +58,22 @@ struct SelectedItemSheetView: View {
                         }
                     }
                 }
-            } else if productSelected.category.id == 2{
+            } else if viewModel.selectedProduct.category.id == 2{
                 Text("Electronik")
-            } else if productSelected.category.id == 3{
+            } else if viewModel.selectedProduct.category.id == 3{
                 Text("Möbel")
-            } else if productSelected.category.id == 4{
+            } else if viewModel.selectedProduct.category.id == 4{
                 Text("Schuhe")
-            } else if productSelected.category.id == 5{
+            } else if viewModel.selectedProduct.category.id == 5{
                 Text("Miscellaneous")
             } else {
                 Text("Andere Dinge")
-
             }
-                
+            Button("HINZUFÜGEN") {
+                viewModel.user.cart.append(viewModel.selectedProduct)
+                print(viewModel.user.cart)
+                viewModel.showSheet = false
+            }
         }
         .onAppear {
             Task {
@@ -76,24 +84,26 @@ struct SelectedItemSheetView: View {
 }
 
 #Preview {
-    let testProduct = Product(
-        id: 1,
-        title: "Classic Navy Blue Baseball Cap",
-        price: 20.0,
-        description: "Test Description",
-        images: [
-        "https://i.imgur.com/R3iobJA.jpeg",
-        "https://i.imgur.com/Wv2KTsf.jpeg",
-        "https://i.imgur.com/76HAxcA.jpeg"
-      ],
-        category: Category(
-            id: 1,
-            name: "Tools",
-            image: "tools.png",
-            creationAt: "2025-01-24T08:29:50.000Z",
-            updatedAt: "2025-01-24T09:42:00.000Z"
-        ))
+//    let testProduct = Product(
+//        id: 1,
+//        title: "Classic Navy Blue Baseball Cap",
+//        price: 20.0,
+//        description: "Test Description",
+//        images: [
+//        "https://i.imgur.com/R3iobJA.jpeg",
+//        "https://i.imgur.com/Wv2KTsf.jpeg",
+//        "https://i.imgur.com/76HAxcA.jpeg"
+//      ],
+//        category: Category(
+//            id: 1,
+//            name: "Tools",
+//            image: "tools.png",
+//            creationAt: "2025-01-24T08:29:50.000Z",
+//            updatedAt: "2025-01-24T09:42:00.000Z"
+//        )
+//        ,size: "",
+//        numberOfProducts: 0)
 
-    SelectedItemSheetView(viewModel: ProductViewModel(), productSelected: testProduct)
+    SelectedItemSheetView(viewModel: ProductViewModel())
         
 }

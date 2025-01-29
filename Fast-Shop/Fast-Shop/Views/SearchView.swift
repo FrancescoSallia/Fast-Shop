@@ -24,37 +24,47 @@ struct SearchView: View {
             image: "tools.png",
             creationAt: "2025-01-24T08:29:50.000Z",
             updatedAt: "2025-01-24T09:42:00.000Z"
-        ))
+        ),
+        size: "",
+        numberOfProducts: 0)
     @ObservedObject var viewModel: ProductViewModel
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         NavigationStack {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(viewModel.categories) { index in
-                        Button {
-//                            viewModel.filterIsActive = false
-                            viewModel.filteredID = String(index.id)
-                            Task {
-                                try await viewModel.getCategorieFilteredFromAPI()
+            if !viewModel.filterIsActive {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(viewModel.categories) { index in
+                            Button {
+                                //                            viewModel.filterIsActive = false
+                                viewModel.filteredID = String(index.id)
+                                if !viewModel.filterIsActive {
+                                    Task {
+                                        try await viewModel.getCategorieFilteredFromAPI()
+                                    }
+                                } else {
+                                    Task {
+                                        try await viewModel.minMaxPriceFiltered()
+                                    }
+                                }
+                            } label: {
+                                if viewModel.filteredID == "0" {
+                                    Text("\(index.name)")
+                                } else if viewModel.filteredID == String(index.id) {
+                                    Text("\(index.name)")
+                                        .underline()
+                                } else {
+                                    Text("\(index.name)")
+                                }
                             }
-                        } label: {
-                            if viewModel.filteredID == "0" {
-                                Text("\(index.name)")
-                            } else if viewModel.filteredID == String(index.id) {
-                                Text("\(index.name)")
-                                    .underline()
-                            } else {
-                                Text("\(index.name)")
-                            }
+                            .font(.title3)
+                            .padding()
+                            .tint(.primary)
                         }
-                        .font(.title3)
-                        .padding()
-                        .tint(.primary)
                     }
+                    Divider()
                 }
-                Divider()
             }
             ScrollView(showsIndicators: false) {
                 VStack {
@@ -111,9 +121,16 @@ struct SearchView: View {
                 }
             }
             .refreshable {
-                Task {
-                    try await viewModel.getCategorieFilteredFromAPI()
+                if !viewModel.filterIsActive {
+                    Task {
+                        try await viewModel.getCategorieFilteredFromAPI()
+                       }
+                } else {
+                    Task {
+                        try await viewModel.minMaxPriceFiltered()
+                       }
                 }
+                        
             }
             .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -126,7 +143,8 @@ struct SearchView: View {
             })
         }
         .sheet(isPresented: $viewModel.showSheet, content: {
-            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? viewModel.testProduct )
+//            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? viewModel.testProduct )
+            SelectedItemSheetView(viewModel: viewModel)
                 .presentationDetents([.height(600)])
 //                .presentationDetents([.medium, .large])
         })
@@ -142,9 +160,15 @@ struct SearchView: View {
             }
         })
         .onAppear {
-            Task{
-                try await viewModel.getCategoriesFromAPI()
-                try await viewModel.getCategorieFilteredFromAPI()
+            if !viewModel.filterIsActive {
+                Task {
+                    try await viewModel.getCategoriesFromAPI()
+                    try await viewModel.getCategorieFilteredFromAPI()
+                   }
+            } else {
+                Task {
+                    try await viewModel.minMaxPriceFiltered()
+                   }
             }
         }
     }

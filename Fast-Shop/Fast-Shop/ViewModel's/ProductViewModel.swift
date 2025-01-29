@@ -17,7 +17,26 @@ class ProductViewModel: ObservableObject {
     @Published var filteredID: String = "0"
     @Published var searchedText: String = ""
     @Published var showSheet: Bool = false
-    @Published var selectedProduct: Product? = nil
+    @Published var selectedProduct: Product = Product(
+        id: 1,
+        title: "Classic Navy Blue Baseball Cap",
+        price: 20.0,
+        description: "Test Description",
+        images: [
+        "https://i.imgur.com/R3iobJA.jpeg",
+        "https://i.imgur.com/Wv2KTsf.jpeg",
+        "https://i.imgur.com/76HAxcA.jpeg"
+      ],
+        category: Category(
+            id: 1,
+            name: "Tools",
+            image: "tools.png",
+            creationAt: "2025-01-24T08:29:50.000Z",
+            updatedAt: "2025-01-24T09:42:00.000Z"
+        ),
+        size: "",
+        numberOfProducts: 0
+    )
     @Published var testProduct = Product(
         id: 1,
         title: "Classic Navy Blue Baseball Cap",
@@ -34,15 +53,22 @@ class ProductViewModel: ObservableObject {
             image: "tools.png",
             creationAt: "2025-01-24T08:29:50.000Z",
             updatedAt: "2025-01-24T09:42:00.000Z"
-        ))
+        ),
+        size: "",
+        numberOfProducts: 0
+    )
     
-    //MARK: Filter sheet
+    //MARK: Filter Sheet
     @Published var minPrice = 0.0
     @Published var maxPrice = 100.0
     @Published var minMaxValues: [CGFloat] = [0.0, 100.0]
     @Published var selectedCategory : FilteredEnum = .allCategories
     @Published var showFilterSheet: Bool = false
     @Published var filterIsActive: Bool = false
+    
+    //MARK: User
+    @Published var user = User(name: "John")
+
 
     
     //MARK: API Calls
@@ -53,14 +79,21 @@ class ProductViewModel: ObservableObject {
         self.categories = try await client.getCategories()
     }
     func getCategorieFilteredFromAPI() async throws {
-        if searchedText.isEmpty {
+        if searchedText.isEmpty && filterIsActive == false {
             self.products = try await client.getCategorieFiltered(id: filteredID)
-        } else {
+        } else if filterIsActive == true {
+            try await minMaxPriceFiltered()
+        }
+        else {
             self.products = try await client.searchTitle(title: searchedText)
         }
     }
    func minMaxPriceFiltered() async throws {
-       self.products = try await client.minMaxPriceFiltered(preisArray: minMaxValues, selectedCategory: filteredID)
+       self.products = try await client.minMaxPriceFiltered(searchText: searchedText, preisArray: minMaxValues, selectedCategory: filteredID)
     }
+    
+//    func userDataCart() async throws {
+//        self.user.cart = try await client.getProducts()
+//    }
     
 }
