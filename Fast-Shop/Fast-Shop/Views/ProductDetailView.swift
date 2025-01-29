@@ -14,97 +14,89 @@ struct ProductDetailView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView() {
-                VStack(alignment: .leading) {
-                    TabView {
-                            AsyncImage(url: URL(string: product.images[0])) { image in
+            ScrollView {
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(product.images, id: \.self) { produkt in
+                            AsyncImage(url: URL(string: produkt)) { image in
                                 image
                                     .resizable()
                             } placeholder: {
                                 ProgressView()
                             }
-                        AsyncImage(url: URL(string: product.images[1])) { image in
-                                image
-                                    .resizable()
-                            } placeholder: {
-                                ProgressView()
-                            }
-                        AsyncImage(url: URL(string: product.images[2])) { image in
-                                image
-                                    .resizable()
-                            } placeholder: {
-                                ProgressView()
-                            }
-                    }
-                    .tabViewStyle(.page)
-                    .indexViewStyle(.page(backgroundDisplayMode: .always))
-                    .frame(width: 400, height: 600)
-                    
-                    
-                    VStack(alignment: .leading) {
-                        Text(product.title)
-                        Text("GRAPHIC - Pants print - red")
-                            .bold()
-                        HStack {
-                            Text("\(product.price.formatted())€")
-                                .bold()
-                                .padding(.bottom, 6)
-                            Text("inkl.MwSt.")
-                                .foregroundStyle(.gray)
-                        }
-                        HStack() {
-                            Button("HINZUFÜGEN") {
-                                //
-                            }
-                            .frame(width: 280, height: 45)
-                            .border(Color.gray)
-                            .tint(.white)
-                            .background(Color.primary)
                             
-                            Button {
-                                //
-                            } label: {
-                                Image(systemName: "bookmark")
-                            }
-                            .frame(width: 55, height: 45)
-                            .border(Color.gray)
-                            .tint(.white)
-                            .background(Color.primary)
-                            .padding(.leading, 12)
+                            .frame(width: 400, height: 600)
                         }
-                        .padding(.top, 40)
-                        
-                        Text(product.description)
-                            .padding()
                     }
-                    .padding(.horizontal)
+                    
                 }
-            }
-            .toolbar(content: {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        //
-                    } label:{
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                    .foregroundStyle(.primary)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    ZStack {
+                .scrollTargetBehavior(.paging)
+                        ScrollView {
+                            VStack(alignment: .leading) {
+                                Text(product.title)
+                                Text("GRAPHIC - Pants print - red")
+                                    .bold()
+                                HStack {
+                                    Text("\(product.price.formatted())€")
+                                        .bold()
+                                        .padding(.bottom, 6)
+                                    Text("inkl.MwSt.")
+                                        .foregroundStyle(.gray)
+                                }
+                                HStack() {
+                                    Button("HINZUFÜGEN") {
+                                        //
+                                    }
+                                    .frame(width: 280, height: 45)
+                                    .border(Color.gray)
+                                    .tint(.white)
+                                    .background(Color.primary)
+                                    
+                                    Button {
+                                        //
+                                    } label: {
+                                        Image(systemName: "bookmark")
+                                    }
+                                    .frame(width: 55, height: 45)
+                                    .border(Color.gray)
+                                    .tint(.white)
+                                    .background(Color.primary)
+                                    .padding(.leading, 12)
+                                }
+                                .padding(.top, 40)
+                                
+                                Text(product.description)
+                                    .padding()
+                            }
+                            .padding(.horizontal)
+                        }
+                    
+                .toolbar(content: {
+                    ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             //
                         } label:{
-                            Image(systemName: "bag")
+                            Image(systemName: "square.and.arrow.up")
                         }
                         .foregroundStyle(.primary)
-
-                        Text("2")
-                            .font(.footnote)
-                            .offset(x: 3, y: 1)
-                            .foregroundStyle(.primary)
                     }
-                }
-            })
+                    ToolbarItem(placement: .topBarTrailing) {
+                        ZStack {
+                            Button {
+                                //
+                            } label:{
+                                Image(systemName: "bag")
+                            }
+                            .foregroundStyle(.primary)
+
+                            Text("2")
+                                .font(.footnote)
+                                .offset(x: 3, y: 1)
+                                .foregroundStyle(.primary)
+                        }
+                    }
+                })
+            }
         }
     }
 }

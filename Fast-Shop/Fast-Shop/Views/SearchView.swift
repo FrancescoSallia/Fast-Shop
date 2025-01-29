@@ -24,7 +24,9 @@ struct SearchView: View {
             image: "tools.png",
             creationAt: "2025-01-24T08:29:50.000Z",
             updatedAt: "2025-01-24T09:42:00.000Z"
-        ))
+        ),
+        size: "",
+        numberOfProducts: 0)
     @ObservedObject var viewModel: ProductViewModel
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
 

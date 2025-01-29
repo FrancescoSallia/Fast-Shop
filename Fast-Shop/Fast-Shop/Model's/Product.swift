@@ -16,6 +16,9 @@ struct Product: Identifiable, Codable {
     let description: String
     let images: [String]
     let category: Category
+    
+    let size: String?
+    let numberOfProducts: Int?
 }
 
 

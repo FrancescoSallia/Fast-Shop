@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CartItem: View {
     @ObservedObject var viewModel = ProductViewModel()
-    let columns = /*[GridItem(.fixed(400.0))]*/ [GridItem(.flexible())]
+//    let columns = [GridItem(.fixed(300.0)) /*[GridItem(.flexible())*/]
     var testProducts: [Product] = [Product(
         id: 1,
         title: "Classic Navy Blue Baseball Cap",
@@ -26,7 +26,8 @@ struct CartItem: View {
             image: "tools.png",
             creationAt: "2025-01-24T08:29:50.000Z",
             updatedAt: "2025-01-24T09:42:00.000Z"
-        )),
+        ), size: "",
+        numberOfProducts: 0),
                                   Product(
                                       id: 2,
                                       title: "Classic Navy Blue Baseball Cap",
@@ -43,19 +44,21 @@ struct CartItem: View {
                                           image: "tools.png",
                                           creationAt: "2025-01-24T08:29:50.000Z",
                                           updatedAt: "2025-01-24T09:42:00.000Z"
-                                      ))
-                                  ]
+                                      ),
+                                      size: "",
+                                      numberOfProducts: 0
+                                  )
+                                ]
 
-    
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns) {
-                ForEach(testProducts) { product in
+//        ScrollView {
+                List(testProducts) { product in
                     HStack (alignment: .top) {
                                 AsyncImage(url: URL(string: product.images[0])) { image in
                                     image
                                         .resizable()
-//                                        .scaledToFit()
+                                        .scaledToFill()
+                                        .frame(maxWidth: 190)
                                 } placeholder: {
                                     ProgressView()
                                 }
@@ -74,64 +77,65 @@ struct CartItem: View {
                                     }
                                 }
                                 .tint(.black)
-                                .padding()
                                     Text(product.title)
                                     .font(.footnote)
-                                    .padding(.top, 50)
-                                    .padding(.trailing, 70)
+                                    .padding(.top, 40)
+//                                    .padding(.trailing, 70)
 
                                 Text("\(product.price.formatted()) EUR")
                                     .font(.footnote)
                                     .fontWeight(.thin)
                                     .padding(.top, 20)
-                                    .padding(.trailing, 130)
-                                HStack {
-                                    Button {
-                                        //placeholder
-                                    } label: {
-                                        Text("-")
+                                    .padding(.trailing, 65)
+                                    .padding(.bottom)
+                                    HStack {
+                                        Button {
+                                            //placeholder
+                                        } label: {
+                                            Text("-")
+                                                .fontWeight(.thin)
+                                                .foregroundStyle(.black)
+                                                .frame(width: 30, height: 30)
+                                                .border(.black, width: 1)
+                                        }
+                                        Text("10")
+                                            .fontDesign(.serif)
                                             .fontWeight(.thin)
                                             .foregroundStyle(.black)
                                             .frame(width: 30, height: 30)
                                             .border(.black, width: 1)
+                                        Button {
+                                            //placeholder
+                                        } label: {
+                                            Text("+")
+                                                .fontWeight(.thin)
+                                                .foregroundStyle(.black)
+                                                .frame(width: 30, height: 30)
+                                                .border(.black, width: 1)
+                                        }
+                                        
                                     }
-                                    Text("10")
-                                        .fontDesign(.serif)
-                                        .fontWeight(.thin)
-                                        .foregroundStyle(.black)
-                                        .frame(width: 30, height: 30)
-                                        .border(.black, width: 1)
-                                    Button {
-                                        //placeholder
-                                    } label: {
-                                        Text("+")
-                                            .fontWeight(.thin)
-                                            .foregroundStyle(.black)
-                                            .frame(width: 30, height: 30)
-                                            .border(.black, width: 1)
-                                    }
-
-                                }
-                                .padding(.trailing, 80)
-                                .padding(.top, 66)
-                                
-                                
-                                }
                             }
-                        .frame(minWidth: 418, maxHeight: 300)
-                        .ignoresSafeArea()
-                        .border(.black)
+                            .padding(.top)
+                            }
                         .swipeActions {
                             Button(role: .destructive) {
                                 viewModel.user.cart.removeAll(where: {$0.id == product.id})
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
+                            Button {
+                                viewModel.user.cart.removeAll(where: {$0.id == product.id})
+                            } label: {
+                                Label("Delete", systemImage: "flag")
+                            }
+                            .tint(.yellow)
                         }
                 }
-
-            }
-        }
+//                .padding()
+                .listStyle(.plain)
+            
+//        }
     }
 }
 
