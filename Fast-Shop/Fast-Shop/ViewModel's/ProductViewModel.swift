@@ -53,14 +53,17 @@ class ProductViewModel: ObservableObject {
         self.categories = try await client.getCategories()
     }
     func getCategorieFilteredFromAPI() async throws {
-        if searchedText.isEmpty {
+        if searchedText.isEmpty && filterIsActive == false {
             self.products = try await client.getCategorieFiltered(id: filteredID)
-        } else {
+        } else if filterIsActive == true {
+            try await minMaxPriceFiltered()
+        }
+        else {
             self.products = try await client.searchTitle(title: searchedText)
         }
     }
    func minMaxPriceFiltered() async throws {
-       self.products = try await client.minMaxPriceFiltered(preisArray: minMaxValues, selectedCategory: filteredID)
+       self.products = try await client.minMaxPriceFiltered(searchText: searchedText, preisArray: minMaxValues, selectedCategory: filteredID)
     }
     
 }

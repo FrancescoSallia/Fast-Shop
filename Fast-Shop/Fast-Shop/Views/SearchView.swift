@@ -30,31 +30,39 @@ struct SearchView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(viewModel.categories) { index in
-                        Button {
-//                            viewModel.filterIsActive = false
-                            viewModel.filteredID = String(index.id)
-                            Task {
-                                try await viewModel.getCategorieFilteredFromAPI()
+            if !viewModel.filterIsActive {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(viewModel.categories) { index in
+                            Button {
+                                //                            viewModel.filterIsActive = false
+                                viewModel.filteredID = String(index.id)
+                                if !viewModel.filterIsActive {
+                                    Task {
+                                        try await viewModel.getCategorieFilteredFromAPI()
+                                    }
+                                } else {
+                                    Task {
+                                        try await viewModel.minMaxPriceFiltered()
+                                    }
+                                }
+                            } label: {
+                                if viewModel.filteredID == "0" {
+                                    Text("\(index.name)")
+                                } else if viewModel.filteredID == String(index.id) {
+                                    Text("\(index.name)")
+                                        .underline()
+                                } else {
+                                    Text("\(index.name)")
+                                }
                             }
-                        } label: {
-                            if viewModel.filteredID == "0" {
-                                Text("\(index.name)")
-                            } else if viewModel.filteredID == String(index.id) {
-                                Text("\(index.name)")
-                                    .underline()
-                            } else {
-                                Text("\(index.name)")
-                            }
+                            .font(.title3)
+                            .padding()
+                            .tint(.primary)
                         }
-                        .font(.title3)
-                        .padding()
-                        .tint(.primary)
                     }
+                    Divider()
                 }
-                Divider()
             }
             ScrollView(showsIndicators: false) {
                 VStack {
@@ -111,9 +119,16 @@ struct SearchView: View {
                 }
             }
             .refreshable {
-                Task {
-                    try await viewModel.getCategorieFilteredFromAPI()
+                if !viewModel.filterIsActive {
+                    Task {
+                        try await viewModel.getCategorieFilteredFromAPI()
+                       }
+                } else {
+                    Task {
+                        try await viewModel.minMaxPriceFiltered()
+                       }
                 }
+                        
             }
             .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -142,9 +157,15 @@ struct SearchView: View {
             }
         })
         .onAppear {
-            Task{
-                try await viewModel.getCategoriesFromAPI()
-                try await viewModel.getCategorieFilteredFromAPI()
+            if !viewModel.filterIsActive {
+                Task {
+                    try await viewModel.getCategoriesFromAPI()
+                    try await viewModel.getCategorieFilteredFromAPI()
+                   }
+            } else {
+                Task {
+                    try await viewModel.minMaxPriceFiltered()
+                   }
             }
         }
     }

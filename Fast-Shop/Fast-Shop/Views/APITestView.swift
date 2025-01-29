@@ -8,48 +8,38 @@
 import SwiftUI
 
 struct APITestView: View {
-    
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @StateObject var user = User(name: "John")
+    var product = Product(id: 1, title: "TEST Product", price: 22.50, description: "Ein test produkt von mir erstellt mit beschreibung", images: ["tshirt"], category: Category(id: 1, name: "Categorie test", image: "ring", creationAt: "gestern erstellt", updatedAt: "jetzt up to date"))
 
     var body: some View {
         
-        ScrollView(showsIndicators: false) {
-            VStack {
-                LazyVGrid(columns: columns ) {
-                    ForEach(0...10, id: \.self) { filteredProduct in
-                        
-                            VStack{
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(minWidth: 210, minHeight: 290)
-                                    .foregroundStyle(.orange)
-                                HStack {
-                                    Text("\(filteredProduct)")
-                                        .font(.footnote)
-                                        .frame(width: 150)
-                                    Image(systemName: "bookmark")
-                                }
+        VStack {
+            Text("User: \(user.name)")
+            // Um die Favoriten zu sehen, wechsel von user.card zu user.favorite
+            List(user.card) { product in
+                
+                Text("gekaufter produkt: \(product.title)")
+                Text("favorisiertes produkt: \(product)")
 
-                                HStack {
-                                    Text("\(filteredProduct)€")
-                                        .font(.footnote)
-                                        .frame(width: 150)
-                                        .padding(.bottom, 30)
+            }
+            .frame(height: 200)
+            Button("ADD TO CARD") {
+                user.card.append(product)
 
-                                    Spacer()
-                                }
-                                .padding(.horizontal)
-                            }
-                        }
-                }
+            }
+            
+            Button("Delete first Product from Card") {
+                user.card.remove(at: 0)
+//                user.warenkorb.removeAll(where: { $0.id == product.id }) //   LÖSCHT ALLE PRODUKTE MIT DER SELBEN ID
+            }
+            
+            Button("Add to Favorite") {
+                user.favorite.append(product)
+                print("added to favorite: \(user.favorite)")
             }
         }
-        
-        
-        
-        
-        
-        
   }
+   
 }
 #Preview {
     APITestView()

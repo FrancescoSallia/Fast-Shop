@@ -45,7 +45,10 @@ struct FilterSheetView: View {
                 viewModel.minMaxValues = [0.0, 100.0]
                 viewModel.filteredID = viewModel.selectedCategory.caseCategorie
                 viewModel.showFilterSheet.toggle()
-//                viewModel.filterIsActive = false
+                viewModel.filterIsActive = false
+                Task {
+                    try await viewModel.getCategorieFilteredFromAPI()
+                }
             } label: {
                 Text("RESET FILTER")
                     .foregroundStyle(.white)
@@ -53,9 +56,10 @@ struct FilterSheetView: View {
             .buttonStyle(.borderedProminent)
             .tint(.orange)
             Button {
-//                viewModel.filterIsActive = true
+                viewModel.filterIsActive = true
                 Task {
-                    try await viewModel.getCategorieFilteredFromAPI()
+                    try await viewModel.minMaxPriceFiltered()
+//                    try await viewModel.getCategorieFilteredFromAPI()
                 }
                 viewModel.showFilterSheet.toggle()
             } label: {
@@ -70,7 +74,7 @@ struct FilterSheetView: View {
             .onAppear {
                 Task {
 //                    try await viewModel.minMaxPriceFiltered()
-                    try await viewModel.getCategorieFilteredFromAPI()
+                    try await viewModel.minMaxPriceFiltered()
                 }
             }
     }

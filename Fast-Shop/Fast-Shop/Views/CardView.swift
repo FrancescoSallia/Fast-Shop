@@ -10,7 +10,6 @@ import SwiftUI
 struct CardView: View {
     let productsFromCard: [Product]
     @State var counter = 1
-    @State var disableCounter: Bool = false
     var body: some View {
         
         HStack {
@@ -74,20 +73,13 @@ struct CardView: View {
                 }
                 HStack(spacing: 30) {
                     Button("-"){
-                        if counter <= 0 {
-                            disableCounter = true
-                        } else {
-                            disableCounter = false
-                            $counter.wrappedValue -= 1
-                        }
+                        $counter.wrappedValue -= 1
                     }
-                    .disabled(disableCounter)
+                    .disabled(counter == 0 ? true : false)
+                    
                     Text("\(counter)")
                     Button("+"){
-                        disableCounter = false
                         $counter.wrappedValue += 1
-                        print(counter)
-
                     }
                 }
                 .tint(.black)
@@ -137,83 +129,13 @@ struct CardView: View {
                 }
                 HStack(spacing: 30) {
                     Button("-"){
-                        if counter <= 0 {
-                            disableCounter = true
-                        } else {
-                            disableCounter = false
-                            $counter.wrappedValue -= 1
-                        }
+                        $counter.wrappedValue -= 1
                     }
-                    .disabled(disableCounter)
-                    Text("\(counter)")
-                    Button("+"){
-                        disableCounter = false
-                        $counter.wrappedValue += 1
-                        print(counter)
-
-                    }
-                }
-                .tint(.black)
-                .padding()
-                .border(.black)
-                .font(.headline)
-                .offset(x: 80, y: 115)
-
-                
-            }
-            .border(.black)
-            ZStack {
-                    HStack {
-                        Image("pants")
-                            .resizable()
-                            .frame(maxWidth: .infinity, maxHeight: 300)
-                            .padding(.trailing, -8)
-                        Rectangle()
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity, maxHeight: 300)
-                }
-                
-                VStack {
-                    HStack {
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "bookmark")
-                        }
-                        .tint(.black)
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "xmark")
-                        }
-                        .tint(.black)
-                    }
-                    .padding()
-                    .offset(x:160, y: -90)
+                    .disabled(counter == 0 ? true : false)
                     
-                    Group {
-                        Text("Titel vom produkt")
-                        Text("Preis vom Produkt")
-                    }
-                    .font(.footnote)
-                    .offset(x: 70, y: -70)
-                }
-                HStack(spacing: 30) {
-                    Button("-"){
-                        if counter <= 0 {
-                            disableCounter = true
-                        } else {
-                            disableCounter = false
-                            $counter.wrappedValue -= 1
-                        }
-                    }
-                    .disabled(disableCounter)
                     Text("\(counter)")
                     Button("+"){
-                        disableCounter = false
                         $counter.wrappedValue += 1
-                        print(counter)
-
                     }
                 }
                 .tint(.black)
