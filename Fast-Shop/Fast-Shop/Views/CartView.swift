@@ -114,7 +114,7 @@ struct CartView: View {
                         Button {
                             viewModel.user.cart.removeAll(where: {$0.id == product.id})
                         } label: {
-                            Label("Delete", systemImage: "flag")
+                            Label("Favorite", systemImage: "flag")
                         }
                         .tint(.yellow)
                     }

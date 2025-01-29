@@ -28,7 +28,6 @@ struct ProductDetailView: View {
                             .frame(width: 400, height: 600)
                         }
                     }
-                    
                 }
                 .scrollTargetBehavior(.paging)
                         ScrollView {
