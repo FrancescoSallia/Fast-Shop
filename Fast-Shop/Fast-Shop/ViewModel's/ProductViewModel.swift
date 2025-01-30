@@ -33,7 +33,7 @@ class ProductViewModel: ObservableObject {
             image: "tools.png",
             creationAt: "2025-01-24T08:29:50.000Z",
             updatedAt: "2025-01-24T09:42:00.000Z"
-        ),
+        ), isFavorite: false,
         size: "",
         numberOfProducts: 0
     )
@@ -53,7 +53,7 @@ class ProductViewModel: ObservableObject {
             image: "tools.png",
             creationAt: "2025-01-24T08:29:50.000Z",
             updatedAt: "2025-01-24T09:42:00.000Z"
-        ),
+        ), isFavorite: false,
         size: "",
         numberOfProducts: 0
     )
@@ -68,6 +68,10 @@ class ProductViewModel: ObservableObject {
     
     //MARK: User
     @Published var user = User(name: "John")
+    
+    //MARK: Cart
+    @Published var showCart = true
+
 
 
     

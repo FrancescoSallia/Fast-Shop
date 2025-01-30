@@ -9,7 +9,7 @@ import SwiftUI
 
 struct APITestView: View {
     @StateObject var user = User(name: "John")
-    var product = Product(id: 1, title: "TEST Product", price: 22.50, description: "Ein test produkt von mir erstellt mit beschreibung", images: ["tshirt"], category: Category(id: 1, name: "Categorie test", image: "ring", creationAt: "gestern erstellt", updatedAt: "jetzt up to date"), size: "", numberOfProducts: 0)
+    var product = Product(id: 1, title: "TEST Product", price: 22.50, description: "Ein test produkt von mir erstellt mit beschreibung", images: ["tshirt"], category: Category(id: 1, name: "Categorie test", image: "ring", creationAt: "gestern erstellt", updatedAt: "jetzt up to date"), isFavorite: false, size: "", numberOfProducts: 0)
 
     var body: some View {
         

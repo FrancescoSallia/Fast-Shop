@@ -51,9 +51,14 @@ struct ProductDetailView: View {
                                     .background(Color.primary)
                                     
                                     Button {
-                                        //
+                                        let addNewFavoriteProduct = Product(id: product.id, title: product.title, price: product.price, description: product.description, images: product.images, category: product.category, isFavorite: true, size: nil, numberOfProducts: nil)
+                                        if viewModel.user.favorite.contains(where: { $0.id == addNewFavoriteProduct.id }) {
+                                            viewModel.user.favorite.removeAll(where: { $0.id == addNewFavoriteProduct.id })
+                                        } else {
+                                            viewModel.user.favorite.append(addNewFavoriteProduct)
+                                        }
                                     } label: {
-                                        Image(systemName: "bookmark")
+                                        Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
                                     }
                                     .frame(width: 55, height: 45)
                                     .border(Color.gray)
@@ -87,7 +92,7 @@ struct ProductDetailView: View {
                             }
                             .foregroundStyle(.primary)
 
-                            Text("2")
+                            Text("\(viewModel.user.cart.count == 0 ? "" : "\(viewModel.user.cart.count)")")
                                 .font(.footnote)
                                 .offset(x: 3, y: 1)
                                 .foregroundStyle(.primary)
