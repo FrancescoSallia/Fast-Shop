@@ -14,21 +14,26 @@ struct CartView: View {
 //    let columns = [GridItem(.flexible()), GridItem(.flexible())]
     let columns = [GridItem(.fixed(400.0))]
 
-
     
     var body: some View {
         
         HStack {
-            Text("EINKAUFSKORB(2)")
-                .font(.footnote)
-                .frame(height: 4)
-                .padding()
-                .padding(.horizontal,35)
-                .border(.black)
-                .padding(.leading,-20)
-            HStack {
-                Text("FAVORITEN")
-                Image(systemName: "bookmark")
+            Button("EINKAUFSKORB(\(viewModel.user.cart.count))") {
+                //placeholder
+            }
+            .font(.footnote)
+            .frame(height: 4)
+            .padding()
+            .padding(.horizontal,35)
+            .border(.black)
+            .padding(.leading,-20)
+            Button {
+                //placeholder
+            }label: {
+                HStack {
+                    Text("FAVORITEN")
+                    Image(systemName: "bookmark")
+                }
             }
             .font(.footnote)
             .frame(height: 4)
@@ -37,6 +42,7 @@ struct CartView: View {
             .border(.black)
             .padding(-10)
         }
+        .padding(.top)
         
 //        ScrollView {
             List(viewModel.user.cart) { product in
@@ -67,6 +73,9 @@ struct CartView: View {
                                 Text(product.title)
                                 .font(.footnote)
                                 .padding(.top, 40)
+                                .padding(.leading, 20)
+                                .frame(width: 160)
+
 //                                    .padding(.trailing, 70)
 
                             Text("\(product.price.formatted()) EUR")
@@ -100,7 +109,6 @@ struct CartView: View {
                                             .frame(width: 30, height: 30)
                                             .border(.black, width: 1)
                                     }
-                                    
                                 }
                         }
                         .padding(.top)
@@ -122,11 +130,11 @@ struct CartView: View {
 //                .padding()
             .listStyle(.plain)
 //        }
-        .onAppear {
-            Task {
-                try await viewModel.getProductsFromAPI()
-            }
-        }
+//        .onAppear {
+//            Task {
+//                try await viewModel.getProductsFromAPI()
+//            }
+//        }
     }
 }
 #Preview {

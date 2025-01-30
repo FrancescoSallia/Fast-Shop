@@ -24,7 +24,6 @@ struct ProductDetailView: View {
                             } placeholder: {
                                 ProgressView()
                             }
-                            
                             .frame(width: 400, height: 600)
                         }
                     }

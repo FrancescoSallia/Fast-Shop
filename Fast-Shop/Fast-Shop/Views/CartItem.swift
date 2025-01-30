@@ -80,6 +80,7 @@ struct CartItem: View {
                                     Text(product.title)
                                     .font(.footnote)
                                     .padding(.top, 40)
+                                    .frame(width: 110)
 //                                    .padding(.trailing, 70)
 
                                 Text("\(product.price.formatted()) EUR")
