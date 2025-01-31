@@ -101,7 +101,7 @@ struct ProductDetailView: View {
                             .offset(x: -165)
                             .foregroundStyle(.white)
                         Button("Ansehen"){
-                            
+                            //placeholder
                         }
                         .bold()
                         .offset(x: 145)
@@ -141,7 +141,15 @@ struct ProductDetailView: View {
                         .frame(width: 300, height: 50)
                     
                     Button("HINZUFÜGEN") {
-                        let addNewCartProduct = Product(id: product.id, title: product.title, price: product.price, description: product.description, images: product.images, category: product.category, isFavorite: true, size: nil)
+                        let addNewCartProduct = Product(
+                            id: product.id,
+                            title: product.title,
+                            price: product.price,
+                            description: product.description,
+                            images: product.images,
+                            category: product.category,
+                            size: nil
+                        )
                         
                         if let index = viewModel.user.cart.firstIndex(where: { $0.id == addNewCartProduct.id }) {
 //                            viewModel.user.cart.removeAll(where: { $0.id == addNewCartProduct.id })
@@ -149,7 +157,6 @@ struct ProductDetailView: View {
                             Task {
                                 try await viewModel.getProductsFromAPI()
                             }
-                            
                         } else {
                             viewModel.user.cart.append(addNewCartProduct)
                             Task {
@@ -174,12 +181,26 @@ struct ProductDetailView: View {
                     Rectangle()
                         .frame(width: 50, height: 50)
                     Button {
-                        let addNewFavoriteProduct = Product(id: product.id, title: product.title, price: product.price, description: product.description, images: product.images, category: product.category, isFavorite: true, size: nil
+                        let addNewFavoriteProduct = Product(
+                            id: product.id,
+                            title: product.title,
+                            price: product.price,
+                            description: product.description,
+                            images: product.images,
+                            category: product.category,
+                            isFavorite: true,
+                            size: nil
                         )
-                        if viewModel.user.favorite.contains(where: { $0.id == addNewFavoriteProduct.id }) {
-                            viewModel.user.favorite.removeAll(where: { $0.id == addNewFavoriteProduct.id })
+                        if let index = viewModel.user.favorite.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
+                            viewModel.user.favorite[index].isFavorite?.toggle()
+                            Task {
+                                try await viewModel.getProductsFromAPI()
+                            }
                         } else {
                             viewModel.user.favorite.append(addNewFavoriteProduct)
+                            Task {
+                                try await viewModel.getProductsFromAPI()
+                            }
                         }
                     } label: {
                         Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
@@ -193,6 +214,11 @@ struct ProductDetailView: View {
             }
 //            .padding(.top, 40)
 
+        }
+        .onAppear {
+            Task {
+                try await viewModel.getProductsFromAPI()
+            }
         }
     }
 }

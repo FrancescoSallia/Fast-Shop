@@ -17,7 +17,7 @@ struct Product: Identifiable, Codable {
     let images: [String]
     let category: Category
     
-    let isFavorite: Bool?
+    var isFavorite: Bool? = false
     let size: String?
     var numberOfProducts: Int? = 1
 }
