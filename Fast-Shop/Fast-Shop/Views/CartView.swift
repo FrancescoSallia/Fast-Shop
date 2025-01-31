@@ -34,7 +34,7 @@ struct CartView: View {
             }label: {
                 HStack {
                     Text("FAVORITEN")
-                    Image(systemName: "bookmark")
+                    Image(systemName: viewModel.showCart ? "bookmark" : "bookmark.fill")
                 }
             }
             .font(.footnote)
@@ -89,29 +89,38 @@ struct CartView: View {
                             .padding(.trailing, 65)
                             .padding(.bottom)
                         HStack {
-                            Button {
-                                //placeholder
-                            } label: {
-                                Text("-")
-                                    .fontWeight(.thin)
-                                    .foregroundStyle(.black)
+                            ZStack {
+                                Rectangle()
                                     .frame(width: 30, height: 30)
-                                    .border(.black, width: 1)
+                                    .foregroundStyle(.white)
+                                    .border(.black)
+                                Button("-") {
+                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
+                                        viewModel.user.cart[index].numberOfProducts? -= 1
+                                    }
+                                }
+                                .tint(.primary)
                             }
-                            Text("10")
+                            Text("\(product.numberOfProducts ?? 0)")
                                 .fontDesign(.serif)
                                 .fontWeight(.thin)
                                 .foregroundStyle(.black)
                                 .frame(width: 30, height: 30)
                                 .border(.black, width: 1)
-                            Button {
-                                //placeholder
-                            } label: {
-                                Text("+")
-                                    .fontWeight(.thin)
-                                    .foregroundStyle(.black)
+                            
+                            
+                            
+                            ZStack {
+                                Rectangle()
                                     .frame(width: 30, height: 30)
-                                    .border(.black, width: 1)
+                                    .foregroundStyle(.white)
+                                    .border(.black)
+                                Button("+") {
+                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
+                                        viewModel.user.cart[index].numberOfProducts? += 1
+                                    }
+                                }
+                                .tint(.primary)
                             }
                         }
                     }
@@ -127,6 +136,9 @@ struct CartView: View {
                         if let addToFavorite = viewModel.user.cart.first(where: {$0.id == product.id}) {
                             viewModel.user.favorite.append(addToFavorite)
                             viewModel.user.cart.removeAll(where: {$0.id == addToFavorite.id})
+                            Task {
+                                try await viewModel.getProductsFromAPI()
+                            }
                         }
                     } label: {
                         Label("Favorite", systemImage: "flag")
@@ -175,30 +187,40 @@ struct CartView: View {
                             .padding(.top, 20)
                             .padding(.trailing, 65)
                             .padding(.bottom)
+                        
                         HStack {
-                            Button {
-                                //placeholder
-                            } label: {
-                                Text("-")
-                                    .fontWeight(.thin)
-                                    .foregroundStyle(.black)
+                            ZStack {
+                                Rectangle()
                                     .frame(width: 30, height: 30)
-                                    .border(.black, width: 1)
+                                    .foregroundStyle(.white)
+                                    .border(.black)
+                                Button("-") {
+                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
+                                        viewModel.user.cart[index].numberOfProducts? -= 1
+                                    }
+                                }
+                                .tint(.primary)
                             }
-                            Text("10")
+                            Text("\(product.numberOfProducts ?? 0)")
                                 .fontDesign(.serif)
                                 .fontWeight(.thin)
                                 .foregroundStyle(.black)
                                 .frame(width: 30, height: 30)
                                 .border(.black, width: 1)
-                            Button {
-                                //placeholder
-                            } label: {
-                                Text("+")
-                                    .fontWeight(.thin)
-                                    .foregroundStyle(.black)
+                            
+                            
+                            
+                            ZStack {
+                                Rectangle()
                                     .frame(width: 30, height: 30)
-                                    .border(.black, width: 1)
+                                    .foregroundStyle(.white)
+                                    .border(.black)
+                                Button("+") {
+                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
+                                        viewModel.user.cart[index].numberOfProducts? += 1
+                                    }
+                                }
+                                .tint(.primary)
                             }
                         }
                     }
@@ -214,6 +236,9 @@ struct CartView: View {
                         if let addToCart = viewModel.user.favorite.first(where: {$0.id == product.id}) {
                             viewModel.user.cart.append(addToCart)
                             viewModel.user.favorite.removeAll(where: {$0.id == addToCart.id})
+                            Task {
+                                try await viewModel.getProductsFromAPI()
+                            }
                         }
                     } label: {
                         Label("Add to Cart", systemImage: "bag")
@@ -228,35 +253,39 @@ struct CartView: View {
                 }
             }
         }
-        VStack {
-            HStack {
-                Text("Total:")
-                Spacer()
-              Text("29,95€")
+        if viewModel.showCart {
+            VStack {
+                VStack {
+                    HStack {
+                        Text("Total:")
+                        Spacer()
+                        Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + $1.price }))€")
+                    }
+                    .font(.headline)
+                    .padding()
+                    
+                    HStack {
+                        Spacer()
+                        Text("INKL. MWST.")
+                            .font(.footnote)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, -18)
+                    .padding(.bottom)
+                }
+                .border(Color.primary)
+                .padding(.bottom, -23)
+                Button("WEITER") {
+                    //
+                }
+                .padding()
+                .frame(minWidth: 410)
+                //        .border(Color.black)
+                .background(Color.black)
+                .tint(.white)
+                .padding()
             }
-            .font(.headline)
-            .padding()
-            
-            HStack {
-                Spacer()
-              Text("INKL. MWST.")
-                    .font(.footnote)
-            }
-            .padding(.horizontal)
-            .padding(.top, -18)
-            .padding(.bottom)
         }
-        .border(Color.primary)
-        .padding(.bottom, -23)
-        Button("WEITER") {
-            //
-        }
-        .padding()
-        .frame(minWidth: 410)
-//        .border(Color.black)
-        .background(Color.black)
-        .tint(.white)
-        .padding()
 
     }
 }

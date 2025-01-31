@@ -19,7 +19,7 @@ struct Product: Identifiable, Codable {
     
     let isFavorite: Bool?
     let size: String?
-    let numberOfProducts: Int?
+    var numberOfProducts: Int?
 }
 
 
