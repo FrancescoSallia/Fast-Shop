@@ -94,22 +94,27 @@ struct CartView: View {
                                     .frame(width: 30, height: 30)
                                     .foregroundStyle(.white)
                                     .border(.black)
+                                
+                                //FIXME: Wenn beide buttons if let index funktion an ist, denn wird die anzahl weder erhöht noch reduziert
                                 Button("-") {
-                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
-                                        viewModel.user.cart[index].numberOfProducts? -= 1
+//                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
+//                                        viewModel.user.cart[index].numberOfProducts? -= 1
+//                                    }
+                                    Task {
+                                        try await viewModel.getProductsFromAPI()
                                     }
                                 }
                                 .tint(.primary)
                             }
-                            Text("\(product.numberOfProducts ?? 0)")
-                                .fontDesign(.serif)
-                                .fontWeight(.thin)
-                                .foregroundStyle(.black)
-                                .frame(width: 30, height: 30)
-                                .border(.black, width: 1)
-                            
-                            
-                            
+                            ZStack {
+                                Rectangle()
+                                    .frame(width: 30, height: 30)
+                                    .foregroundStyle(.white)
+                                    .border(.black)
+                                Text("\(product.numberOfProducts ?? 0)")
+                                    .fontDesign(.serif)
+                                    .fontWeight(.thin)
+                            }
                             ZStack {
                                 Rectangle()
                                     .frame(width: 30, height: 30)
@@ -118,6 +123,9 @@ struct CartView: View {
                                 Button("+") {
                                     if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
                                         viewModel.user.cart[index].numberOfProducts? += 1
+                                    }
+                                    Task {
+                                        try await viewModel.getProductsFromAPI()
                                     }
                                 }
                                 .tint(.primary)
@@ -259,7 +267,8 @@ struct CartView: View {
                     HStack {
                         Text("Total:")
                         Spacer()
-                        Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + $1.price }))€")
+//                        Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + $1.price }))€")
+                        Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price }))€")
                     }
                     .font(.headline)
                     .padding()

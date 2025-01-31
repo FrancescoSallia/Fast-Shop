@@ -141,7 +141,7 @@ struct ProductDetailView: View {
                         .frame(width: 300, height: 50)
                     
                     Button("HINZUFÜGEN") {
-                        let addNewCartProduct = Product(id: product.id, title: product.title, price: product.price, description: product.description, images: product.images, category: product.category, isFavorite: true, size: nil, numberOfProducts: 1)
+                        let addNewCartProduct = Product(id: product.id, title: product.title, price: product.price, description: product.description, images: product.images, category: product.category, isFavorite: true, size: nil)
                         
                         if let index = viewModel.user.cart.firstIndex(where: { $0.id == addNewCartProduct.id }) {
 //                            viewModel.user.cart.removeAll(where: { $0.id == addNewCartProduct.id })
