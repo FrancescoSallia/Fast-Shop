@@ -137,6 +137,9 @@ struct CartView: View {
                 .swipeActions {
                     Button(role: .destructive) {
                         viewModel.user.cart.removeAll(where: {$0.id == product.id})
+                        Task {
+                            try await viewModel.getProductsFromAPI()
+                        }
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
