@@ -95,7 +95,7 @@ struct SearchView: View {
                                     }
                                     .padding(.horizontal,3)
                                     
-                                    VStack{
+                                    VStack {
                                         HStack {
                                             Text("\(filteredProduct.title)")
                                                 .font(.footnote)

@@ -228,6 +228,36 @@ struct CartView: View {
                 }
             }
         }
+        VStack {
+            HStack {
+                Text("Total:")
+                Spacer()
+              Text("29,95€")
+            }
+            .font(.headline)
+            .padding()
+            
+            HStack {
+                Spacer()
+              Text("INKL. MWST.")
+                    .font(.footnote)
+            }
+            .padding(.horizontal)
+            .padding(.top, -18)
+            .padding(.bottom)
+        }
+        .border(Color.primary)
+        .padding(.bottom, -23)
+        Button("WEITER") {
+            //
+        }
+        .padding()
+        .frame(minWidth: 410)
+//        .border(Color.black)
+        .background(Color.black)
+        .tint(.white)
+        .padding()
+
     }
 }
 #Preview {

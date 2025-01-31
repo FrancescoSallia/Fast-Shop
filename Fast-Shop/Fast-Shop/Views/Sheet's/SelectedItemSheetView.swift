@@ -77,7 +77,7 @@ struct SelectedItemSheetView: View {
         }
         .onAppear {
             Task {
-               try await viewModel.getProductsFromAPI()
+                try await viewModel.getCategorieFromID(filterID: "\(viewModel.selectedProduct.id)")
             }
         }
     }

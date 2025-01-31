@@ -14,7 +14,7 @@ class ProductViewModel: ObservableObject {
     
     @Published var products: [Product] = []
     @Published var categories: [Category] = []
-    @Published var filteredID: String = "0"
+    @Published var filteredID: String = "1"
     @Published var searchedText: String = ""
     @Published var showSheet: Bool = false
     @Published var selectedProduct: Product = Product(
@@ -72,8 +72,6 @@ class ProductViewModel: ObservableObject {
     //MARK: Cart
     @Published var showCart = true
 
-
-
     
     //MARK: API Calls
     func getProductsFromAPI() async throws {
@@ -84,7 +82,7 @@ class ProductViewModel: ObservableObject {
     }
     func getCategorieFilteredFromAPI() async throws {
         if searchedText.isEmpty && filterIsActive == false {
-            self.products = try await client.getCategorieFiltered(id: filteredID)
+            try await getCategorieFromID(filterID: filteredID)
         } else if filterIsActive == true {
             try await minMaxPriceFiltered()
         }
@@ -95,9 +93,7 @@ class ProductViewModel: ObservableObject {
    func minMaxPriceFiltered() async throws {
        self.products = try await client.minMaxPriceFiltered(searchText: searchedText, preisArray: minMaxValues, selectedCategory: filteredID)
     }
-    
-//    func userDataCart() async throws {
-//        self.user.cart = try await client.getProducts()
-//    }
-    
+   func getCategorieFromID(filterID: String) async throws {
+        self.products = try await client.getCategorieFiltered(id: filteredID)
+    }
 }
