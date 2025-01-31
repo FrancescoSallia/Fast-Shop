@@ -141,6 +141,8 @@ struct ProductDetailView: View {
                         .frame(width: 300, height: 50)
                     
                     Button("HINZUFÜGEN") {
+                        viewModel.showSizes = true
+                        
                         let addNewCartProduct = Product(
                             id: product.id,
                             title: product.title,
@@ -148,20 +150,14 @@ struct ProductDetailView: View {
                             description: product.description,
                             images: product.images,
                             category: product.category,
-                            size: nil
+                            size: viewModel.selectedSize
                         )
-                        
-                        if let index = viewModel.user.cart.firstIndex(where: { $0.id == addNewCartProduct.id }) {
+                        viewModel.selectedProduct = addNewCartProduct
+                        if let index = viewModel.user.cart.firstIndex(where: { $0.id == viewModel.selectedProduct.id }) {
 //                            viewModel.user.cart.removeAll(where: { $0.id == addNewCartProduct.id })
                             viewModel.user.cart[index].numberOfProducts? += 1
-                            Task {
-                                try await viewModel.getProductsFromAPI()
-                            }
                         } else {
-                            viewModel.user.cart.append(addNewCartProduct)
-                            Task {
-                                try await viewModel.getProductsFromAPI()
-                            }
+                            viewModel.user.cart.append(viewModel.selectedProduct)
                         }
                         
                         withAnimation {
@@ -181,6 +177,8 @@ struct ProductDetailView: View {
                     Rectangle()
                         .frame(width: 50, height: 50)
                     Button {
+                        
+                        //FIXME: Man muss erst eine größe auswählen bevor man es im warenkorb hinzufügen kann, schau wie du das lösen kannst!
                         let addNewFavoriteProduct = Product(
                             id: product.id,
                             title: product.title,
@@ -189,7 +187,7 @@ struct ProductDetailView: View {
                             images: product.images,
                             category: product.category,
                             isFavorite: true,
-                            size: nil
+                            size: viewModel.selectedSize
                         )
                         if let index = viewModel.user.favorite.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
                             viewModel.user.favorite[index].isFavorite?.toggle()
@@ -215,6 +213,10 @@ struct ProductDetailView: View {
 //            .padding(.top, 40)
 
         }
+        .sheet(isPresented: $viewModel.showSizes, content: {
+            SizeSheetView(viewModel: viewModel)
+                .presentationDetents([(.medium)])
+        })
         .onAppear {
             Task {
                 try await viewModel.getProductsFromAPI()

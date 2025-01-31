@@ -99,6 +99,9 @@ class ProductViewModel: ObservableObject {
         numberOfProducts: 0
     )
 ]
+    @Published var selectedSize: String = ""
+    @Published var showSizes: Bool = false
+
     
     //MARK: Filter Sheet
     @Published var minPrice = 0.0

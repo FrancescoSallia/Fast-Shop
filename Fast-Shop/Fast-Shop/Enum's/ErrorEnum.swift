@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum errorEnum: Error {
+enum ErrorEnum: Error {
     case invalidURL
     case networkError(Error)
     case decodingError(Error)
