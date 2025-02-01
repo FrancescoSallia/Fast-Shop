@@ -40,9 +40,10 @@ struct SelectedItemSheetView: View {
 //                print(viewModel.user.cart)
 //                viewModel.showSheet = false
 //            }
+            //FIXME: Mit den Kleidungen funktioniert das mit einfügen im warenkorb und löschen/favorisieren auch wenn man andere größen eingibt. jetzt muss es nur noch bei den anderen kategorien funktionieren!
             
             if viewModel.selectedProduct.category.id == 1{
-                SizeSheetView(viewModel: viewModel)
+                SizeSheetView(viewModel: viewModel, product: viewModel.selectedProduct)
 //                Text("Wählen Sie eine Größe aus")
 //                LazyVGrid(columns: columns) {
 //                    ForEach(sizes, id: \.self) { item in
@@ -85,7 +86,6 @@ struct SelectedItemSheetView: View {
               
                 viewModel.selectedProduct = newProduct
                 viewModel.user.cart.append(viewModel.selectedProduct)
-                print(viewModel.user.cart)
                 viewModel.showSheet = false
             }
         }

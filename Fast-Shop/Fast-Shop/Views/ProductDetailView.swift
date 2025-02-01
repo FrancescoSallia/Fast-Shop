@@ -11,7 +11,6 @@ struct ProductDetailView: View {
     
     let product: Product
     @ObservedObject var viewModel: ProductViewModel
-    @State var showAlert: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -85,14 +84,14 @@ struct ProductDetailView: View {
                         }
             }
             //Wenn eine Ware zum Warenkorb hinzugefügt wurde, erscheint das Alert
-            if showAlert {
+            if viewModel.showAlertSuccessfullAdded {
                 VStack {
                     ZStack {
                         Rectangle()
                             .frame(width: 420, height: 50)
                             .foregroundStyle(.green)
                         
-                        Text("Zum Warenkorb hinzufügen")
+                        Text("Zum Warenkorb hinzugefügt")
                             .foregroundStyle(.white)
                             .padding(.trailing, 70)
                         Image(systemName: "checkmark.circle.fill")
@@ -133,7 +132,7 @@ struct ProductDetailView: View {
 //                        }
 //                    })
                 }
-                .animation(.easeInOut, value: showAlert)
+                .animation(.easeInOut, value: viewModel.showAlertSuccessfullAdded)
             }
             HStack() {
                 ZStack {
@@ -143,32 +142,35 @@ struct ProductDetailView: View {
                     Button("HINZUFÜGEN") {
                         viewModel.showSizes = true
                         
-                        let addNewCartProduct = Product(
-                            id: product.id,
-                            title: product.title,
-                            price: product.price,
-                            description: product.description,
-                            images: product.images,
-                            category: product.category,
-                            size: viewModel.selectedSize
-                        )
-                        viewModel.selectedProduct = addNewCartProduct
-                        if let index = viewModel.user.cart.firstIndex(where: { $0.id == viewModel.selectedProduct.id }) {
-//                            viewModel.user.cart.removeAll(where: { $0.id == addNewCartProduct.id })
-                            viewModel.user.cart[index].numberOfProducts? += 1
-                        } else {
-                            viewModel.user.cart.append(viewModel.selectedProduct)
-                        }
+//                        let addNewCartProduct = Product(
+//                            id: product.id,
+//                            title: product.title,
+//                            price: product.price,
+//                            description: product.description,
+//                            images: product.images,
+//                            category: product.category,
+//                            size: viewModel.selectedSize
+//                        )
+//                        viewModel.selectedProduct = addNewCartProduct
+//                        print("ausgewählte größe: \(viewModel.selectedSize)")
+//
+//                        if let index = viewModel.user.cart.firstIndex(where: { $0.id == viewModel.selectedProduct.id }) {
+////                            viewModel.user.cart.removeAll(where: { $0.id == addNewCartProduct.id })
+//                            viewModel.user.cart[index].numberOfProducts? += 1
+//                        } else {
+//                            viewModel.user.cart.append(viewModel.selectedProduct)
+//                        }
                         
                         withAnimation {
-                            showAlert.toggle()
+                            viewModel.showAlertSuccessfullAdded.toggle()
                         }
                         Task {
                             try await Task.sleep(for: .seconds(3))
                             withAnimation {
-                                showAlert = false
+                                viewModel.showAlertSuccessfullAdded = false
                             }
                         }
+                        print(viewModel.selectedSize)
                     }
                     .tint(.white)
                 }
@@ -177,8 +179,6 @@ struct ProductDetailView: View {
                     Rectangle()
                         .frame(width: 50, height: 50)
                     Button {
-                        
-                        //FIXME: Man muss erst eine größe auswählen bevor man es im warenkorb hinzufügen kann, schau wie du das lösen kannst!
                         let addNewFavoriteProduct = Product(
                             id: product.id,
                             title: product.title,
@@ -214,7 +214,7 @@ struct ProductDetailView: View {
 
         }
         .sheet(isPresented: $viewModel.showSizes, content: {
-            SizeSheetView(viewModel: viewModel)
+            SizeSheetView(viewModel: viewModel, product: product)
                 .presentationDetents([(.medium)])
         })
         .onAppear {

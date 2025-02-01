@@ -10,6 +10,7 @@ import SwiftUI
 struct SizeSheetView: View {
     @ObservedObject var viewModel: ProductViewModel
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
+    var product: Product
 
     var body: some View {
         Text("Wählen Sie eine Größe aus")
@@ -29,7 +30,39 @@ struct SizeSheetView: View {
                 }
                 .onTapGesture {
                     viewModel.selectedSize = item.rawValue
+//                    print("ausgewählte größe vm: \(viewModel.selectedSize), ausgewählte größe: \(item.rawValue)")
+//                    viewModel.selectedProduct = product
+                    let addNewCartProduct = Product(
+                        id: product.id,
+                        title: product.title,
+                        price: product.price,
+                        description: product.description,
+                        images: product.images,
+                        category: product.category,
+                        size: viewModel.selectedSize,
+                        cartID: nil
+                    )
+                    viewModel.selectedProduct = addNewCartProduct
+                    print("ausgewählte größe: \(viewModel.selectedSize)")
+                    
+                    if let index = viewModel.user.cart.firstIndex(where: {
+                        $0.id == viewModel.selectedProduct.id && $0.size == viewModel.selectedSize
+                    }) {
+                        print("Produkt bereits im Warenkorb. Erhöhe Anzahl um 1.")
+                        var updatedProduct = viewModel.user.cart[index]
+                        updatedProduct.numberOfProducts? += 1
+                        viewModel.selectedSize = ""
+
+                        viewModel.user.cart[index] = updatedProduct
+                    } else {
+                        print("Neues Produkt wird hinzugefügt.")
+                        viewModel.selectedProduct.cartID = UUID()
+                        viewModel.user.cart.append(viewModel.selectedProduct)
+                        viewModel.selectedSize = ""
+
+                    }
                     viewModel.showSizes = false
+                    viewModel.showSheet = false
 
                 }
                 
@@ -40,7 +73,7 @@ struct SizeSheetView: View {
 }
 
 #Preview {
-    SizeSheetView(viewModel: ProductViewModel())
+    SizeSheetView(viewModel: ProductViewModel(), product: ProductViewModel().testProduct)
 }
 
 

@@ -49,7 +49,7 @@ struct CartView: View {
         .padding(.top)
         
         if viewModel.showCart {
-            List(viewModel.user.cart) { product in
+            List(viewModel.user.cart, id: \.cartID) { product in
                 HStack (alignment: .top) {
                     AsyncImage(url: URL(string: product.images[0])) { image in
                         image
@@ -82,12 +82,19 @@ struct CartView: View {
                         
                         //                                    .padding(.trailing, 70)
                         
-                        Text("\(product.price.formatted()) EUR")
+//                        Text("\(product.price.formatted()) EUR")
+//                            .font(.footnote)
+//                            .fontWeight(.thin)
+//                            .padding(.top, 20)
+//                            .padding(.trailing, 65)
+//                            .padding(.bottom)
+                        Text(product.size ?? "keine Größe")
                             .font(.footnote)
                             .fontWeight(.thin)
                             .padding(.top, 20)
                             .padding(.trailing, 65)
                             .padding(.bottom)
+                        
                         HStack {
                             ZStack {
                                 Rectangle()
@@ -121,7 +128,7 @@ struct CartView: View {
                                     .foregroundStyle(.white)
                                     .border(.black)
                                 Button("+") {
-                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
+                                    if let index = viewModel.user.cart.firstIndex(where: {$0.cartID == product.cartID}) {
                                         viewModel.user.cart[index].numberOfProducts? += 1
                                     }
                                     Task {
@@ -136,7 +143,7 @@ struct CartView: View {
                 }
                 .swipeActions {
                     Button(role: .destructive) {
-                        viewModel.user.cart.removeAll(where: {$0.id == product.id})
+                        viewModel.user.cart.removeAll(where: {$0.cartID == product.cartID})
                         Task {
                             try await viewModel.getProductsFromAPI()
                         }
@@ -144,9 +151,9 @@ struct CartView: View {
                         Label("Delete", systemImage: "trash")
                     }
                     Button {
-                        if let addToFavorite = viewModel.user.cart.first(where: {$0.id == product.id}) {
+                        if let addToFavorite = viewModel.user.cart.first(where: {$0.cartID == product.cartID}) {
                             viewModel.user.favorite.append(addToFavorite)
-                            viewModel.user.cart.removeAll(where: {$0.id == addToFavorite.id})
+                            viewModel.user.cart.removeAll(where: {$0.cartID == addToFavorite.cartID})
                             Task {
                                 try await viewModel.getProductsFromAPI()
                             }
@@ -159,7 +166,7 @@ struct CartView: View {
             }
             .listStyle(.plain)
         } else {
-            List(viewModel.user.favorite) { product in
+            List(viewModel.user.favorite, id: \.cartID) { product in
                 HStack (alignment: .top) {
                     AsyncImage(url: URL(string: product.images[0])) { image in
                         image
@@ -206,7 +213,7 @@ struct CartView: View {
                                     .foregroundStyle(.white)
                                     .border(.black)
                                 Button("-") {
-                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
+                                    if let index = viewModel.user.cart.firstIndex(where: {$0.cartID == product.cartID}) {
                                         viewModel.user.cart[index].numberOfProducts? -= 1
                                     }
                                 }
@@ -227,7 +234,7 @@ struct CartView: View {
                                     .foregroundStyle(.white)
                                     .border(.black)
                                 Button("+") {
-                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
+                                    if let index = viewModel.user.cart.firstIndex(where: {$0.cartID == product.cartID}) {
                                         viewModel.user.cart[index].numberOfProducts? += 1
                                     }
                                 }
@@ -239,14 +246,14 @@ struct CartView: View {
                 }
                 .swipeActions {
                     Button(role: .destructive) {
-                        viewModel.user.favorite.removeAll(where: {$0.id == product.id})
+                        viewModel.user.favorite.removeAll(where: {$0.cartID == product.cartID})
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
                     Button {
-                        if let addToCart = viewModel.user.favorite.first(where: {$0.id == product.id}) {
+                        if let addToCart = viewModel.user.favorite.first(where: {$0.cartID == product.cartID}) {
                             viewModel.user.cart.append(addToCart)
-                            viewModel.user.favorite.removeAll(where: {$0.id == addToCart.id})
+                            viewModel.user.favorite.removeAll(where: {$0.cartID == addToCart.cartID})
                             Task {
                                 try await viewModel.getProductsFromAPI()
                             }

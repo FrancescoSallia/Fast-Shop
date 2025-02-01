@@ -110,6 +110,7 @@ class ProductViewModel: ObservableObject {
     @Published var selectedCategory : FilteredEnum = .allCategories
     @Published var showFilterSheet: Bool = false
     @Published var filterIsActive: Bool = false
+    @Published var showAlertSuccessfullAdded = false
     
     //MARK: User
     @Published var user = User(name: "John")

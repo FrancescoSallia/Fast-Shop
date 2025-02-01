@@ -20,6 +20,7 @@ struct Product: Identifiable, Codable {
     var isFavorite: Bool? = false
     let size: String?
     var numberOfProducts: Int? = 1
+    var cartID: UUID? = UUID()
 }
 
 
