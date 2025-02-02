@@ -43,19 +43,16 @@ struct SizeSheetView: View {
                         cartID: nil
                     )
                     viewModel.selectedProduct = addNewCartProduct
-                    print("ausgewählte größe: \(viewModel.selectedSize)")
                     
                     if let index = viewModel.user.cart.firstIndex(where: {
                         $0.id == viewModel.selectedProduct.id && $0.size == viewModel.selectedSize
                     }) {
-                        print("Produkt bereits im Warenkorb. Erhöhe Anzahl um 1.")
                         var updatedProduct = viewModel.user.cart[index]
                         updatedProduct.numberOfProducts? += 1
                         viewModel.selectedSize = ""
 
                         viewModel.user.cart[index] = updatedProduct
                     } else {
-                        print("Neues Produkt wird hinzugefügt.")
                         viewModel.selectedProduct.cartID = UUID()
                         viewModel.user.cart.append(viewModel.selectedProduct)
                         viewModel.selectedSize = ""

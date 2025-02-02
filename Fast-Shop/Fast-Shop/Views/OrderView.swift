@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-struct OrderSheetView: View {
-    
+struct OrderView: View {
     var body: some View {
         ScrollView {
             VStack {
@@ -114,19 +113,9 @@ struct OrderSheetView: View {
             }
             .padding(-8)
         }
-        
-//        Button("WEITER") {
-//            //
-//        }
-//        .padding()
-//        .frame(minWidth: 410)
-//        //        .border(Color.black)
-//        .background(Color.black)
-//        .tint(.white)
-//        .padding()
     }
 }
 
 #Preview {
-    OrderSheetView()
+    OrderView()
 }
