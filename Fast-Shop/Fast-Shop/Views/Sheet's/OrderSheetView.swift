@@ -10,93 +10,120 @@ import SwiftUI
 struct OrderSheetView: View {
     
     var body: some View {
-        VStack {
-            HStack {
-                ForEach(0...1, id: \.self) { item in
-                    ZStack {
-                        Rectangle()
-                            .frame(width: 206, height: 100)
-                            .foregroundStyle(.white)
-                            .border(Color.black)
-                            .padding(-4)
-                        VStack {
-                            Image(systemName: "map.fill")
-                            Text("Lieferstelle")
+        ScrollView {
+            VStack {
+                HStack {
+                    ForEach(0...1, id: \.self) { item in
+                        ZStack {
+                            Rectangle()
+                                .frame(width: 206, height: 100)
+                                .foregroundStyle(.white)
+                                .border(Color.black)
+                                .padding(-4)
+                            VStack {
+                                Image(systemName: "map.fill")
+                                Text("Lieferstelle")
+                            }
                         }
                     }
                 }
-            }
-            ZStack {
-                Rectangle()
-                    .frame(width: .infinity, height: 60)
-                    .foregroundStyle(.white)
-                    .border(Color.primary)
-                    .padding(-6)
+                ZStack {
+                    Rectangle()
+                        .frame(width: .infinity, height: 60)
+                        .foregroundStyle(.white)
+                        .border(Color.primary)
+                        .padding(-6)
+                    HStack {
+                        Text("Musterstraße 123") //Als NavigationLink
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                }
+                
                 HStack {
-                    Text("Musterstraße 123") //Als NavigationLink
+                    Text("ZUSTELLUNG")
+                        .font(.footnote)
+                        .padding()
+                    Spacer()
+                }
+                HStack {
+                    Image("ring")
+                        .resizable()
+                        .frame(width:110, height: 140)
+                    Image("ring")
+                        .resizable()
+                        .frame(width:110, height: 140)
                     Spacer()
                 }
                 .padding(.horizontal)
+                
+                VStack {
+                    HStack {
+                        Image(systemName: "button.programmable")
+                        Text("DIENSTAG 04, FEBRUAR - MITTWOCH 05, FEBRUAR")
+                            .font(.footnote)
+                        Spacer()
+                        Text("KOSTENLOS")
+                            .font(.footnote)
+                        
+                        Spacer()
+                    }
+                    .padding(.top)
+                    .padding(.horizontal)
+                    HStack {
+//                        Image(systemName: "button.programmable")
+                        Circle()
+                            .stroke(lineWidth: 1)
+                            .frame(width: 16)
+                        Text("MONTAG 03, FEBRUAR - DIENSTAG 04, FEBRUAR")
+                            .font(.footnote)
+                        Spacer()
+                        Text("8,95 EUR")
+                            .font(.footnote)
+                        Spacer()
+                        
+                    }
+                    .padding(.horizontal)
+                }
             }
-            
-            HStack {
-                Text("ZUSTELLUNG")
-                    .font(.footnote)
-                    .padding()
-                Spacer()
-            }
-            HStack {
-                Image("ring")
-                    .resizable()
-                    .frame(width:110, height: 140)
-                Image("ring")
-                    .resizable()
-                    .frame(width:110, height: 140)
-                Spacer()
-            }
-            .padding(.horizontal)
-            
-            VStack {
-            HStack {
-                    Image(systemName: "button.programmable")
-                    Text("DIENSTAG 04, FEBRUAR - MITTWOCH 05, FEBRUAR")
+        }
+        VStack {
+            ZStack {
+                Rectangle()
+                    .frame(width: .infinity, height: 50)
+                    .foregroundStyle(.white)
+                    .border(Color.black)
+                HStack {
+                    Text("VERSAND")
                         .font(.footnote)
-                Spacer()
+                    Spacer()
                     Text("KOSTENLOS")
-                    .font(.footnote)
-
-                Spacer()
+                        .font(.footnote)
                 }
-            .padding(.top)
-            .padding(.horizontal)
-            HStack {
-                Image(systemName: "button.programmable")
-                Text("MONTAG 03, FEBRUAR - DIENSTAG 04, FEBRUAR")
-                    .font(.footnote)
-                Spacer()
-                Text("8,95 EUR")
-                    .font(.footnote)
-                Spacer()
-
-                }
-            .padding(.horizontal)
+                .padding(.horizontal)
+                .bold()
             }
-        }
-        ZStack {
-            Rectangle()
-                .frame(width: .infinity, height: 50)
-                .foregroundStyle(.white)
-                .border(Color.black)
-            HStack {
-                Text("VERSAND")
-                    .font(.footnote)
-                Spacer()
-                Text("KOSTENLOS")
-                    .font(.footnote)
+            ZStack {
+                Rectangle()
+                    .frame(width: .infinity, height: 50)
+                    .foregroundStyle(.black)
+                        Button("WEITER") {
+                            //
+                        }
+                        .tint(.white)
             }
-            .padding(.horizontal)
-            .bold()
+            .padding(-8)
         }
+        
+//        Button("WEITER") {
+//            //
+//        }
+//        .padding()
+//        .frame(minWidth: 410)
+//        //        .border(Color.black)
+//        .background(Color.black)
+//        .tint(.white)
+//        .padding()
     }
 }
 
