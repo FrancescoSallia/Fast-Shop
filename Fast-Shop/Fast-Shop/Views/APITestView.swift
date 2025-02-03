@@ -18,11 +18,19 @@ struct APITestView: View {
             
             VStack {
                 
-                VStack (alignment: .leading){
-                    Text("FAST-SHOP")
-                        .fontDesign(.serif)
-                        .font(.largeTitle)
-                        .padding(.top, -200)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 3)
+                        .frame(width: 230, height: 90)
+                        .foregroundStyle(.white.opacity(0.5))
+                        .border(.black.opacity(0.4))
+                        .padding(.top, -226)
+
+                    VStack (alignment: .leading){
+                        Text("FAST-SHOP")
+                            .fontDesign(.serif)
+                            .font(.largeTitle)
+                            .padding(.top, -200)
+                    }
                 }
                 
           TextField("E-Mail", text: .constant(""))
