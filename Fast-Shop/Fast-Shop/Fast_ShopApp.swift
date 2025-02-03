@@ -17,7 +17,8 @@ struct Fast_ShopApp: App {
             
                 TabView {
                     Tab("Home", systemImage: "house.fill"){
-                        HomeView(isScrolling: $showTab)
+//                        HomeView(isScrolling: $showTab)
+                        APITestView()
                     }
                     Tab("Search", systemImage: "magnifyingglass"){
                         SearchView(viewModel: viewModel)

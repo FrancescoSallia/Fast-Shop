@@ -26,8 +26,8 @@ class HttpClient {
             return []
     }
     func getCategories() async throws -> [Category] {
-//        guard let url = URL(string: "http://localhost:3001/categories") else {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
+        guard let url = URL(string: "http://localhost:3001/categories") else {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
            throw ErrorEnum.invalidURL
         }
         do {

@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		741B95302D479F1600A0C9D3 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 741B952F2D479F1600A0C9D3 /* MultiSlider */; };
+		745AACDA2D50F0B60071A584 /* FastShopBackground.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 745AACD92D50F0B60071A584 /* FastShopBackground.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		745AACD92D50F0B60071A584 /* FastShopBackground.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FastShopBackground.mp4; sourceTree = "<group>"; };
 		748DEC2E2D2EAA1100EE76D3 /* Fast-Shop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fast-Shop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -39,6 +41,7 @@
 			children = (
 				748DEC302D2EAA1100EE76D3 /* Fast-Shop */,
 				748DEC2F2D2EAA1100EE76D3 /* Products */,
+				745AACD92D50F0B60071A584 /* FastShopBackground.mp4 */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,6 +121,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				745AACDA2D50F0B60071A584 /* FastShopBackground.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

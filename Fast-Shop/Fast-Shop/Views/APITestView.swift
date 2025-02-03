@@ -6,40 +6,78 @@
 //
 
 import SwiftUI
+import AVFoundation
+import AVKit
 
 struct APITestView: View {
-    @StateObject var user = User(name: "John")
-    var product = Product(id: 1, title: "TEST Product", price: 22.50, description: "Ein test produkt von mir erstellt mit beschreibung", images: ["tshirt"], category: Category(id: 1, name: "Categorie test", image: "ring", creationAt: "gestern erstellt", updatedAt: "jetzt up to date"), isFavorite: false, size: "", numberOfProducts: 0)
-
+//    @State var player = AVPlayer(url: URL(string:"https://youtu.be/9TwO9yMsPRg")!)
+    @State var player = AVPlayer(url: URL(string: "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4")!)
+    @State var isPlaying: Bool = false
+    
     var body: some View {
-        
-        VStack {
-            Text("User: \(user.name)")
-            // Um die Favoriten zu sehen, wechsel von user.card zu user.favorite
-            List(user.cart) { product in
+        ZStack {
+                    VideoBackgroundView()
+                        .ignoresSafeArea() // Deckt den ganzen Bildschirm ab
+            
+            VStack {
+          TextField("E-Mail", text: .constant(""))
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(10)
+                    .keyboardType(.emailAddress)
+//                    .autocapitalization(.none)
+                    .padding(.top, 30)
                 
-                Text("gekaufter produkt: \(product.title)")
-                Text("favorisiertes produkt: \(product)")
-
+          SecureField("Passwort", text: .constant(""))
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(10)
+          
+          HStack {
+              Text("Passwort vergessen?")
+                  .underline()
+                  .foregroundStyle(.blue)
+                  .font(.subheadline)
+                  .padding(.bottom, 20)
+                  .padding(.leading, 8)
+                  Spacer()
+          }
+                
+                Button(action: {
+                  //placeholder
+                }) {
+                    Text("Anmelden")
+                        .textCase(.uppercase)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.secondary)
+                        .cornerRadius(3)
+                }
+                Button(action: {
+                  //placeholder
+                }) {
+                    Text("Registrieren")
+                        .textCase(.uppercase)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.secondary)
+                        .cornerRadius(3)
+                }
             }
-            .frame(height: 200)
-            Button("ADD TO CARD") {
-                user.cart.append(product)
-
-            }
-            
-            Button("Delete first Product from Card") {
-                user.cart.remove(at: 0)
-//                user.warenkorb.removeAll(where: { $0.id == product.id }) //   LÖSCHT ALLE PRODUKTE MIT DER SELBEN ID
-            }
-            
-            Button("Add to Favorite") {
-                user.favorite.append(product)
-                print("added to favorite: \(user.favorite)")
-            }
-        }
-  }
-   
+            .padding()
+            .padding(.top, 80)
+                    
+//                    VStack {
+//                        Text("Willkommen")
+//                            .font(.largeTitle)
+//                            .foregroundColor(.white)
+//                            .bold()
+//                            .padding()
+//                    }
+                }
+    }
 }
 #Preview {
     APITestView()
