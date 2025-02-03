@@ -40,24 +40,26 @@ struct SelectedItemSheetView: View {
 //                print(viewModel.user.cart)
 //                viewModel.showSheet = false
 //            }
+            //FIXME: Mit den Kleidungen funktioniert das mit einfügen im warenkorb und löschen/favorisieren auch wenn man andere größen eingibt. jetzt muss es nur noch bei den anderen kategorien funktionieren!
             
             if viewModel.selectedProduct.category.id == 1{
-                Text("Wählen Sie eine Größe aus")
-                LazyVGrid(columns: columns) {
-                    ForEach(sizes, id: \.self) { item in
-                        HStack {
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 220, height: 50)
-                                    .border(.black, width: 2)
-                                    .foregroundStyle(.white)
-                                    .offset(x:10)
-                                Text(item)
-                                
-                            }
-                        }
-                    }
-                }
+                SizeSheetView(viewModel: viewModel, product: viewModel.selectedProduct)
+//                Text("Wählen Sie eine Größe aus")
+//                LazyVGrid(columns: columns) {
+//                    ForEach(sizes, id: \.self) { item in
+//                        HStack {
+//                            ZStack {
+//                                Rectangle()
+//                                    .frame(width: 220, height: 50)
+//                                    .border(.black, width: 2)
+//                                    .foregroundStyle(.white)
+//                                    .offset(x:10)
+//                                Text(item)
+//                                
+//                            }
+//                        }
+//                    }
+//                }
             } else if viewModel.selectedProduct.category.id == 2{
                 Text("Electronik")
             } else if viewModel.selectedProduct.category.id == 3{
@@ -70,14 +72,26 @@ struct SelectedItemSheetView: View {
                 Text("Andere Dinge")
             }
             Button("HINZUFÜGEN") {
+                let newProduct = Product(
+                    id: viewModel.selectedProduct.id,
+                    title: viewModel.selectedProduct.title,
+                    price: viewModel.selectedProduct.price,
+                    description: viewModel.selectedProduct.description,
+                    images: viewModel.selectedProduct.images,
+                    category: viewModel.selectedProduct.category,
+                    isFavorite: false,
+                    size: viewModel.selectedSize,
+                    numberOfProducts: 1
+                )
+              
+                viewModel.selectedProduct = newProduct
                 viewModel.user.cart.append(viewModel.selectedProduct)
-                print(viewModel.user.cart)
                 viewModel.showSheet = false
             }
         }
         .onAppear {
             Task {
-               try await viewModel.getProductsFromAPI()
+                try await viewModel.getCategorieFromID(filterID: "\(viewModel.selectedProduct.id)")
             }
         }
     }

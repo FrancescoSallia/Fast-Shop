@@ -24,6 +24,7 @@ struct Fast_ShopApp: App {
                     }
                     Tab("Cart", systemImage: "bag"){
                         CartView(viewModel: viewModel)
+//                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
                     }
                     Tab("Settings", systemImage: "person"){
                         SettingsView()

@@ -24,11 +24,9 @@ struct ProductDetailView: View {
                             } placeholder: {
                                 ProgressView()
                             }
-                            
                             .frame(width: 400, height: 600)
                         }
                     }
-                    
                 }
                 .scrollTargetBehavior(.paging)
                         ScrollView {
@@ -43,59 +41,185 @@ struct ProductDetailView: View {
                                     Text("inkl.MwSt.")
                                         .foregroundStyle(.gray)
                                 }
-                                HStack() {
-                                    Button("HINZUFÜGEN") {
-                                        //
-                                    }
-                                    .frame(width: 280, height: 45)
-                                    .border(Color.gray)
-                                    .tint(.white)
-                                    .background(Color.primary)
-                                    
-                                    Button {
-                                        //
-                                    } label: {
-                                        Image(systemName: "bookmark")
-                                    }
-                                    .frame(width: 55, height: 45)
-                                    .border(Color.gray)
-                                    .tint(.white)
-                                    .background(Color.primary)
-                                    .padding(.leading, 12)
-                                }
-                                .padding(.top, 40)
+//                                HStack() {
+//                                    Button("HINZUFÜGEN") {
+//                                        withAnimation {
+//                                            showAlert.toggle()
+//                                        }
+//                                        Task {
+//                                            try await Task.sleep(for: .seconds(3))
+//                                            withAnimation {
+//                                                showAlert = false
+//                                            }
+//                                        }
+//                                    }
+//                                    .frame(width: 280, height: 45)
+//                                    .border(Color.gray)
+//                                    .tint(.white)
+//                                    .background(Color.primary)
+//                                    
+//                                    Button {
+//                                        let addNewFavoriteProduct = Product(id: product.id, title: product.title, price: product.price, description: product.description, images: product.images, category: product.category, isFavorite: true, size: nil, numberOfProducts: nil)
+//                                        if viewModel.user.favorite.contains(where: { $0.id == addNewFavoriteProduct.id }) {
+//                                            viewModel.user.favorite.removeAll(where: { $0.id == addNewFavoriteProduct.id })
+//                                        } else {
+//                                            viewModel.user.favorite.append(addNewFavoriteProduct)
+//                                        }
+//                                    } label: {
+//                                        Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
+//                                    }
+//                                    .frame(width: 55, height: 45)
+//                                    .border(Color.gray)
+//                                    .tint(.white)
+//                                    .background(Color.primary)
+//                                    .padding(.leading, 12)
+//                                }
+//                                .padding(.top, 40)
                                 
                                 Text(product.description)
                                     .padding()
+                                
                             }
                             .padding(.horizontal)
                         }
+            }
+            //Wenn eine Ware zum Warenkorb hinzugefügt wurde, erscheint das Alert
+            if viewModel.showAlertSuccessfullAdded {
+                VStack {
+                    ZStack {
+                        Rectangle()
+                            .frame(width: 420, height: 50)
+                            .foregroundStyle(.green)
+                        
+                        Text("Zum Warenkorb hinzugefügt")
+                            .foregroundStyle(.white)
+                            .padding(.trailing, 70)
+                        Image(systemName: "checkmark.circle.fill")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .offset(x: -165)
+                            .foregroundStyle(.white)
+                        Button("Ansehen"){
+                            //placeholder
+                        }
+                        .bold()
+                        .offset(x: 145)
+                        .tint(.white)
+                    }
+//                    .toolbar(content: {
+//                        ToolbarItem(placement: .topBarTrailing) {
+//                            Button {
+//                                //
+//                            } label:{
+//                                Image(systemName: "square.and.arrow.up")
+//                            }
+//                            .foregroundStyle(.primary)
+//                        }
+//                        ToolbarItem(placement: .topBarTrailing) {
+//                            ZStack {
+//                                Button {
+//                                    //
+//                                } label:{
+//                                    Image(systemName: "bag")
+//                                }
+//                                .foregroundStyle(.primary)
+//                                
+//                                Text("\(viewModel.user.cart.count == 0 ? "" : "\(viewModel.user.cart.count)")")
+//                                    .font(.footnote)
+//                                    .offset(x: 3, y: 1)
+//                                    .foregroundStyle(.primary)
+//                            }
+//                        }
+//                    })
+                }
+                .animation(.easeInOut, value: viewModel.showAlertSuccessfullAdded)
+            }
+            HStack() {
+                ZStack {
+                    Rectangle()
+                        .frame(width: 300, height: 50)
                     
-                .toolbar(content: {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            //
-                        } label:{
-                            Image(systemName: "square.and.arrow.up")
+                    Button("HINZUFÜGEN") {
+                        viewModel.showSizes = true
+                        
+//                        let addNewCartProduct = Product(
+//                            id: product.id,
+//                            title: product.title,
+//                            price: product.price,
+//                            description: product.description,
+//                            images: product.images,
+//                            category: product.category,
+//                            size: viewModel.selectedSize
+//                        )
+//                        viewModel.selectedProduct = addNewCartProduct
+//                        print("ausgewählte größe: \(viewModel.selectedSize)")
+//
+//                        if let index = viewModel.user.cart.firstIndex(where: { $0.id == viewModel.selectedProduct.id }) {
+////                            viewModel.user.cart.removeAll(where: { $0.id == addNewCartProduct.id })
+//                            viewModel.user.cart[index].numberOfProducts? += 1
+//                        } else {
+//                            viewModel.user.cart.append(viewModel.selectedProduct)
+//                        }
+                        
+                        withAnimation {
+                            viewModel.showAlertSuccessfullAdded.toggle()
                         }
-                        .foregroundStyle(.primary)
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        ZStack {
-                            Button {
-                                //
-                            } label:{
-                                Image(systemName: "bag")
+                        Task {
+                            try await Task.sleep(for: .seconds(3))
+                            withAnimation {
+                                viewModel.showAlertSuccessfullAdded = false
                             }
-                            .foregroundStyle(.primary)
-
-                            Text("2")
-                                .font(.footnote)
-                                .offset(x: 3, y: 1)
-                                .foregroundStyle(.primary)
                         }
+                        print(viewModel.selectedSize)
                     }
-                })
+                    .tint(.white)
+                }
+                
+                ZStack {
+                    Rectangle()
+                        .frame(width: 50, height: 50)
+                    Button {
+                        let addNewFavoriteProduct = Product(
+                            id: product.id,
+                            title: product.title,
+                            price: product.price,
+                            description: product.description,
+                            images: product.images,
+                            category: product.category,
+                            isFavorite: true,
+                            size: viewModel.selectedSize
+                        )
+                        if let index = viewModel.user.favorite.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
+                            viewModel.user.favorite[index].isFavorite?.toggle()
+                            Task {
+                                try await viewModel.getProductsFromAPI()
+                            }
+                        } else {
+                            viewModel.user.favorite.append(addNewFavoriteProduct)
+                            Task {
+                                try await viewModel.getProductsFromAPI()
+                            }
+                        }
+                    } label: {
+                        Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
+                    }
+                    .tint(.white)
+                }
+//                .buttonBorderShape(.roundedRectangle(radius: 0))
+//                .padding()
+//                .padding(.horizontal, 5)
+//                .border(Color.primary)
+            }
+//            .padding(.top, 40)
+
+        }
+        .sheet(isPresented: $viewModel.showSizes, content: {
+            SizeSheetView(viewModel: viewModel, product: product)
+                .presentationDetents([(.medium)])
+        })
+        .onAppear {
+            Task {
+                try await viewModel.getProductsFromAPI()
             }
         }
     }

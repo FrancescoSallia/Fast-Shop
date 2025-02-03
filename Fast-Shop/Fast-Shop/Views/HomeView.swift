@@ -51,7 +51,7 @@ struct HomeView: View {
                                     .offset(y: 180)
                                     .italic()
                             }
-                        }
+                      }
 //                        .listStyle(.inset)
 //                        .scrollTransition(.interactive, axis: .vertical) { view, phase in
 ////                            view.offset(y: phase.value * -70)

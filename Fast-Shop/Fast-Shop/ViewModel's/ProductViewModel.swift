@@ -14,7 +14,7 @@ class ProductViewModel: ObservableObject {
     
     @Published var products: [Product] = []
     @Published var categories: [Category] = []
-    @Published var filteredID: String = "0"
+    @Published var filteredID: String = "1"
     @Published var searchedText: String = ""
     @Published var showSheet: Bool = false
     @Published var selectedProduct: Product = Product(
@@ -33,7 +33,7 @@ class ProductViewModel: ObservableObject {
             image: "tools.png",
             creationAt: "2025-01-24T08:29:50.000Z",
             updatedAt: "2025-01-24T09:42:00.000Z"
-        ),
+        ), isFavorite: false,
         size: "",
         numberOfProducts: 0
     )
@@ -53,10 +53,55 @@ class ProductViewModel: ObservableObject {
             image: "tools.png",
             creationAt: "2025-01-24T08:29:50.000Z",
             updatedAt: "2025-01-24T09:42:00.000Z"
-        ),
+        ), isFavorite: false,
         size: "",
         numberOfProducts: 0
     )
+    @Published var testProducteArray: [Product] = [
+        Product(
+        id: 1,
+        title: "Classic Navy Blue Baseball Cap",
+        price: 20.0,
+        description: "Test Description",
+        images: [
+        "https://i.imgur.com/R3iobJA.jpeg",
+        "https://i.imgur.com/Wv2KTsf.jpeg",
+        "https://i.imgur.com/76HAxcA.jpeg"
+      ],
+        category: Category(
+            id: 1,
+            name: "Tools",
+            image: "tools.png",
+            creationAt: "2025-01-24T08:29:50.000Z",
+            updatedAt: "2025-01-24T09:42:00.000Z"
+        ), isFavorite: false,
+        size: "",
+        numberOfProducts: 0
+    ),
+        Product(
+        id: 2,
+        title: "Classic Navy Blue Baseball Cap",
+        price: 20.0,
+        description: "Test Description",
+        images: [
+        "https://i.imgur.com/R3iobJA.jpeg",
+        "https://i.imgur.com/Wv2KTsf.jpeg",
+        "https://i.imgur.com/76HAxcA.jpeg"
+      ],
+        category: Category(
+            id: 1,
+            name: "Tools",
+            image: "tools.png",
+            creationAt: "2025-01-24T08:29:50.000Z",
+            updatedAt: "2025-01-24T09:42:00.000Z"
+        ), isFavorite: false,
+        size: "",
+        numberOfProducts: 0
+    )
+]
+    @Published var selectedSize: String = ""
+    @Published var showSizes: Bool = false
+
     
     //MARK: Filter Sheet
     @Published var minPrice = 0.0
@@ -65,10 +110,13 @@ class ProductViewModel: ObservableObject {
     @Published var selectedCategory : FilteredEnum = .allCategories
     @Published var showFilterSheet: Bool = false
     @Published var filterIsActive: Bool = false
+    @Published var showAlertSuccessfullAdded = false
     
     //MARK: User
     @Published var user = User(name: "John")
-
+    
+    //MARK: Cart
+    @Published var showCart = true
 
     
     //MARK: API Calls
@@ -80,7 +128,7 @@ class ProductViewModel: ObservableObject {
     }
     func getCategorieFilteredFromAPI() async throws {
         if searchedText.isEmpty && filterIsActive == false {
-            self.products = try await client.getCategorieFiltered(id: filteredID)
+            try await getCategorieFromID(filterID: filteredID)
         } else if filterIsActive == true {
             try await minMaxPriceFiltered()
         }
@@ -91,9 +139,7 @@ class ProductViewModel: ObservableObject {
    func minMaxPriceFiltered() async throws {
        self.products = try await client.minMaxPriceFiltered(searchText: searchedText, preisArray: minMaxValues, selectedCategory: filteredID)
     }
-    
-//    func userDataCart() async throws {
-//        self.user.cart = try await client.getProducts()
-//    }
-    
+   func getCategorieFromID(filterID: String) async throws {
+        self.products = try await client.getCategorieFiltered(id: filteredID)
+    }
 }
