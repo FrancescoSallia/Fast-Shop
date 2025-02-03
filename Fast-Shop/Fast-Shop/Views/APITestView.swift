@@ -10,10 +10,7 @@ import AVFoundation
 import AVKit
 
 struct APITestView: View {
-//    @State var player = AVPlayer(url: URL(string:"https://youtu.be/9TwO9yMsPRg")!)
-    @State var player = AVPlayer(url: URL(string: "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4")!)
-    @State var isPlaying: Bool = false
-    
+
     var body: some View {
         ZStack {
                     VideoBackgroundView()

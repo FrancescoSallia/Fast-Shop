@@ -11,7 +11,7 @@ import Foundation
 class ProductViewModel: ObservableObject {
     
     private let client = HttpClient()
-    
+    var productIndex: Int = 0
     @Published var products: [Product] = []
     @Published var categories: [Category] = []
     @Published var filteredID: String = "1"
@@ -111,6 +111,7 @@ class ProductViewModel: ObservableObject {
     @Published var showFilterSheet: Bool = false
     @Published var filterIsActive: Bool = false
     @Published var showAlertSuccessfullAdded = false
+    @Published var showProgressView: Bool = true
     
     //MARK: User
     @Published var user = User(name: "John")
@@ -121,11 +122,21 @@ class ProductViewModel: ObservableObject {
     
     //MARK: API Calls
     func getProductsFromAPI() async throws {
-        self.products = try await client.getProducts()
+        let result = try await client.getProducts(firstIndex: productIndex, lastIndex: 10)
+        print("Downloaded \(result.count) products")
+        self.products.append(contentsOf: result)
+//        self.products = try await client.getProducts(firstIndex: productIndex, lastIndex: productIndex + 10)
+        productIndex += 10
+        if result.count == 0 {
+            showProgressView = false
+        }
+//        print("\(products)")
     }
+    
     func getCategoriesFromAPI() async throws {
         self.categories = try await client.getCategories()
     }
+    
     func getCategorieFilteredFromAPI() async throws {
         if searchedText.isEmpty && filterIsActive == false {
             try await getCategorieFromID(filterID: filteredID)
@@ -136,10 +147,19 @@ class ProductViewModel: ObservableObject {
             self.products = try await client.searchTitle(title: searchedText)
         }
     }
+    
    func minMaxPriceFiltered() async throws {
        self.products = try await client.minMaxPriceFiltered(searchText: searchedText, preisArray: minMaxValues, selectedCategory: filteredID)
     }
+    
    func getCategorieFromID(filterID: String) async throws {
         self.products = try await client.getCategorieFiltered(id: filteredID)
+    }
+    
+    func isLastItem(product: Product) -> Bool {
+        if let index = self.products.lastIndex(where: {$0.id == product.id}) {
+            return index == self.products.count - 1
+        }
+        return false
     }
 }
