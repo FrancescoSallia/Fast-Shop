@@ -19,24 +19,25 @@ struct APITestView: View {
             VStack {
           TextField("E-Mail", text: .constant(""))
                     .padding()
-                    .background(Color(.secondarySystemBackground))
+                    .background(Color(uiColor: UIColor.lightText))
                     .cornerRadius(10)
                     .keyboardType(.emailAddress)
-//                    .autocapitalization(.none)
                     .padding(.top, 30)
                 
           SecureField("Passwort", text: .constant(""))
                     .padding()
-                    .background(Color(.secondarySystemBackground))
+                    .background(Color(uiColor: UIColor.lightText))
                     .cornerRadius(10)
           
           HStack {
-              Text("Passwort vergessen?")
-                  .underline()
-                  .foregroundStyle(.blue)
-                  .font(.subheadline)
-                  .padding(.bottom, 20)
-                  .padding(.leading, 8)
+              Button("Passwort vergessen?") {
+                  
+              }
+              .underline()
+              .foregroundStyle(.black)
+              .font(.subheadline)
+              .padding(.bottom, 20)
+              .padding(.leading, 8)
                   Spacer()
           }
                 
@@ -48,7 +49,7 @@ struct APITestView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.secondary)
+                        .background(Color.black.opacity(0.8))
                         .cornerRadius(3)
                 }
                 Button(action: {
@@ -56,10 +57,10 @@ struct APITestView: View {
                 }) {
                     Text("Registrieren")
                         .textCase(.uppercase)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.secondary)
+                        .background(Color.white.opacity(0.9))
                         .cornerRadius(3)
                 }
             }
