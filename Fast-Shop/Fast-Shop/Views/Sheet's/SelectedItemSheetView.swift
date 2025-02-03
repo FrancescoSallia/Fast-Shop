@@ -27,7 +27,7 @@ struct SelectedItemSheetView: View {
                             pic
                                 .resizable()
                                 .frame(width: 122, height: 180)
-                                .foregroundStyle(.red)
+//                                .foregroundStyle(.red)
                         } placeholder: {
                             ProgressView()
                         }

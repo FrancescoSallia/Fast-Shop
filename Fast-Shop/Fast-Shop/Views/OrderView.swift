@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct OrderView: View {
+    @ObservedObject var viewModel: ProductViewModel
+    @State var deliveryIsSelected = false
     var body: some View {
         ScrollView {
             VStack {
@@ -26,9 +28,10 @@ struct OrderView: View {
                         }
                     }
                 }
+                
                 ZStack {
                     Rectangle()
-                        .frame(width: .infinity, height: 60)
+                        .frame(maxWidth: .infinity, maxHeight: 60)
                         .foregroundStyle(.white)
                         .border(Color.primary)
                         .padding(-6)
@@ -45,20 +48,43 @@ struct OrderView: View {
                         .padding()
                     Spacer()
                 }
-                HStack {
-                    Image("ring")
-                        .resizable()
-                        .frame(width:110, height: 140)
-                    Image("ring")
-                        .resizable()
-                        .frame(width:110, height: 140)
-                    Spacer()
+                ScrollView(.horizontal) {
+                    HStack(alignment: .firstTextBaseline) {
+                        ForEach(viewModel.user.cart, id: \.cartID) { cartItem in
+                            AsyncImage(url: URL(string: cartItem.images[0])) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(1.0, contentMode: .fit)
+                                    .frame(maxWidth: 122, maxHeight: 150)
+                            } placeholder: {
+                                ProgressView()
+                            }
+//                            Image("pants")
+//                             .resizable()
+//                             .aspectRatio(1.0, contentMode: .fill)
+//                             .frame(maxWidth: 140, maxHeight: 150)
+                        }
+                    }
+                    .padding(.leading, 4)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .padding(.horizontal)
                 
                 VStack {
                     HStack {
-                        Image(systemName: "button.programmable")
+                        if !deliveryIsSelected {
+                            Image(systemName: "button.programmable")
+                                .frame(width: 16)
+                                .onTapGesture {
+                                    deliveryIsSelected.toggle()
+                                }
+                        } else {
+                            Circle()
+                                .stroke(lineWidth: 1)
+                                .frame(width: 16)
+                                .onTapGesture {
+                                    deliveryIsSelected.toggle()
+                                }
+                        }
                         Text("DIENSTAG 04, FEBRUAR - MITTWOCH 05, FEBRUAR")
                             .font(.footnote)
                         Spacer()
@@ -70,10 +96,21 @@ struct OrderView: View {
                     .padding(.top)
                     .padding(.horizontal)
                     HStack {
-//                        Image(systemName: "button.programmable")
-                        Circle()
-                            .stroke(lineWidth: 1)
-                            .frame(width: 16)
+                        if deliveryIsSelected {
+                            Image(systemName: "button.programmable")
+                                .frame(width: 16)
+                                .onTapGesture {
+                                    deliveryIsSelected.toggle()
+                                }
+                        } else {
+                            Circle()
+                                .stroke(lineWidth: 1)
+                                .frame(width: 16)
+                                .onTapGesture {
+                                    deliveryIsSelected.toggle()
+                                }
+                        }
+
                         Text("MONTAG 03, FEBRUAR - DIENSTAG 04, FEBRUAR")
                             .font(.footnote)
                         Spacer()
@@ -89,7 +126,7 @@ struct OrderView: View {
         VStack {
             ZStack {
                 Rectangle()
-                    .frame(width: .infinity, height: 50)
+                    .frame(maxWidth: .infinity, maxHeight: 50)
                     .foregroundStyle(.white)
                     .border(Color.black)
                 HStack {
@@ -104,18 +141,18 @@ struct OrderView: View {
             }
             ZStack {
                 Rectangle()
-                    .frame(width: .infinity, height: 50)
+                    .frame(maxWidth: .infinity, maxHeight: 50)
                     .foregroundStyle(.black)
                         Button("WEITER") {
                             //
                         }
                         .tint(.white)
             }
-            .padding(-8)
+            .padding(.top ,-8)
         }
     }
 }
 
 #Preview {
-    OrderView()
+    OrderView(viewModel: ProductViewModel())
 }
