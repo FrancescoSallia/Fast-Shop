@@ -100,33 +100,33 @@ struct OrderView: View {
                     }
                 }
             }
-            VStack {
-                ZStack {
-                    Rectangle()
-                        .frame(maxWidth: .infinity, maxHeight: 50)
-                        .foregroundStyle(.white)
-                        .border(Color.black)
-                    HStack {
-                        Text("VERSAND")
-                            .font(.footnote)
-                        Spacer()
-                        Text(viewModel.selectedDeliveryOption == 1 ? "8,95 EUR" : "KOSTENLOS")
-                            .font(.footnote)
-                    }
-                    .padding(.horizontal)
-                    .bold()
-                }
-                ZStack {
-                    Rectangle()
-                        .frame(maxWidth: .infinity, maxHeight: 50)
-                        .foregroundStyle(.black)
-                    NavigationLink("WEITER", destination: {
-                        PayOptionView(viewModel: viewModel)
-                    })
-                    .tint(.white)
-                }
-                .padding(.top ,-8)
-            }
+//            VStack {
+//                ZStack {
+//                    Rectangle()
+//                        .frame(maxWidth: .infinity, maxHeight: 50)
+//                        .foregroundStyle(.white)
+//                        .border(Color.black)
+//                    HStack {
+//                        Text("VERSAND")
+//                            .font(.footnote)
+//                        Spacer()
+//                        Text(viewModel.selectedDeliveryOption == 1 ? "8,95 EUR" : "KOSTENLOS")
+//                            .font(.footnote)
+//                    }
+//                    .padding(.horizontal)
+//                    .bold()
+//                }
+//                ZStack {
+//                    Rectangle()
+//                        .frame(maxWidth: .infinity, maxHeight: 50)
+//                        .foregroundStyle(.black)
+//                    NavigationLink("WEITER", destination: {
+//                        PayOptionView(viewModel: viewModel)
+//                    })
+//                    .tint(.white)
+//                }
+//                .padding(.top ,-8)
+//            }
         }
     }
 

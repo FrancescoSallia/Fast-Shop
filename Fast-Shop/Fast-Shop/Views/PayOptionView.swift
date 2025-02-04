@@ -50,35 +50,35 @@ struct PayOptionView: View {
                 }
             }
         }
-        VStack {
-            ZStack {
-                Rectangle()
-                    .frame(maxWidth: .infinity, maxHeight: 50)
-                    .foregroundStyle(.white)
-                    .border(Color.black)
-                HStack {
-                    Text("GESAMT")
-                        .font(.footnote)
-                    Spacer()
-//                    Text("129,98 EUR")
-                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
-                        .textCase(.uppercase)
-                        .font(.footnote)
-                }
-                .padding(.horizontal)
-                .bold()
-            }
-            ZStack {
-                Rectangle()
-                    .frame(maxWidth: .infinity, maxHeight: 50)
-                    .foregroundStyle(.black)
-                NavigationLink("WEITER", destination: {
-                    OrderOverviewView(viewModel: viewModel)
-                })
-                .tint(.white)
-            }
-            .padding(-8)
-        }
+//        VStack {
+//            ZStack {
+//                Rectangle()
+//                    .frame(maxWidth: .infinity, maxHeight: 50)
+//                    .foregroundStyle(.white)
+//                    .border(Color.black)
+//                HStack {
+//                    Text("GESAMT")
+//                        .font(.footnote)
+//                    Spacer()
+////                    Text("129,98 EUR")
+//                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
+//                        .textCase(.uppercase)
+//                        .font(.footnote)
+//                }
+//                .padding(.horizontal)
+//                .bold()
+//            }
+//            ZStack {
+//                Rectangle()
+//                    .frame(maxWidth: .infinity, maxHeight: 50)
+//                    .foregroundStyle(.black)
+//                NavigationLink("WEITER", destination: {
+//                    OrderOverviewView(viewModel: viewModel)
+//                })
+//                .tint(.white)
+//            }
+//            .padding(-8)
+//        }
     }
 }
 }

@@ -14,17 +14,19 @@ struct OrderOverviewView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                Text("\(viewModel.user.cart.count) Artikel")
+                    .font(.footnote)
+                    .textCase(.uppercase)
                 ScrollView {
                     //                Text("Donnerstag 06, Februar - Freitag 08, Februar")
                     
-                    HStack {
-                        //                    Text("4 Artikel")
-                        Text("\(viewModel.user.cart.count) Artikel")
-                            .font(.footnote)
-                            .textCase(.uppercase)
-                        Spacer()
-                    }
-                    .padding(.horizontal)
+//                    HStack {
+//                        Text("\(viewModel.user.cart.count) Artikel")
+//                            .font(.footnote)
+//                            .textCase(.uppercase)
+//                        Spacer()
+//                    }
+//                    .padding(.horizontal)
                     
                     
                     ScrollView(.horizontal) {
@@ -42,23 +44,29 @@ struct OrderOverviewView: View {
                             }
                         }
                     }
-//DELIVERY SECTION
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Image(systemName: "calendar")
-                            Text("Erwartete Zustellung")
+//DELIVERY CALENDAR SECTION
+                    NavigationLink {
+                        OrderView(viewModel: viewModel)
+                    } label: {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Image(systemName: "calendar")
+                                Text("Erwartete Zustellung")
+                                    .font(.subheadline)
+                                    .bold()
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.black)
+                            }
+                            .padding(.bottom, 4)
+                            Text(viewModel.selectedDeliveryOption == 0 ? "\(viewModel.deliveryDate(daysToAdd: 4)) - \(viewModel.deliveryDate(daysToAdd: 6))" : "\(viewModel.deliveryDate(daysToAdd: 1)) - \(viewModel.deliveryDate(daysToAdd: 3))")
+                                .font(.footnote)
+                                .textCase(.uppercase)
                                 .font(.subheadline)
-                                .bold()
-                            Spacer()
                         }
-                        .padding(.bottom, 4)
-                        Text(viewModel.selectedDeliveryOption == 0 ? "\(viewModel.deliveryDate(daysToAdd: 4)) - \(viewModel.deliveryDate(daysToAdd: 6))" : "\(viewModel.deliveryDate(daysToAdd: 1)) - \(viewModel.deliveryDate(daysToAdd: 3))")
-                            .font(.footnote)
-                            .textCase(.uppercase)
-                            .font(.subheadline)
+                        .padding()
                     }
-                    .padding()
-                        
+                    .tint(.primary)
                     Divider()
                         .frame(height: 2)
                         .background(Color.black)
@@ -80,7 +88,7 @@ struct OrderOverviewView: View {
                             Text(viewModel.user.name)
                                 .textCase(.uppercase)
                             Spacer()
-                            Image(systemName: "chevron.right") // Pfeil nach rechts hinzufügen
+                            Image(systemName: "chevron.right")
                                 .foregroundColor(.black)
                         }
                         Text("\(viewModel.user.adress) \(viewModel.user.houseNumber)")
