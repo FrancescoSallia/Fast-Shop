@@ -115,6 +115,8 @@ class ProductViewModel: ObservableObject {
     
     //MARK: User
     @Published var user = User(name: "John")
+    @Published var selectedPayOption: String = ""
+
     
     //MARK: Cart
     @Published var showCart = true

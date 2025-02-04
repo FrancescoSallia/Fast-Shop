@@ -20,7 +20,8 @@ struct OrderOverviewView: View {
                     .font(.subheadline)
                 
                 HStack {
-                    Text("4 Artikel")
+//                    Text("4 Artikel")
+                    Text("\(viewModel.user.cart.count) Artikel")
                         .font(.footnote)
                         .textCase(.uppercase)
                     Spacer()
@@ -30,10 +31,16 @@ struct OrderOverviewView: View {
                 
                 ScrollView(.horizontal) {
                     HStack {
-                        ForEach(dummyArtikeln, id: \.self) { item in
-                            Image(item)
-                                .resizable()
-                                .frame(width: 122, height: 180)
+                        ForEach(viewModel.user.cart, id: \.cartID) { item in
+                            AsyncImage(url: URL(string: item.images[0])) { item in
+                                item
+                                    .resizable()
+                                    .frame(width: 122, height: 180)
+                            } placeholder: {
+                                ProgressView()
+                            }
+
+                        
                         }
                     }
                 }
@@ -56,11 +63,11 @@ struct OrderOverviewView: View {
                     .frame(height: 2)
                     .background(Color.black)
                 VStack(alignment: .leading) {
-                    Text("Name vom User")
+                    Text(viewModel.user.name)
                         .textCase(.uppercase)
-                    Text("Adresse vom User")
+                    Text("\(viewModel.user.adress) \(viewModel.user.houseNumber)")
                         .textCase(.uppercase)
-                    Text("PLZ & ort vom user")
+                    Text("\(viewModel.user.plz) \(viewModel.user.location)")
                         .textCase(.uppercase)
                 }
                 .padding()
@@ -70,10 +77,10 @@ struct OrderOverviewView: View {
                     .background(Color.black)
                 
                 HStack {
-                    Image("Apple")
+                    Image(viewModel.selectedPayOption)
                         .resizable()
                         .frame(width: 80, height: 80)
-                    Text("Apple Pay")
+                    Text(viewModel.selectedPayOption)
                         .textCase(.uppercase)
                         .font(.subheadline)
                 }
@@ -84,7 +91,7 @@ struct OrderOverviewView: View {
                     .frame(height: 2)
                     .background(Color.black)
                 HStack{
-                    Text("4 Artikel")
+                    Text("\(viewModel.user.cart.count) Artikel")
                         .textCase(.uppercase)
                     Spacer()
                     Text("128,95 EUR")
@@ -95,7 +102,8 @@ struct OrderOverviewView: View {
                     Text("Versand")
                         .textCase(.uppercase)
                     Spacer()
-                    Text("0,00 EUR")
+                    Text("\(viewModel.selectedDeliveryPrice) EUR")
+//                    Text("0,00 EUR")
                 }
                 .padding(.horizontal)
                 HStack{
@@ -103,7 +111,8 @@ struct OrderOverviewView: View {
                         .textCase(.uppercase)
                         .bold()
                     Spacer()
-                    Text("128,95 EUR")
+                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
+                    //Text("128,95 EUR")
                         .bold()
                 }
                 .padding(.horizontal)
@@ -125,7 +134,7 @@ struct OrderOverviewView: View {
             .tint(.white)
             .textCase(.uppercase)
         }
-        .padding(-8)
+//        .padding(-8)
         
         
         

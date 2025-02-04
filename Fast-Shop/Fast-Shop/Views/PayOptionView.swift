@@ -11,7 +11,6 @@ struct PayOptionView: View {
     let payOptionItems: [String] = ["apple-pay", "klarna", "google-pay", "paypal"]
     let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
     @ObservedObject var viewModel: ProductViewModel
-    @State var selectedPayOption: String = ""
     var body: some View {
         NavigationStack {
         HStack {
@@ -19,14 +18,6 @@ struct PayOptionView: View {
                 .textCase(.uppercase)
                 .font(.subheadline)
             Spacer()
-            //            Button {
-            //                // sheet schließen
-            //            } label: {
-            //                Image(systemName: "xmark.circle.fill")
-            //                    .resizable()
-            //                    .frame(width: 24, height: 24)
-            //                    .tint(.black)
-            //            }
         }
         .padding()
         ScrollView {
@@ -34,13 +25,14 @@ struct PayOptionView: View {
                 ForEach(payOptionItems, id: \.self) { option in
                     ZStack {
                         Rectangle()
-                            .foregroundStyle(selectedPayOption == option  ? .black : .white)
+                            .foregroundStyle(viewModel.selectedPayOption == option  ? .black : .white)
                             .aspectRatio(1.2, contentMode: .fill) // Stellt das Verhältnis von Breite zu Höhe sicher
                             .overlay(
-                                Rectangle().stroke(selectedPayOption == option ? Color.white : Color.black, lineWidth: 1.2)
+                                Rectangle().stroke(viewModel.selectedPayOption == option ? Color.white : Color.black, lineWidth: 1.2)
                             )
                         Button {
-                            selectedPayOption = option
+                            viewModel.selectedPayOption = option
+                            print(viewModel.selectedPayOption)
                         } label: {
                             VStack {
                                 Image(option)
@@ -52,7 +44,7 @@ struct PayOptionView: View {
                                     .italic()
                             }
                         }
-                        .tint(selectedPayOption == option ? .white : .black)
+                        .tint(viewModel.selectedPayOption == option ? .white : .black)
                         
                     }
                 }
