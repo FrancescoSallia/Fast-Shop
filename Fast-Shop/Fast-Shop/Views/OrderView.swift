@@ -71,9 +71,10 @@ struct OrderView: View {
                                 .onTapGesture {
                                     viewModel.selectedDeliveryOption = 0
                                     viewModel.selectedDeliveryPrice = "KOSTENLOS"
+                                    viewModel.deliveryDay = 6
                                 }
 
-                            Text("\(viewModel.deliveryDate(daysToAdd: 3)) - \(viewModel.deliveryDate(daysToAdd: 4))")
+                            Text("\(viewModel.deliveryDate(daysToAdd: 4)) - \(viewModel.deliveryDate(daysToAdd: 6))")
                                 .font(.footnote)
                             Spacer()
                             Text("KOSTENLOS")
@@ -88,9 +89,10 @@ struct OrderView: View {
                                 .onTapGesture {
                                     viewModel.selectedDeliveryOption = 1
                                     viewModel.selectedDeliveryPrice = "8.95"
+                                    viewModel.deliveryDay = 3
                                 }
 
-                            Text("\(viewModel.deliveryDate(daysToAdd: 2)) - \(viewModel.deliveryDate(daysToAdd: 3))")
+                            Text("\(viewModel.deliveryDate(daysToAdd: 1)) - \(viewModel.deliveryDate(daysToAdd: 3))")
                                 .font(.footnote)
                             Spacer()
                             Text("8,95 €")
@@ -110,7 +112,7 @@ struct OrderView: View {
                         Text("VERSAND")
                             .font(.footnote)
                         Spacer()
-                        Text(viewModel.selectedDeliveryOption == 1 ? "8,95 €" : "KOSTENLOS")
+                        Text(viewModel.selectedDeliveryOption == 1 ? "8,95 EUR" : "KOSTENLOS")
                             .font(.footnote)
                     }
                     .padding(.horizontal)

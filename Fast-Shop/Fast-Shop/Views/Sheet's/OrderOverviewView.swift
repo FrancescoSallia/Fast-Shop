@@ -14,7 +14,8 @@ struct OrderOverviewView: View {
     var body: some View {
         VStack {
             ScrollView {
-                Text("Donnerstag 06, Februar - Freitag 08, Februar")
+//                Text("Donnerstag 06, Februar - Freitag 08, Februar")
+                Text(viewModel.selectedDateFormatted)
                     .textCase(.uppercase)
                     .font(.subheadline)
                 
@@ -112,17 +113,11 @@ struct OrderOverviewView: View {
                     .frame(height: 2)
                     .background(Color.black)
 
-                    
-                
-                
-                
-                
-                
             }
         }
         ZStack {
             Rectangle()
-                .frame(width: .infinity, height: 50)
+                .frame(maxWidth: .infinity, maxHeight: 50)
                 .foregroundStyle(.black)
             Button("Zahlung Autorisieren") {
                 //

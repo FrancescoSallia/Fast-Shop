@@ -69,7 +69,7 @@ struct PayOptionView: View {
                         .font(.footnote)
                     Spacer()
 //                    Text("129,98 EUR")
-                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost))€")
+                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
                         .textCase(.uppercase)
                         .font(.footnote)
                 }
