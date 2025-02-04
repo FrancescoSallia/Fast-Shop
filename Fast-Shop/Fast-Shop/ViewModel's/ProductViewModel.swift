@@ -127,8 +127,7 @@ class ProductViewModel: ObservableObject {
     var deliveryCost: Double {
         return Double(selectedDeliveryPrice.replacingOccurrences(of: ",", with: ".")) ?? 0.00
     }
-    var selectedDateFormatted: String = ""
-    var deliveryDay: Int = 0
+
 
     func deliveryDate(daysToAdd: Int) -> String {
         let calendar = Calendar.current
@@ -147,9 +146,6 @@ class ProductViewModel: ObservableObject {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "de_DE") // Deutsches Format
         dateFormatter.dateFormat = "EEEE, d. MMMM" // Beispiel: "Freitag, 9. Februar"
-        deliveryDay = daysToAdd
-        print("day INT: \(deliveryDay) addedDays:\(addedDays)")
-        self.selectedDateFormatted = dateFormatter.string(from: date)
         return dateFormatter.string(from: date)
     }
 

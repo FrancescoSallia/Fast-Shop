@@ -14,9 +14,6 @@ struct OrderOverviewView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text(viewModel.selectedDateFormatted)
-                    .textCase(.uppercase)
-                    .font(.subheadline)
                 ScrollView {
                     //                Text("Donnerstag 06, Februar - Freitag 08, Februar")
                     
@@ -46,21 +43,22 @@ struct OrderOverviewView: View {
                         }
                     }
 //DELIVERY SECTION
-                    HStack {
-                        Text("Versand nach Hause")
-                            .textCase(.uppercase)
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Image(systemName: "calendar")
+                            Text("Erwartete Zustellung")
+                                .font(.subheadline)
+                                .bold()
+                            Spacer()
+                        }
+                        .padding(.bottom, 4)
+                        Text(viewModel.selectedDeliveryOption == 0 ? "\(viewModel.deliveryDate(daysToAdd: 4)) - \(viewModel.deliveryDate(daysToAdd: 6))" : "\(viewModel.deliveryDate(daysToAdd: 1)) - \(viewModel.deliveryDate(daysToAdd: 3))")
                             .font(.footnote)
-                        Spacer()
+                            .textCase(.uppercase)
+                            .font(.subheadline)
                     }
                     .padding()
-                    HStack {
-                        Text("Zustellung Donnerstag 06, Februar - Freitag 08, Februar")
-                            .textCase(.uppercase)
-                            .font(.footnote)
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, -16)
+                        
                     Divider()
                         .frame(height: 2)
                         .background(Color.black)
@@ -70,6 +68,14 @@ struct OrderOverviewView: View {
                         OrderView(viewModel: viewModel)
                     } label: {
                     VStack(alignment: .leading) {
+                        HStack {
+                            Image(systemName: "house")
+                            Text("Lieferadresse")
+                                .bold()
+                                .font(.subheadline)
+                            Spacer()
+                        }
+                        .padding(.bottom)
                         HStack {
                             Text(viewModel.user.name)
                                 .textCase(.uppercase)
@@ -103,6 +109,7 @@ struct OrderOverviewView: View {
                                 Text("Bezahlart")
                                     .tint(.primary)
                                     .font(.subheadline)
+                                    .bold()
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.black)
@@ -134,6 +141,9 @@ struct OrderOverviewView: View {
                 }
                 
 //Summary Section
+                Divider()
+                    .frame(height: 2)
+                    .background(Color.black)
                 HStack{
                     Text("\(viewModel.user.cart.count) Artikel")
                         .textCase(.uppercase)

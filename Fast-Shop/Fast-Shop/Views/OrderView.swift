@@ -71,7 +71,6 @@ struct OrderView: View {
                                 .onTapGesture {
                                     viewModel.selectedDeliveryOption = 0
                                     viewModel.selectedDeliveryPrice = "KOSTENLOS"
-                                    viewModel.deliveryDay = 6
                                 }
 
                             Text("\(viewModel.deliveryDate(daysToAdd: 4)) - \(viewModel.deliveryDate(daysToAdd: 6))")
@@ -89,7 +88,6 @@ struct OrderView: View {
                                 .onTapGesture {
                                     viewModel.selectedDeliveryOption = 1
                                     viewModel.selectedDeliveryPrice = "8.95"
-                                    viewModel.deliveryDay = 3
                                 }
 
                             Text("\(viewModel.deliveryDate(daysToAdd: 1)) - \(viewModel.deliveryDate(daysToAdd: 3))")
