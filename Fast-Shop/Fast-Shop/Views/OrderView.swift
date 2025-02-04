@@ -66,52 +66,35 @@ struct OrderView: View {
                     }
                     VStack {
                         HStack {
-                            if !viewModel.deliveryIsSelected {
-                                Image(systemName: "button.programmable")
-                                    .frame(width: 16)
-                                    .onTapGesture {
-                                        viewModel.deliveryIsSelected.toggle()
-                                    }
-                            } else {
-                                Circle()
-                                    .stroke(lineWidth: 1)
-                                    .frame(width: 16)
-                                    .onTapGesture {
-                                        viewModel.deliveryIsSelected.toggle()
-                                    }
-                            }
-                            Text("\(viewModel.deliveryDate(daysToAdd: 5)) - \(viewModel.deliveryDate(daysToAdd: 7))")
+                            Image(systemName: viewModel.selectedDeliveryOption == 0 ? "largecircle.fill.circle" : "circle")
+                                .frame(width: 16)
+                                .onTapGesture {
+                                    viewModel.selectedDeliveryOption = 0
+                                    viewModel.selectedDeliveryPrice = "KOSTENLOS"
+                                }
+
+                            Text("\(viewModel.deliveryDate(daysToAdd: 3)) - \(viewModel.deliveryDate(daysToAdd: 4))")
                                 .font(.footnote)
                             Spacer()
-                            Text("\(viewModel.toggleDeliveryIsSelected(deliveryPrice: nil))")
+                            Text("KOSTENLOS")
                                 .font(.footnote)
-                            
-                            Spacer()
                         }
                         .padding(.top)
                         .padding(.horizontal)
+
                         HStack {
-                            if viewModel.deliveryIsSelected {
-                                Image(systemName: "button.programmable")
-                                    .frame(width: 16)
-                                    .onTapGesture {
-                                        viewModel.deliveryIsSelected.toggle()
-                                    }
-                            } else {
-                                Circle()
-                                    .stroke(lineWidth: 1)
-                                    .frame(width: 16)
-                                    .onTapGesture {
-                                        viewModel.deliveryIsSelected.toggle()
-                                    }
-                            }
-                            
-                            Text("\(viewModel.deliveryDate(daysToAdd: 3)) - \(viewModel.deliveryDate(daysToAdd: 4))")                                .font(.footnote)
-                            Spacer()
-                            Text("\(viewModel.toggleDeliveryIsSelected(deliveryPrice: 8.95))")
+                            Image(systemName: viewModel.selectedDeliveryOption == 1 ? "largecircle.fill.circle" : "circle")
+                                .frame(width: 16)
+                                .onTapGesture {
+                                    viewModel.selectedDeliveryOption = 1
+                                    viewModel.selectedDeliveryPrice = "8.95"
+                                }
+
+                            Text("\(viewModel.deliveryDate(daysToAdd: 2)) - \(viewModel.deliveryDate(daysToAdd: 3))")
                                 .font(.footnote)
                             Spacer()
-                            
+                            Text("8,95 €")
+                                .font(.footnote)
                         }
                         .padding(.horizontal)
                     }
@@ -127,7 +110,7 @@ struct OrderView: View {
                         Text("VERSAND")
                             .font(.footnote)
                         Spacer()
-//                        Text(viewModel.selectedDeliveryPrice)
+                        Text(viewModel.selectedDeliveryOption == 1 ? "8,95 €" : "KOSTENLOS")
                             .font(.footnote)
                     }
                     .padding(.horizontal)

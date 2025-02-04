@@ -120,17 +120,10 @@ class ProductViewModel: ObservableObject {
     @Published var showCart = true
     
     //MARK: Calender
-    @Published var deliveryIsSelected = false
-    @Published var selectedDeliveryPrice = ""
-    
-    func toggleDeliveryIsSelected(deliveryPrice:Double?) -> String {
-        if deliveryPrice != nil {
-            if let deliveryPrice {
-                let result = String(deliveryPrice).replacingOccurrences(of: ".", with: ",") + " €"
-                return result
-            }
-        }
-        return "KOSTENLOS"
+    @Published var selectedDeliveryPrice: String = "0.00"
+    @Published var selectedDeliveryOption: Int = 0 // 0 = kostenlos, 1 = kostenpflichtig
+    var deliveryCost: Double {
+        return Double(selectedDeliveryPrice.replacingOccurrences(of: ",", with: ".")) ?? 0.00
     }
 
     func deliveryDate(daysToAdd: Int) -> String {
@@ -165,7 +158,6 @@ class ProductViewModel: ObservableObject {
         if result.count == 0 {
             showProgressView = false
         }
-//        print("\(products)")
     }
     
     func getCategoriesFromAPI() async throws {
