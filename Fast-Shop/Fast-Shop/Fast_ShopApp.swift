@@ -28,7 +28,9 @@ struct Fast_ShopApp: App {
 //                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
                     }
                     Tab("Settings", systemImage: "person"){
-                        SettingsView()
+//                        SettingsView()
+                          APITestView()
+
                     }
                 
                 }
