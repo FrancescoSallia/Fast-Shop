@@ -9,7 +9,6 @@ import SwiftUI
 
 struct OrderView: View {
     @ObservedObject var viewModel: ProductViewModel
-    @State var deliveryIsSelected = false
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -60,36 +59,31 @@ struct OrderView: View {
                                 } placeholder: {
                                     ProgressView()
                                 }
-                                //                            Image("pants")
-                                //                             .resizable()
-                                //                             .aspectRatio(1.0, contentMode: .fill)
-                                //                             .frame(maxWidth: 140, maxHeight: 150)
                             }
                         }
                         .padding(.leading, 4)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    
                     VStack {
                         HStack {
-                            if !deliveryIsSelected {
+                            if !viewModel.deliveryIsSelected {
                                 Image(systemName: "button.programmable")
                                     .frame(width: 16)
                                     .onTapGesture {
-                                        deliveryIsSelected.toggle()
+                                        viewModel.deliveryIsSelected.toggle()
                                     }
                             } else {
                                 Circle()
                                     .stroke(lineWidth: 1)
                                     .frame(width: 16)
                                     .onTapGesture {
-                                        deliveryIsSelected.toggle()
+                                        viewModel.deliveryIsSelected.toggle()
                                     }
                             }
-                            Text("\(getEstimatedDeliveryDateSkippingWeekends(daysToAdd: 5)) - \(getEstimatedDeliveryDateSkippingWeekends(daysToAdd: 7))")
+                            Text("\(viewModel.deliveryDate(daysToAdd: 5)) - \(viewModel.deliveryDate(daysToAdd: 7))")
                                 .font(.footnote)
                             Spacer()
-                            Text("KOSTENLOS")
+                            Text("\(viewModel.toggleDeliveryIsSelected(deliveryPrice: nil))")
                                 .font(.footnote)
                             
                             Spacer()
@@ -97,24 +91,24 @@ struct OrderView: View {
                         .padding(.top)
                         .padding(.horizontal)
                         HStack {
-                            if deliveryIsSelected {
+                            if viewModel.deliveryIsSelected {
                                 Image(systemName: "button.programmable")
                                     .frame(width: 16)
                                     .onTapGesture {
-                                        deliveryIsSelected.toggle()
+                                        viewModel.deliveryIsSelected.toggle()
                                     }
                             } else {
                                 Circle()
                                     .stroke(lineWidth: 1)
                                     .frame(width: 16)
                                     .onTapGesture {
-                                        deliveryIsSelected.toggle()
+                                        viewModel.deliveryIsSelected.toggle()
                                     }
                             }
                             
-                            Text("\(getEstimatedDeliveryDateSkippingWeekends(daysToAdd: 3)) - \(getEstimatedDeliveryDateSkippingWeekends(daysToAdd: 4))")                                .font(.footnote)
+                            Text("\(viewModel.deliveryDate(daysToAdd: 3)) - \(viewModel.deliveryDate(daysToAdd: 4))")                                .font(.footnote)
                             Spacer()
-                            Text("8,95 EUR")
+                            Text("\(viewModel.toggleDeliveryIsSelected(deliveryPrice: 8.95))")
                                 .font(.footnote)
                             Spacer()
                             
@@ -133,7 +127,7 @@ struct OrderView: View {
                         Text("VERSAND")
                             .font(.footnote)
                         Spacer()
-                        Text("KOSTENLOS")
+//                        Text(viewModel.selectedDeliveryPrice)
                             .font(.footnote)
                     }
                     .padding(.horizontal)
@@ -152,26 +146,7 @@ struct OrderView: View {
             }
         }
     }
-    func getEstimatedDeliveryDateSkippingWeekends(daysToAdd: Int) -> String {
-        let calendar = Calendar.current
-        var date = Date()
-        var addedDays = 0
 
-        while addedDays < daysToAdd {
-            date = calendar.date(byAdding: .day, value: 1, to: date)! // Einen Tag hinzufügen
-
-            let weekday = calendar.component(.weekday, from: date)
-            if weekday != 1 && weekday != 7 { // 1 = Sonntag, 7 = Samstag (keine Lieferung)
-                addedDays += 1
-            }
-        }
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "de_DE") // Deutsches Format
-        dateFormatter.dateFormat = "EEEE, d. MMMM" // Beispiel: "Freitag, 9. Februar"
-
-        return dateFormatter.string(from: date)
-    }
 }
 
 #Preview {

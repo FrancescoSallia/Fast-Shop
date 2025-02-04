@@ -118,6 +118,41 @@ class ProductViewModel: ObservableObject {
     
     //MARK: Cart
     @Published var showCart = true
+    
+    //MARK: Calender
+    @Published var deliveryIsSelected = false
+    @Published var selectedDeliveryPrice = ""
+    
+    func toggleDeliveryIsSelected(deliveryPrice:Double?) -> String {
+        if deliveryPrice != nil {
+            if let deliveryPrice {
+                let result = String(deliveryPrice).replacingOccurrences(of: ".", with: ",") + " €"
+                return result
+            }
+        }
+        return "KOSTENLOS"
+    }
+
+    func deliveryDate(daysToAdd: Int) -> String {
+        let calendar = Calendar.current
+        var date = Date()
+        var addedDays = 0
+
+        while addedDays < daysToAdd {
+            date = calendar.date(byAdding: .day, value: 1, to: date)! // Einen Tag hinzufügen
+
+            let weekday = calendar.component(.weekday, from: date)
+            if weekday != 1 && weekday != 7 { // 1 = Sonntag, 7 = Samstag (keine Lieferung)
+                addedDays += 1
+            }
+        }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "de_DE") // Deutsches Format
+        dateFormatter.dateFormat = "EEEE, d. MMMM" // Beispiel: "Freitag, 9. Februar"
+
+        return dateFormatter.string(from: date)
+    }
 
     
     //MARK: API Calls
