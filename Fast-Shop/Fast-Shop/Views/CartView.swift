@@ -312,7 +312,7 @@ struct CartView: View {
                     .border(Color.primary)
                     .padding(.bottom, -23)
                     NavigationLink("WEITER") {
-                        OrderView(viewModel: viewModel)
+                        OrderOverviewView(viewModel: viewModel)
                     }
                     .padding()
                     .frame(minWidth: 410)

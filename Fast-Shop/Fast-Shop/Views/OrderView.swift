@@ -95,7 +95,7 @@ struct OrderView: View {
                             Text("\(viewModel.deliveryDate(daysToAdd: 1)) - \(viewModel.deliveryDate(daysToAdd: 3))")
                                 .font(.footnote)
                             Spacer()
-                            Text("8,95 €")
+                            Text("+8,95 €")
                                 .font(.footnote)
                         }
                         .padding(.horizontal)

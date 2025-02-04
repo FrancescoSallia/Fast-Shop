@@ -12,137 +12,174 @@ struct OrderOverviewView: View {
     @ObservedObject var viewModel: ProductViewModel
 
     var body: some View {
-        VStack {
-            ScrollView {
-//                Text("Donnerstag 06, Februar - Freitag 08, Februar")
+        NavigationStack {
+            VStack {
                 Text(viewModel.selectedDateFormatted)
                     .textCase(.uppercase)
                     .font(.subheadline)
-                
-                HStack {
-//                    Text("4 Artikel")
-                    Text("\(viewModel.user.cart.count) Artikel")
-                        .font(.footnote)
-                        .textCase(.uppercase)
-                    Spacer()
-                }
-                .padding(.horizontal)
-                
-                
-                ScrollView(.horizontal) {
+                ScrollView {
+                    //                Text("Donnerstag 06, Februar - Freitag 08, Februar")
+                    
                     HStack {
-                        ForEach(viewModel.user.cart, id: \.cartID) { item in
-                            AsyncImage(url: URL(string: item.images[0])) { item in
-                                item
-                                    .resizable()
-                                    .frame(width: 122, height: 180)
-                            } placeholder: {
-                                ProgressView()
+                        //                    Text("4 Artikel")
+                        Text("\(viewModel.user.cart.count) Artikel")
+                            .font(.footnote)
+                            .textCase(.uppercase)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    
+                    
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(viewModel.user.cart, id: \.cartID) { item in
+                                AsyncImage(url: URL(string: item.images[0])) { item in
+                                    item
+                                        .resizable()
+                                        .frame(width: 122, height: 180)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                
+                                
                             }
-
-                        
                         }
                     }
+//DELIVERY SECTION
+                    HStack {
+                        Text("Versand nach Hause")
+                            .textCase(.uppercase)
+                            .font(.footnote)
+                        Spacer()
+                    }
+                    .padding()
+                    HStack {
+                        Text("Zustellung Donnerstag 06, Februar - Freitag 08, Februar")
+                            .textCase(.uppercase)
+                            .font(.footnote)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, -16)
+                    Divider()
+                        .frame(height: 2)
+                        .background(Color.black)
+                    
+//ADRESS SECTION
+                    NavigationLink {
+                        OrderView(viewModel: viewModel)
+                    } label: {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(viewModel.user.name)
+                                .textCase(.uppercase)
+                            Spacer()
+                            Image(systemName: "chevron.right") // Pfeil nach rechts hinzufügen
+                                .foregroundColor(.black)
+                        }
+                        Text("\(viewModel.user.adress) \(viewModel.user.houseNumber)")
+                            .textCase(.uppercase)
+                        Text("\(viewModel.user.plz) \(viewModel.user.location)")
+                            .textCase(.uppercase)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .tint(.primary)
+                    Divider()
+                        .frame(height: 2)
+                        .background(Color.black)
+                    
+//PAYMENT SECTION
+                    NavigationLink {
+                        PayOptionView(viewModel: viewModel)
+                    } label: {
+                        VStack {
+                            HStack {
+                                Image(systemName: "creditcard")
+                                    .resizable()
+                                    .frame(width: 26, height: 26)
+                                    .tint(.primary)
+                                Text("Bezahlart")
+                                    .tint(.primary)
+                                    .font(.subheadline)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.black)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 4)
+                            .padding(.horizontal)
+                            HStack {
+                                Text(viewModel.selectedPayOption)
+                                    .textCase(.uppercase)
+                                    .font(.subheadline)
+                                    .tint(.black)
+                                Spacer()
+                                Image(viewModel.selectedPayOption)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 80)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                            .padding(.top, -16)
+                        }
+                    }
+                    
+                    
+                    Divider()
+                        .frame(height: 2)
+                        .background(Color.black)
                 }
-                HStack {
-                    Text("Versand nach Hause")
+                
+//Summary Section
+                HStack{
+                    Text("\(viewModel.user.cart.count) Artikel")
                         .textCase(.uppercase)
-                        .font(.footnote)
                     Spacer()
+                    Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
                 }
-                .padding()
-                HStack {
-                    Text("Zustellung Donnerstag 06, Februar - Freitag 08, Februar")
+                .padding(.top)
+                .padding(.horizontal)
+                HStack{
+                    Text("Versand")
                         .textCase(.uppercase)
-                        .font(.footnote)
                     Spacer()
+                    Text("\(viewModel.selectedDeliveryPrice) EUR")
+                    //                    Text("0,00 EUR")
                 }
                 .padding(.horizontal)
-                .padding(.top, -16)
-                Divider()
-                    .frame(height: 2)
-                    .background(Color.black)
-                VStack(alignment: .leading) {
-                    Text(viewModel.user.name)
+                HStack{
+                    Text("Gesamt")
                         .textCase(.uppercase)
-                    Text("\(viewModel.user.adress) \(viewModel.user.houseNumber)")
-                        .textCase(.uppercase)
-                    Text("\(viewModel.user.plz) \(viewModel.user.location)")
-                        .textCase(.uppercase)
+                        .bold()
+                    Spacer()
+                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
+                    //Text("128,95 EUR")
+                        .bold()
                 }
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                Divider()
-                    .frame(height: 2)
-                    .background(Color.black)
+                .padding(.horizontal)
+                .padding(.bottom)
                 
-                HStack {
-                    Image(viewModel.selectedPayOption)
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                    Text(viewModel.selectedPayOption)
-                        .textCase(.uppercase)
-                        .font(.subheadline)
+                //            Divider()
+                //                .frame(height: 2)
+                //                .background(Color.black)
+            }
+            ZStack {
+                Rectangle()
+                    .frame(maxWidth: .infinity, maxHeight: 50)
+                    .foregroundStyle(.black)
+                Button("Zahlung Autorisieren") {
+                    //
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-                
-                Divider()
-                    .frame(height: 2)
-                    .background(Color.black)
-               
-                
-                
-                
-
-
+                .tint(.white)
+                .textCase(.uppercase)
             }
-            HStack{
-                Text("\(viewModel.user.cart.count) Artikel")
-                    .textCase(.uppercase)
-                Spacer()
-                Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
-            }
-            .padding(.top)
-            .padding(.horizontal)
-            HStack{
-                Text("Versand")
-                    .textCase(.uppercase)
-                Spacer()
-                Text("\(viewModel.selectedDeliveryPrice) EUR")
-//                    Text("0,00 EUR")
-            }
-            .padding(.horizontal)
-            HStack{
-                Text("Gesamt")
-                    .textCase(.uppercase)
-                    .bold()
-                Spacer()
-                Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
-                //Text("128,95 EUR")
-                    .bold()
-            }
-            .padding(.horizontal)
-            .padding(.bottom)
+            //        .padding(-8)
             
-//            Divider()
-//                .frame(height: 2)
-//                .background(Color.black)
+            
         }
-        ZStack {
-            Rectangle()
-                .frame(maxWidth: .infinity, maxHeight: 50)
-                .foregroundStyle(.black)
-            Button("Zahlung Autorisieren") {
-                //
-            }
-            .tint(.white)
-            .textCase(.uppercase)
-        }
-//        .padding(-8)
-        
-        
-        
     }
 }
 #Preview {
