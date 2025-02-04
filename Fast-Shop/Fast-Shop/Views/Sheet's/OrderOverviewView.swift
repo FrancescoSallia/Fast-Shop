@@ -9,6 +9,7 @@ import SwiftUI
 
 struct OrderOverviewView: View {
     let dummyArtikeln: [String] = ["tasche", "pants", "tshirt", "ring"]
+    @ObservedObject var viewModel: ProductViewModel
 
     var body: some View {
         VStack {
@@ -136,5 +137,5 @@ struct OrderOverviewView: View {
     }
 }
 #Preview {
-    OrderOverviewView()
+    OrderOverviewView(viewModel: ProductViewModel())
 }

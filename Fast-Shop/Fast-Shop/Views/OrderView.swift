@@ -86,7 +86,7 @@ struct OrderView: View {
                                         deliveryIsSelected.toggle()
                                     }
                             }
-                            Text("DIENSTAG 04, FEBRUAR - MITTWOCH 05, FEBRUAR")
+                            Text("\(getEstimatedDeliveryDateSkippingWeekends(daysToAdd: 5)) - \(getEstimatedDeliveryDateSkippingWeekends(daysToAdd: 7))")
                                 .font(.footnote)
                             Spacer()
                             Text("KOSTENLOS")
@@ -112,8 +112,7 @@ struct OrderView: View {
                                     }
                             }
                             
-                            Text("MONTAG 03, FEBRUAR - DIENSTAG 04, FEBRUAR")
-                                .font(.footnote)
+                            Text("\(getEstimatedDeliveryDateSkippingWeekends(daysToAdd: 3)) - \(getEstimatedDeliveryDateSkippingWeekends(daysToAdd: 4))")                                .font(.footnote)
                             Spacer()
                             Text("8,95 EUR")
                                 .font(.footnote)
@@ -145,13 +144,33 @@ struct OrderView: View {
                         .frame(maxWidth: .infinity, maxHeight: 50)
                         .foregroundStyle(.black)
                     NavigationLink("WEITER", destination: {
-                        PayOptionView()
+                        PayOptionView(viewModel: viewModel)
                     })
                     .tint(.white)
                 }
                 .padding(.top ,-8)
             }
         }
+    }
+    func getEstimatedDeliveryDateSkippingWeekends(daysToAdd: Int) -> String {
+        let calendar = Calendar.current
+        var date = Date()
+        var addedDays = 0
+
+        while addedDays < daysToAdd {
+            date = calendar.date(byAdding: .day, value: 1, to: date)! // Einen Tag hinzufügen
+
+            let weekday = calendar.component(.weekday, from: date)
+            if weekday != 1 && weekday != 7 { // 1 = Sonntag, 7 = Samstag (keine Lieferung)
+                addedDays += 1
+            }
+        }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "de_DE") // Deutsches Format
+        dateFormatter.dateFormat = "EEEE, d. MMMM" // Beispiel: "Freitag, 9. Februar"
+
+        return dateFormatter.string(from: date)
     }
 }
 

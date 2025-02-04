@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct PayOptionView: View {
-    let payOptionItems: [String] = ["Google", "Apple", "Facebook", "ring"]
+    let payOptionItems: [String] = ["apple-pay", "klarna", "google-pay", "paypal"]
     let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
+    @ObservedObject var viewModel: ProductViewModel
     @State var selectedPayOption: String = ""
     var body: some View {
         NavigationStack {
@@ -44,7 +45,7 @@ struct PayOptionView: View {
                             VStack {
                                 Image(option)
                                     .resizable()
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: 70, height: 70)
                                 Text(option)
                                     .font(.caption)
                                     .textCase(.uppercase)
@@ -79,7 +80,7 @@ struct PayOptionView: View {
                     .frame(width: .infinity, height: 50)
                     .foregroundStyle(.black)
                 NavigationLink("WEITER", destination: {
-                    OrderOverviewView()
+                    OrderOverviewView(viewModel: viewModel)
                 })
                 .tint(.white)
             }
@@ -90,5 +91,5 @@ struct PayOptionView: View {
 }
 
 #Preview {
-    PayOptionView()
+    PayOptionView(viewModel: ProductViewModel())
 }
