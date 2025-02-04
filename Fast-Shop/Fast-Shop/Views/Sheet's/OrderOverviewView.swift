@@ -90,39 +90,44 @@ struct OrderOverviewView: View {
                 Divider()
                     .frame(height: 2)
                     .background(Color.black)
-                HStack{
-                    Text("\(viewModel.user.cart.count) Artikel")
-                        .textCase(.uppercase)
-                    Spacer()
-                    Text("128,95 EUR")
-                }
-                .padding(.top)
-                .padding(.horizontal)
-                HStack{
-                    Text("Versand")
-                        .textCase(.uppercase)
-                    Spacer()
-                    Text("\(viewModel.selectedDeliveryPrice) EUR")
-//                    Text("0,00 EUR")
-                }
-                .padding(.horizontal)
-                HStack{
-                    Text("Gesamt")
-                        .textCase(.uppercase)
-                        .bold()
-                    Spacer()
-                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
-                    //Text("128,95 EUR")
-                        .bold()
-                }
-                .padding(.horizontal)
-                .padding(.bottom)
+               
                 
-                Divider()
-                    .frame(height: 2)
-                    .background(Color.black)
+                
+                
+
 
             }
+            HStack{
+                Text("\(viewModel.user.cart.count) Artikel")
+                    .textCase(.uppercase)
+                Spacer()
+                Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
+            }
+            .padding(.top)
+            .padding(.horizontal)
+            HStack{
+                Text("Versand")
+                    .textCase(.uppercase)
+                Spacer()
+                Text("\(viewModel.selectedDeliveryPrice) EUR")
+//                    Text("0,00 EUR")
+            }
+            .padding(.horizontal)
+            HStack{
+                Text("Gesamt")
+                    .textCase(.uppercase)
+                    .bold()
+                Spacer()
+                Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
+                //Text("128,95 EUR")
+                    .bold()
+            }
+            .padding(.horizontal)
+            .padding(.bottom)
+            
+//            Divider()
+//                .frame(height: 2)
+//                .background(Color.black)
         }
         ZStack {
             Rectangle()

@@ -36,7 +36,7 @@ struct OrderView: View {
                             .border(Color.primary)
                             .padding(-6)
                         HStack {
-                            Text("Musterstraße 123") //Als NavigationLink
+                            Text("\(viewModel.user.adress) \(viewModel.user.houseNumber)") //Als NavigationLink
                             Spacer()
                         }
                         .padding(.horizontal)
