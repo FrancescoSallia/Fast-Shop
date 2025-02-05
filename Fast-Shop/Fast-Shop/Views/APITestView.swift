@@ -86,14 +86,6 @@ struct APITestView: View {
             }
             .padding()
             .padding(.top, 80)
-                    
-//                    VStack {
-//                        Text("Willkommen")
-//                            .font(.largeTitle)
-//                            .foregroundColor(.white)
-//                            .bold()
-//                            .padding()
-//                    }
                 }
     }
 }

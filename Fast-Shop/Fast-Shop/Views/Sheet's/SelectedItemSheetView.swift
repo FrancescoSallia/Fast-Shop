@@ -35,31 +35,11 @@ struct SelectedItemSheetView: View {
                 }
             }
             .padding(.leading)
-//            Button("HINZUFÜGEN"){
-//                viewModel.user.cart.append(viewModel.selectedProduct ?? viewModel.testProduct)
-//                print(viewModel.user.cart)
-//                viewModel.showSheet = false
-//            }
             //FIXME: Mit den Kleidungen funktioniert das mit einfügen im warenkorb und löschen/favorisieren auch wenn man andere größen eingibt. jetzt muss es nur noch bei den anderen kategorien funktionieren!
             
-            if viewModel.selectedProduct.category.id == 1{
+            if viewModel.selectedProduct.category.id == 1 {
                 SizeSheetView(viewModel: viewModel, product: viewModel.selectedProduct)
-//                Text("Wählen Sie eine Größe aus")
-//                LazyVGrid(columns: columns) {
-//                    ForEach(sizes, id: \.self) { item in
-//                        HStack {
-//                            ZStack {
-//                                Rectangle()
-//                                    .frame(width: 220, height: 50)
-//                                    .border(.black, width: 2)
-//                                    .foregroundStyle(.white)
-//                                    .offset(x:10)
-//                                Text(item)
-//                                
-//                            }
-//                        }
-//                    }
-//                }
+                
             } else if viewModel.selectedProduct.category.id == 2{
                 Text("Electronik")
             } else if viewModel.selectedProduct.category.id == 3{
@@ -84,9 +64,12 @@ struct SelectedItemSheetView: View {
                     numberOfProducts: 1
                 )
               
-                viewModel.selectedProduct = newProduct
-                viewModel.user.cart.append(viewModel.selectedProduct)
+//                viewModel.selectedProduct = newProduct
+                viewModel.user.cart.append(newProduct)
                 viewModel.showSheet = false
+                if viewModel.selectedProduct.category.id != 1 {
+                    viewModel.showAlertSuccessfullAdded = true
+                }
             }
         }
         .onAppear {

@@ -158,7 +158,6 @@ class ProductViewModel: ObservableObject {
     //MARK: API Calls
     func getProductsFromAPI() async throws {
         let result = try await client.getProducts(firstIndex: productIndex, lastIndex: 10)
-        print("Downloaded \(result.count) products")
         self.products.append(contentsOf: result)
 //        self.products = try await client.getProducts(firstIndex: productIndex, lastIndex: productIndex + 10)
         productIndex += 10

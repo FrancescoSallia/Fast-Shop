@@ -92,20 +92,26 @@ struct ProductDetailView: View {
                     Rectangle()
                         .frame(width: 300, height: 50)
                     
+                    //FIXME: das alert zeigt zweimal an bei hinzufügen!
                     Button("HINZUFÜGEN") {
                         if viewModel.selectedProduct.category.id == 1 {
                             viewModel.showSizes = true
+                            print("selected ID 1: \(viewModel.selectedProduct.category.id)")
+                        } else {
+                            print("selected ID ANDERE: \(viewModel.selectedProduct.category.id)")
+                            viewModel.showAlertSuccessfullAdded = true
                         }
-                        withAnimation {
-                            viewModel.showAlertSuccessfullAdded.toggle()
-                        }
-                        Task {
-                            try await Task.sleep(for: .seconds(3))
-                            withAnimation {
-                                viewModel.showAlertSuccessfullAdded = false
-                            }
-                        }
-                        print(viewModel.selectedSize)
+//                        if viewModel.showAlertSuccessfullAdded {
+////                            withAnimation {
+////                                viewModel.showAlertSuccessfullAdded.toggle()
+////                            }
+////                            Task {
+////                                try await Task.sleep(for: .seconds(3))
+////                                withAnimation {
+////                                    viewModel.showAlertSuccessfullAdded = false
+////                                }
+////                            }
+//                        }
                     }
                     .tint(.white)
                 }

@@ -22,6 +22,10 @@ struct Fast_ShopApp: App {
                     }
                     Tab("Search", systemImage: "magnifyingglass"){
                         SearchView(viewModel: viewModel)
+                            .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
+                                IsSuccessfullSheet(viewModel: viewModel)
+                                    .presentationDetents([.height(60)])
+                            })
                     }
                     Tab("Cart", systemImage: "bag"){
                         CartView(viewModel: viewModel)
