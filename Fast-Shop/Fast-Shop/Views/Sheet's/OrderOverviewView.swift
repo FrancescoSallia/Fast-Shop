@@ -73,7 +73,7 @@ struct OrderOverviewView: View {
                     
 //ADRESS SECTION
                     NavigationLink {
-                        OrderView(viewModel: viewModel)
+                        AdressView(viewModel: viewModel)
                     } label: {
                     VStack(alignment: .leading) {
                         HStack {
@@ -85,7 +85,7 @@ struct OrderOverviewView: View {
                         }
                         .padding(.bottom)
                         HStack {
-                            Text(viewModel.user.name)
+                            Text(viewModel.user.firstName)
                                 .textCase(.uppercase)
                             Spacer()
                             Image(systemName: "chevron.right")

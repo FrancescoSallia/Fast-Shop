@@ -9,7 +9,8 @@ import Foundation
 
 class User: ObservableObject, Identifiable {
     let id: UUID = UUID()
-    let name: String
+    let firstName: String
+    let secondName: String
     var cart: [Product] //Variablen die sich ändern können, werden mit Published markiert
     var favorite: [Product]
     var email: String
@@ -19,8 +20,9 @@ class User: ObservableObject, Identifiable {
     var plz: String
     var location: String
     
-    init(name: String, card: [Product] = [], favorite: [Product] = [], email: String = "test@mail.com", password: String = "test123", adress: String = "Musterstraße", houseNumber: String = "12a", plz: String = "12132", location: String = "Berlin") {
-        self.name = name
+    init(firstName: String, secondName: String, card: [Product] = [], favorite: [Product] = [], email: String = "test@mail.com", password: String = "test123", adress: String = "Musterstraße", houseNumber: String = "12a", plz: String = "12132", location: String = "Berlin") {
+        self.firstName = firstName
+        self.secondName = secondName
         self.cart = card
         self.favorite = favorite
         self.email = email

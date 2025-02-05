@@ -114,7 +114,7 @@ class ProductViewModel: ObservableObject {
     @Published var showProgressView: Bool = true
     
     //MARK: User
-    @Published var user = User(name: "John")
+    @Published var user = User(firstName: "John", secondName: "Mustermann")
     @Published var selectedPayOption: String = "paypal"
 
     
