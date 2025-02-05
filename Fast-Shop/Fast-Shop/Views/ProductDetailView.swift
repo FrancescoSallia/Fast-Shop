@@ -84,83 +84,18 @@ struct ProductDetailView: View {
                         }
             }
             //Wenn eine Ware zum Warenkorb hinzugefügt wurde, erscheint das Alert
-            if viewModel.showAlertSuccessfullAdded {
-                VStack {
-                    ZStack {
-                        Rectangle()
-                            .frame(width: 420, height: 50)
-                            .foregroundStyle(.green)
-                        
-                        Text("Zum Warenkorb hinzugefügt")
-                            .foregroundStyle(.white)
-                            .padding(.trailing, 70)
-                        Image(systemName: "checkmark.circle.fill")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .offset(x: -165)
-                            .foregroundStyle(.white)
-                        Button("Ansehen"){
-                            //placeholder
-                        }
-                        .bold()
-                        .offset(x: 145)
-                        .tint(.white)
-                    }
-//                    .toolbar(content: {
-//                        ToolbarItem(placement: .topBarTrailing) {
-//                            Button {
-//                                //
-//                            } label:{
-//                                Image(systemName: "square.and.arrow.up")
-//                            }
-//                            .foregroundStyle(.primary)
-//                        }
-//                        ToolbarItem(placement: .topBarTrailing) {
-//                            ZStack {
-//                                Button {
-//                                    //
-//                                } label:{
-//                                    Image(systemName: "bag")
-//                                }
-//                                .foregroundStyle(.primary)
-//                                
-//                                Text("\(viewModel.user.cart.count == 0 ? "" : "\(viewModel.user.cart.count)")")
-//                                    .font(.footnote)
-//                                    .offset(x: 3, y: 1)
-//                                    .foregroundStyle(.primary)
-//                            }
-//                        }
-//                    })
-                }
-                .animation(.easeInOut, value: viewModel.showAlertSuccessfullAdded)
-            }
+//            if viewModel.showAlertSuccessfullAdded {
+//
+//            }
             HStack() {
                 ZStack {
                     Rectangle()
                         .frame(width: 300, height: 50)
                     
                     Button("HINZUFÜGEN") {
-                        viewModel.showSizes = true
-                        
-//                        let addNewCartProduct = Product(
-//                            id: product.id,
-//                            title: product.title,
-//                            price: product.price,
-//                            description: product.description,
-//                            images: product.images,
-//                            category: product.category,
-//                            size: viewModel.selectedSize
-//                        )
-//                        viewModel.selectedProduct = addNewCartProduct
-//                        print("ausgewählte größe: \(viewModel.selectedSize)")
-//
-//                        if let index = viewModel.user.cart.firstIndex(where: { $0.id == viewModel.selectedProduct.id }) {
-////                            viewModel.user.cart.removeAll(where: { $0.id == addNewCartProduct.id })
-//                            viewModel.user.cart[index].numberOfProducts? += 1
-//                        } else {
-//                            viewModel.user.cart.append(viewModel.selectedProduct)
-//                        }
-                        
+                        if viewModel.selectedProduct.category.id == 1 {
+                            viewModel.showSizes = true
+                        }
                         withAnimation {
                             viewModel.showAlertSuccessfullAdded.toggle()
                         }
@@ -216,6 +151,10 @@ struct ProductDetailView: View {
         .sheet(isPresented: $viewModel.showSizes, content: {
             SizeSheetView(viewModel: viewModel, product: product)
                 .presentationDetents([(.medium)])
+        })
+        .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
+            IsSuccessfullSheet(viewModel: viewModel)
+                .presentationDetents([.height(60)])
         })
         .onAppear {
             Task {
