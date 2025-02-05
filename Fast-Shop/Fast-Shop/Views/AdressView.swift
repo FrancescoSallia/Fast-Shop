@@ -10,7 +10,6 @@ import SwiftUI
 struct AdressView: View {
     
     @ObservedObject var viewModel: ProductViewModel
-    @State var showTextFields: Bool = false
     
     var body: some View {
         ZStack {
@@ -49,10 +48,10 @@ struct AdressView: View {
                     
                     Button {
                         withAnimation(.easeInOut(duration: 0.25)) {
-                            showTextFields.toggle()
+                            viewModel.showTextFields.toggle()
                         }
                     } label: {
-                        if !showTextFields{
+                        if !viewModel.showTextFields{
                             Image(systemName: "plus")
                                 .padding(.trailing, 8)
                             Text("Neue Adresse hinzufügen")
@@ -64,7 +63,7 @@ struct AdressView: View {
                 }
                 .padding()
                 
-                if showTextFields {
+                if viewModel.showTextFields {
                     VStack {
                         TextField("Vorname", text: .constant(""))
                             .padding()
@@ -99,7 +98,7 @@ struct AdressView: View {
                         VStack {
                             Button("Stornieren") {
                                 withAnimation(.easeInOut(duration: 0.25)) {
-                                    showTextFields.toggle()
+                                    viewModel.showTextFields.toggle()
                                 }
                             }
                             .frame(maxWidth: 400, minHeight: 50)
@@ -108,7 +107,7 @@ struct AdressView: View {
                             
                             Button("Speichern") {
                                 withAnimation(.easeInOut(duration: 0.25)) {
-                                    showTextFields.toggle()
+                                    viewModel.showTextFields.toggle()
                                 }
                             }
                             .frame(maxWidth: 400, minHeight: 50)

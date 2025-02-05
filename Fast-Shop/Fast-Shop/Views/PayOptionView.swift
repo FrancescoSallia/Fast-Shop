@@ -25,14 +25,14 @@ struct PayOptionView: View {
                 ForEach(payOptionItems, id: \.self) { option in
                     ZStack {
                         Rectangle()
-                            .foregroundStyle(viewModel.selectedPayOption == option  ? .black : .white)
+                            .foregroundStyle(viewModel.selectedPayOption == option  ? .gray.opacity(0.2) : .white)
                             .aspectRatio(1.2, contentMode: .fill) // Stellt das Verhältnis von Breite zu Höhe sicher
                             .overlay(
-                                Rectangle().stroke(viewModel.selectedPayOption == option ? Color.white : Color.black, lineWidth: 1.2)
+                                Rectangle().stroke(Color.black, lineWidth: 1.2)
                             )
                         Button {
                             viewModel.selectedPayOption = option
-                            print(viewModel.selectedPayOption)
+                            viewModel.showPayOptionViewSheet = false
                         } label: {
                             VStack {
                                 Image(option)
@@ -44,7 +44,7 @@ struct PayOptionView: View {
                                     .italic()
                             }
                         }
-                        .tint(viewModel.selectedPayOption == option ? .white : .black)
+                        .tint(.primary)
                         
                     }
                 }

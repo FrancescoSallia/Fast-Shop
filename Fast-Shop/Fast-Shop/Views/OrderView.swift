@@ -11,122 +11,80 @@ struct OrderView: View {
     @ObservedObject var viewModel: ProductViewModel
     var body: some View {
         NavigationStack {
+            ZStack {
+                Rectangle()
+                    .frame(maxWidth: 405, maxHeight: 96)
+                    .foregroundStyle(.white)
+                    .border(.black)
+                HStack {
+                    Image(systemName: "calendar")
+                        .resizable()
+                        .frame(width: 60, height: 60)
+                    Text("Erwartete Zustellung")
+                }
+                .padding()
+            }
             ScrollView {
                 VStack {
                     HStack {
-                        ForEach(0...1, id: \.self) { item in
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 206, height: 100)
-                                    .foregroundStyle(.white)
-                                    .border(Color.black)
-                                    .padding(-4)
-                                VStack {
-                                    Image(systemName: "map.fill")
-                                    Text("Lieferstelle")
-                                }
+                        Image(systemName: viewModel.selectedDeliveryOption == 0 ? "largecircle.fill.circle" : "circle")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .onTapGesture {
+                                viewModel.selectedDeliveryOption = 0
+                                viewModel.selectedDeliveryPrice = "KOSTENLOS"
+                                viewModel.showOrderViewSheet = false
                             }
-                        }
-                    }
-                    
-                    ZStack {
-                        Rectangle()
-                            .frame(maxWidth: .infinity, maxHeight: 60)
-                            .foregroundStyle(.white)
-                            .border(Color.primary)
-                            .padding(-6)
-                        HStack {
-                            Text("\(viewModel.user.adress) \(viewModel.user.houseNumber)") //Als NavigationLink
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                    }
-                    
-                    HStack {
-                        Text("ZUSTELLUNG")
-                            .font(.footnote)
-                            .padding()
+
+                        Text("\(viewModel.deliveryDate(daysToAdd: 4)) - \(viewModel.deliveryDate(daysToAdd: 6))")
+//                            .font(.footnote)
                         Spacer()
+                        Text("KOSTENLOS")
+                            .font(.callout)
                     }
-                    ScrollView(.horizontal) {
-                        HStack(alignment: .firstTextBaseline) {
-                            ForEach(viewModel.user.cart, id: \.cartID) { cartItem in
-                                AsyncImage(url: URL(string: cartItem.images[0])) { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(1.0, contentMode: .fit)
-                                        .frame(maxWidth: 122, maxHeight: 150)
-                                } placeholder: {
-                                    ProgressView()
-                                }
+                    .padding(.top)
+                    .padding(.horizontal)
+
+                    HStack {
+                        Image(systemName: viewModel.selectedDeliveryOption == 1 ? "largecircle.fill.circle" : "circle")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .onTapGesture {
+                                viewModel.selectedDeliveryOption = 1
+                                viewModel.selectedDeliveryPrice = "8.95"
+                                viewModel.showOrderViewSheet = false
+
                             }
-                        }
-                        .padding(.leading, 4)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                        Text("\(viewModel.deliveryDate(daysToAdd: 1)) - \(viewModel.deliveryDate(daysToAdd: 3))")
+//                            .font(.footnote)
+                        Spacer()
+                        Text("+8,95 €")
+                            .font(.callout)
                     }
-                    VStack {
-                        HStack {
-                            Image(systemName: viewModel.selectedDeliveryOption == 0 ? "largecircle.fill.circle" : "circle")
-                                .frame(width: 16)
-                                .onTapGesture {
-                                    viewModel.selectedDeliveryOption = 0
-                                    viewModel.selectedDeliveryPrice = "KOSTENLOS"
-                                }
-
-                            Text("\(viewModel.deliveryDate(daysToAdd: 4)) - \(viewModel.deliveryDate(daysToAdd: 6))")
-                                .font(.footnote)
-                            Spacer()
-                            Text("KOSTENLOS")
-                                .font(.footnote)
-                        }
-                        .padding(.top)
-                        .padding(.horizontal)
-
-                        HStack {
-                            Image(systemName: viewModel.selectedDeliveryOption == 1 ? "largecircle.fill.circle" : "circle")
-                                .frame(width: 16)
-                                .onTapGesture {
-                                    viewModel.selectedDeliveryOption = 1
-                                    viewModel.selectedDeliveryPrice = "8.95"
-                                }
-
-                            Text("\(viewModel.deliveryDate(daysToAdd: 1)) - \(viewModel.deliveryDate(daysToAdd: 3))")
-                                .font(.footnote)
-                            Spacer()
-                            Text("+8,95 €")
-                                .font(.footnote)
-                        }
-                        .padding(.horizontal)
-                    }
+                    .padding()
                 }
-            }
-//            VStack {
-//                ZStack {
-//                    Rectangle()
-//                        .frame(maxWidth: .infinity, maxHeight: 50)
-//                        .foregroundStyle(.white)
-//                        .border(Color.black)
-//                    HStack {
-//                        Text("VERSAND")
-//                            .font(.footnote)
-//                        Spacer()
-//                        Text(viewModel.selectedDeliveryOption == 1 ? "8,95 EUR" : "KOSTENLOS")
-//                            .font(.footnote)
+                .padding()
+//                VStack {
+//                    ScrollView(.horizontal) {
+//                        HStack(alignment: .firstTextBaseline) {
+//                            ForEach(viewModel.user.cart, id: \.cartID) { cartItem in
+//                                AsyncImage(url: URL(string: cartItem.images[0])) { image in
+//                                    image
+//                                        .resizable()
+//                                        .aspectRatio(1.0, contentMode: .fit)
+//                                        .frame(maxWidth: 122, maxHeight: 150)
+//                                } placeholder: {
+//                                    ProgressView()
+//                                }
+//                            }
+//                        }
+//                        .padding(.leading, 4)
+//                        .frame(maxWidth: .infinity, alignment: .leading)
 //                    }
-//                    .padding(.horizontal)
-//                    .bold()
+//                    
 //                }
-//                ZStack {
-//                    Rectangle()
-//                        .frame(maxWidth: .infinity, maxHeight: 50)
-//                        .foregroundStyle(.black)
-//                    NavigationLink("WEITER", destination: {
-//                        PayOptionView(viewModel: viewModel)
-//                    })
-//                    .tint(.white)
-//                }
-//                .padding(.top ,-8)
-//            }
+            }
         }
     }
 

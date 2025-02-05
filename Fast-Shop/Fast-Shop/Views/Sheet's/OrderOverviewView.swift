@@ -45,8 +45,10 @@ struct OrderOverviewView: View {
                         }
                     }
 //DELIVERY CALENDAR SECTION
-                    NavigationLink {
-                        OrderView(viewModel: viewModel)
+                    Button {
+//                        OrderView(viewModel: viewModel)
+                        viewModel.showOrderViewSheet = true
+                        
                     } label: {
                         VStack(alignment: .leading) {
                             HStack {
@@ -105,8 +107,8 @@ struct OrderOverviewView: View {
                         .background(Color.black)
                     
 //PAYMENT SECTION
-                    NavigationLink {
-                        PayOptionView(viewModel: viewModel)
+                    Button {
+                        viewModel.showPayOptionViewSheet = true
                     } label: {
                         VStack {
                             HStack {
@@ -195,8 +197,14 @@ struct OrderOverviewView: View {
                 .textCase(.uppercase)
             }
             //        .padding(-8)
-            
-            
+        }
+        .sheet(isPresented: $viewModel.showOrderViewSheet) {
+            OrderView(viewModel: viewModel)
+                .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $viewModel.showPayOptionViewSheet) {
+            PayOptionView(viewModel: viewModel)
+                .presentationDetents([.medium])
         }
     }
 }

@@ -115,7 +115,7 @@ class ProductViewModel: ObservableObject {
     
     //MARK: User
     @Published var user = User(firstName: "John", secondName: "Mustermann")
-    @Published var selectedPayOption: String = "paypal"
+    @Published var selectedPayOption: String = "apple-pay"
 
     
     //MARK: Cart
@@ -127,6 +127,11 @@ class ProductViewModel: ObservableObject {
     var deliveryCost: Double {
         return Double(selectedDeliveryPrice.replacingOccurrences(of: ",", with: ".")) ?? 0.00
     }
+    @Published var showTextFields: Bool = false
+    @Published var showOrderViewSheet: Bool = false
+    @Published var showPayOptionViewSheet: Bool = false
+
+
 
 
     func deliveryDate(daysToAdd: Int) -> String {
