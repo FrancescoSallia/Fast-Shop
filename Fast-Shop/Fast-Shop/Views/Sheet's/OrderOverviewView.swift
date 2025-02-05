@@ -199,11 +199,11 @@ struct OrderOverviewView: View {
             //        .padding(-8)
         }
         .sheet(isPresented: $viewModel.showOrderViewSheet) {
-            OrderView(viewModel: viewModel)
+            DeliveryDateViewSheet(viewModel: viewModel)
                 .presentationDetents([.medium])
         }
         .sheet(isPresented: $viewModel.showPayOptionViewSheet) {
-            PayOptionView(viewModel: viewModel)
+            PayOptionViewSheet(viewModel: viewModel)
                 .presentationDetents([.medium])
         }
     }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OrderView: View {
+struct DeliveryDateViewSheet: View {
     @ObservedObject var viewModel: ProductViewModel
     var body: some View {
         NavigationStack {
@@ -91,5 +91,5 @@ struct OrderView: View {
 }
 
 #Preview {
-    OrderView(viewModel: ProductViewModel())
+    DeliveryDateViewSheet(viewModel: ProductViewModel())
 }

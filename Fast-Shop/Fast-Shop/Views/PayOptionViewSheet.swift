@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PayOptionView: View {
+struct PayOptionViewSheet: View {
     let payOptionItems: [String] = ["apple-pay", "klarna", "google-pay", "paypal"]
     let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
     @ObservedObject var viewModel: ProductViewModel
@@ -84,5 +84,5 @@ struct PayOptionView: View {
 }
 
 #Preview {
-    PayOptionView(viewModel: ProductViewModel())
+    PayOptionViewSheet(viewModel: ProductViewModel())
 }
