@@ -5,9 +5,9 @@
 //  Created by Francesco Sallia on 20.01.25.
 //
 
-import SwiftUI
 import AVFoundation
 import AVKit
+import SwiftUI
 
 struct LogInScreenView: View {
 
@@ -17,9 +17,9 @@ struct LogInScreenView: View {
             ZStack {
                 VideoBackgroundView()
                     .ignoresSafeArea()
-                
+
                 VStack {
-                    
+
                     ZStack {
                         Group {
                             RoundedRectangle(cornerRadius: 3)
@@ -27,8 +27,8 @@ struct LogInScreenView: View {
                                 .foregroundStyle(.white.opacity(0.5))
                                 .border(.black.opacity(0.4))
                                 .padding(.top, -226)
-                            
-                            VStack (alignment: .leading){
+
+                            VStack(alignment: .leading) {
                                 Text("FAST-SHOP")
                                     .fontDesign(.serif)
                                     .font(.largeTitle)
@@ -37,22 +37,22 @@ struct LogInScreenView: View {
                         }
                         .padding(.top, 90)
                     }
-                    
+
                     TextField("E-Mail", text: $authViewModel.email)
                         .padding()
                         .background(Color(uiColor: UIColor.lightText))
                         .cornerRadius(10)
                         .keyboardType(.emailAddress)
                         .padding(.top, 30)
-                    
+
                     SecureField("Passwort", text: $authViewModel.password)
                         .padding()
                         .background(Color(uiColor: UIColor.lightText))
                         .cornerRadius(10)
-                    
+
                     HStack {
-                        Button("Passwort vergessen?") {
-                            
+                        NavigationLink("Passwort vergessen?") {
+                            ResetPasswordView(authViewModel: authViewModel)
                         }
                         .underline()
                         .foregroundStyle(.black)
@@ -62,23 +62,22 @@ struct LogInScreenView: View {
                         .padding(.top, 4)
                         Spacer()
                     }
-                    
+
                     VStack {
-                        
-                        
-                        
-                        
-                        NavigationLink(destination: {
-                            RegisterViewSheet(authViewModel: authViewModel)
-                        }, label:  {
-                            Text("Registrieren")
-                                .textCase(.uppercase)
-                                .foregroundColor(.black)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.white.opacity(0.9))
-                                .cornerRadius(3)
-                        })
+
+                        NavigationLink(
+                            destination: {
+                                RegisterViewSheet(authViewModel: authViewModel)
+                            },
+                            label: {
+                                Text("Registrieren")
+                                    .textCase(.uppercase)
+                                    .foregroundColor(.black)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.white.opacity(0.9))
+                                    .cornerRadius(3)
+                            })
                         Button(action: {
                             authViewModel.login()
                         }) {
@@ -90,12 +89,12 @@ struct LogInScreenView: View {
                                 .background(Color.black.opacity(0.85))
                                 .cornerRadius(3)
                         }
-                        
+
                         HStack(spacing: 25.0) {
                             Button(action: {
                                 //placeholder
                             }) {
-                                
+
                                 Image("Google")
                                     .resizable()
                                     .buttonBorderShape(.circle)
@@ -103,14 +102,14 @@ struct LogInScreenView: View {
                                     .padding()
                                     .background(Color.white)
                                     .clipShape(.rect(cornerRadius: 100))
-                                
+
                             }
                             Button(action: {
                                 //placeholder
                             }) {
-                                
+
                                 Image(systemName: "applelogo")
-                                
+
                                     .buttonBorderShape(.circle)
                                     .frame(maxWidth: 25, maxHeight: 25)
                                     .padding()
@@ -121,7 +120,7 @@ struct LogInScreenView: View {
                             Button(action: {
                                 //placeholder
                             }) {
-                                
+
                                 Image("Facebook")
                                     .resizable()
                                     .buttonBorderShape(.circle)
@@ -145,6 +144,3 @@ struct LogInScreenView: View {
 #Preview {
     LogInScreenView(authViewModel: AuthViewModel())
 }
-
-
-

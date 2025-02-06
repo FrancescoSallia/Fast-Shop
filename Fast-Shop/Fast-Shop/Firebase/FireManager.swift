@@ -36,4 +36,8 @@ class FireManager {
     func deleteUser(user: User) async throws {
         try await user.delete()
     }
+    func resetPassword(email: String) {
+        auth.sendPasswordReset(withEmail: email)
+        
+    }
 }

@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import SwiftUI
 
 @MainActor
 class AuthViewModel: ObservableObject {
@@ -78,6 +79,14 @@ class AuthViewModel: ObservableObject {
                 print(error)
             }
         }
+    }
+    func resetPassword(email: String) {
+        guard !email.isEmpty else {
+            print("Die Emailadresse darf nicht leer sein")
+            return
+        }
+        manager.resetPassword(email: email)
+        self.email = ""
     }
 
 
