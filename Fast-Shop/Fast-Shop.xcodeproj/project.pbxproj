@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		741B95302D479F1600A0C9D3 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 741B952F2D479F1600A0C9D3 /* MultiSlider */; };
 		745AACDA2D50F0B60071A584 /* FastShopBackground.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 745AACD92D50F0B60071A584 /* FastShopBackground.mp4 */; };
+		7462B9752D54ED1A002058A7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7462B9742D54ED1A002058A7 /* FirebaseAuth */; };
+		7462B9772D54ED1A002058A7 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7462B9762D54ED1A002058A7 /* FirebaseCore */; };
+		7462B9792D54ED1A002058A7 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 7462B9782D54ED1A002058A7 /* FirebaseDatabase */; };
+		7462B97B2D54ED1A002058A7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7462B97A2D54ED1A002058A7 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +34,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				741B95302D479F1600A0C9D3 /* MultiSlider in Frameworks */,
+				7462B9772D54ED1A002058A7 /* FirebaseCore in Frameworks */,
+				7462B9792D54ED1A002058A7 /* FirebaseDatabase in Frameworks */,
+				7462B97B2D54ED1A002058A7 /* FirebaseFirestore in Frameworks */,
+				7462B9752D54ED1A002058A7 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +82,10 @@
 			name = "Fast-Shop";
 			packageProductDependencies = (
 				741B952F2D479F1600A0C9D3 /* MultiSlider */,
+				7462B9742D54ED1A002058A7 /* FirebaseAuth */,
+				7462B9762D54ED1A002058A7 /* FirebaseCore */,
+				7462B9782D54ED1A002058A7 /* FirebaseDatabase */,
+				7462B97A2D54ED1A002058A7 /* FirebaseFirestore */,
 			);
 			productName = "Fast-Shop";
 			productReference = 748DEC2E2D2EAA1100EE76D3 /* Fast-Shop.app */;
@@ -105,6 +117,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				741B952E2D479F1600A0C9D3 /* XCRemoteSwiftPackageReference "MultiSlider" */,
+				7462B9732D54ED1A002058A7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 748DEC2F2D2EAA1100EE76D3 /* Products */;
@@ -355,6 +368,14 @@
 				minimumVersion = 2.2.0;
 			};
 		};
+		7462B9732D54ED1A002058A7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.8.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -362,6 +383,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 741B952E2D479F1600A0C9D3 /* XCRemoteSwiftPackageReference "MultiSlider" */;
 			productName = MultiSlider;
+		};
+		7462B9742D54ED1A002058A7 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7462B9732D54ED1A002058A7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		7462B9762D54ED1A002058A7 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7462B9732D54ED1A002058A7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		7462B9782D54ED1A002058A7 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7462B9732D54ED1A002058A7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		7462B97A2D54ED1A002058A7 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7462B9732D54ED1A002058A7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
-class User: ObservableObject, Identifiable {
-    let id: UUID = UUID()
+class FireUser: ObservableObject, Codable, Identifiable {
+    @DocumentID var id: String?
     let firstName: String
     let secondName: String
-    var cart: [Product] //Variablen die sich ändern können, werden mit Published markiert
+    var cart: [Product]
     var favorite: [Product]
     var email: String
     var password: String

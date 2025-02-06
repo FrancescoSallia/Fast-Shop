@@ -6,19 +6,32 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
 struct Fast_ShopApp: App {
+    
+    init() {
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
+        FirebaseApp.configure()
+    }
+    
     @StateObject var viewModel = ProductViewModel()
     @State var showTab: Bool = true
+    @State var isLogged: Bool = false
 
     var body: some Scene {
         WindowGroup {
-            
+        
+        
+        if !isLogged {
+            LogInScreenView()
+        } else {
+  
                 TabView {
                     Tab("Home", systemImage: "house.fill"){
                         HomeView(isScrolling: $showTab)
-//                        APITestView()
+                        //                        APITestView()
                     }
                     Tab("Search", systemImage: "magnifyingglass"){
                         SearchView(viewModel: viewModel)
@@ -29,14 +42,15 @@ struct Fast_ShopApp: App {
                     }
                     Tab("Cart", systemImage: "bag"){
                         CartView(viewModel: viewModel)
-//                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
+                        //                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
                     }
                     Tab("Settings", systemImage: "person"){
                         SettingsView(viewModel: viewModel)
-//                          LogInScreenView()
+                        //                          LogInScreenView()
                     }
-                
+                    
                 }
+            }
         }
 
     }
