@@ -22,7 +22,8 @@ class FireManager {
     private let auth = Auth.auth()
     let store = Firestore.firestore()
     
-    func registerUser(email: String, password: String) async throws {
-        try await auth.createUser(withEmail: email, password: password)
+    func registerUser(email: String, password: String) async throws -> User {
+        let result = try await auth.createUser(withEmail: email, password: password)
+        return result.user
     }
 }

@@ -17,6 +17,7 @@ struct Fast_ShopApp: App {
     }
     
     @StateObject var viewModel = ProductViewModel()
+    @StateObject var authViewModel = AuthViewModel()
     @State var showTab: Bool = true
     @State var isLogged: Bool = false
 
@@ -25,7 +26,7 @@ struct Fast_ShopApp: App {
         
         
         if !isLogged {
-            LogInScreenView()
+            LogInScreenView(authViewModel: authViewModel)
         } else {
   
                 TabView {

@@ -11,11 +11,12 @@ import AVKit
 
 struct LogInScreenView: View {
 
+    @ObservedObject var authViewModel: AuthViewModel
     var body: some View {
         NavigationStack {
             ZStack {
                 VideoBackgroundView()
-                    .ignoresSafeArea() // Deckt den ganzen Bildschirm ab
+                    .ignoresSafeArea() 
                 
                 VStack {
                     
@@ -142,7 +143,7 @@ struct LogInScreenView: View {
     }
 }
 #Preview {
-    LogInScreenView()
+    LogInScreenView(authViewModel: AuthViewModel())
 }
 
 
