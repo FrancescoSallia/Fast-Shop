@@ -34,7 +34,6 @@ struct Fast_ShopApp: App {
                     Tab("Settings", systemImage: "person"){
 //                        SettingsView()
                           APITestView()
-
                     }
                 
                 }

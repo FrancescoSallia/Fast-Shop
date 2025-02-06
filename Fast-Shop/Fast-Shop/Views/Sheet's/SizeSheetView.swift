@@ -26,7 +26,6 @@ struct SizeSheetView: View {
                     Text(item.rawValue)
                         .bold()
                         .foregroundStyle(item.rawValue == viewModel.selectedSize ? .white : .black)
-
                 }
                 .onTapGesture {
                     viewModel.selectedSize = item.rawValue
