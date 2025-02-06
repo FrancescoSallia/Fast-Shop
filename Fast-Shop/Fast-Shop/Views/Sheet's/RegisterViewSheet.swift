@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct RegisterViewSheet: View {
+    @Environment(\.dismiss) var dismiss
+
+    @ObservedObject var authViewModel: AuthViewModel
     @State var acceptTerms: Bool = false
     
     var body: some View {
@@ -18,27 +21,17 @@ struct RegisterViewSheet: View {
                       .fontWeight(.bold)
                   
             VStack(alignment: .leading) {
-                Text("Vorname")
+                Text("E-mail")
                     .padding(.bottom, -4)
-                TextField("Vorname", text: .constant(""))
+                TextField("Email", text: $authViewModel.email)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .border(.primary)
             }
-                  
-            VStack(alignment: .leading) {
-                Text("Nachname")
-                    .padding(.bottom, -4)
-                TextField("Nachname", text: .constant(""))
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .border(.primary)
-            }
-
             VStack(alignment: .leading) {
                 Text("Passwort")
                     .padding(.bottom, -4)
-                SecureField("Passwort", text: .constant(""))
+                SecureField("Passwort", text: $authViewModel.password)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .border(.primary)
@@ -46,7 +39,7 @@ struct RegisterViewSheet: View {
             VStack(alignment: .leading) {
                 Text("Passwort wiederholen")
                     .padding(.bottom, -4)
-                SecureField("Passwort wiederholen", text: .constant(""))
+                SecureField("Passwort wiederholen", text: $authViewModel.repeatedPassword)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .border(.primary)
@@ -56,9 +49,11 @@ struct RegisterViewSheet: View {
                       Text("Ich akzeptiere die AGB")
                   }
                   .padding(.horizontal)
-                  
+                
             Button(action: {
-              //placeholder
+                authViewModel.register()
+                dismiss()
+                
             }) {
                 Text("Registrieren")
                     .textCase(.uppercase)
@@ -82,5 +77,5 @@ struct RegisterViewSheet: View {
 }
 
 #Preview {
-    RegisterViewSheet()
+    RegisterViewSheet(authViewModel: AuthViewModel())
 }

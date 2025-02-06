@@ -26,4 +26,14 @@ class FireManager {
         let result = try await auth.createUser(withEmail: email, password: password)
         return result.user
     }
+    func loginUser(email: String, password: String) async throws -> User {
+        let result = try await auth.signIn(withEmail: email, password: password)
+        return result.user
+    }
+    func logoutUser() throws {
+        try auth.signOut()
+    }
+    func deleteUser(user: User) async throws {
+        try await user.delete()
+    }
 }

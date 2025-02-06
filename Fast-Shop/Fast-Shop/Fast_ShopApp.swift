@@ -12,7 +12,7 @@ import FirebaseCore
 struct Fast_ShopApp: App {
     
     init() {
-        FirebaseConfiguration.shared.setLoggerLevel(.min)
+//        FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
     }
     
@@ -23,34 +23,36 @@ struct Fast_ShopApp: App {
 
     var body: some Scene {
         WindowGroup {
-        
-        
-        if !isLogged {
-            LogInScreenView(authViewModel: authViewModel)
-        } else {
-  
-                TabView {
-                    Tab("Home", systemImage: "house.fill"){
-                        HomeView(isScrolling: $showTab)
-                        //                        APITestView()
+                VStack {
+                    if !authViewModel.userIsLoggedIn {
+                    LogInScreenView(authViewModel: authViewModel)
+                } else {
+                        TabView {
+                            Tab("Home", systemImage: "house.fill"){
+                                HomeView(isScrolling: $showTab)
+                                //                        APITestView()
+                            }
+                            Tab("Search", systemImage: "magnifyingglass"){
+                                SearchView(viewModel: viewModel)
+                                    .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
+                                        IsSuccessfullSheet(viewModel: viewModel)
+                                            .presentationDetents([.height(60)])
+                                    })
+                            }
+                            Tab("Cart", systemImage: "bag"){
+                                CartView(viewModel: viewModel)
+                                //                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
+                            }
+                            Tab("Settings", systemImage: "person"){
+                                SettingsView(viewModel: viewModel, authViewModel: authViewModel)
+                                //                          LogInScreenView()
+                            }
+                            
+                        }
                     }
-                    Tab("Search", systemImage: "magnifyingglass"){
-                        SearchView(viewModel: viewModel)
-                            .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
-                                IsSuccessfullSheet(viewModel: viewModel)
-                                    .presentationDetents([.height(60)])
-                            })
-                    }
-                    Tab("Cart", systemImage: "bag"){
-                        CartView(viewModel: viewModel)
-                        //                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
-                    }
-                    Tab("Settings", systemImage: "person"){
-                        SettingsView(viewModel: viewModel)
-                        //                          LogInScreenView()
-                    }
-                    
                 }
+            .onAppear {
+                authViewModel.checkLoggedIn()
             }
         }
 

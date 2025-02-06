@@ -10,8 +10,8 @@ import SwiftUI
 struct SettingsView: View {
     @State private var notificationsEnabled: Bool = true
       @State private var isDarkMode: Bool = false
-      let email: String = "user@example.com"
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var authViewModel: AuthViewModel
 
     var body: some View {
         NavigationStack {
@@ -26,7 +26,7 @@ struct SettingsView: View {
                                 }
                                 
                                 Section(header: Text("Konto")) {
-                                    Text("E-Mail: \(email)")
+                                    Text("E-Mail: \(authViewModel.user?.email ?? "Keine User-Email")")
 //                                    Button(action: {}) {
 //                                        Text("Account löschen")
 //                                            .foregroundColor(.red)
@@ -37,12 +37,14 @@ struct SettingsView: View {
                             .toolbar {
                                 ToolbarItem(placement: .navigationBarTrailing) {
                                     Button("Ausloggen") {
-                                        // Logout action
+                                        authViewModel.logout()
                                     }
                                 }
                             }
                         }
-            Button(action: {}) {
+            Button{
+                authViewModel.deleteUser()
+            } label: {
                 Text("Account löschen")
                     .foregroundColor(.red)
             }
@@ -52,5 +54,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView(viewModel: ProductViewModel())
+    SettingsView(viewModel: ProductViewModel(), authViewModel: AuthViewModel())
 }

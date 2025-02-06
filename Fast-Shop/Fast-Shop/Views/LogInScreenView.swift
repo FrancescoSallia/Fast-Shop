@@ -16,7 +16,7 @@ struct LogInScreenView: View {
         NavigationStack {
             ZStack {
                 VideoBackgroundView()
-                    .ignoresSafeArea() 
+                    .ignoresSafeArea()
                 
                 VStack {
                     
@@ -38,14 +38,14 @@ struct LogInScreenView: View {
                         .padding(.top, 90)
                     }
                     
-                    TextField("E-Mail", text: .constant(""))
+                    TextField("E-Mail", text: $authViewModel.email)
                         .padding()
                         .background(Color(uiColor: UIColor.lightText))
                         .cornerRadius(10)
                         .keyboardType(.emailAddress)
                         .padding(.top, 30)
                     
-                    SecureField("Passwort", text: .constant(""))
+                    SecureField("Passwort", text: $authViewModel.password)
                         .padding()
                         .background(Color(uiColor: UIColor.lightText))
                         .cornerRadius(10)
@@ -69,7 +69,7 @@ struct LogInScreenView: View {
                         
                         
                         NavigationLink(destination: {
-                            RegisterViewSheet()
+                            RegisterViewSheet(authViewModel: authViewModel)
                         }, label:  {
                             Text("Registrieren")
                                 .textCase(.uppercase)
@@ -80,7 +80,7 @@ struct LogInScreenView: View {
                                 .cornerRadius(3)
                         })
                         Button(action: {
-                            //placeholder
+                            authViewModel.login()
                         }) {
                             Text("Anmelden")
                                 .textCase(.uppercase)
