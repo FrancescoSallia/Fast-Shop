@@ -18,6 +18,8 @@ class AuthViewModel: ObservableObject {
     @Published var repeatedPassword = ""
     
     private var manager = FireManager.shared
+    private let errorHandler = ErrorHandler.shared
+
     
     init() {
         checkLoggedIn()
@@ -33,7 +35,8 @@ class AuthViewModel: ObservableObject {
     
     func register() {
         guard !email.isEmpty  && !password.isEmpty && password == repeatedPassword else {
-            print("Fehler beim Registrieren")
+//            print("Fehler beim Registrieren")
+            errorHandler.handleError(error: ErrorEnum.custom("Error registering, check the text fields again"))
             return
         }
         Task {
@@ -43,8 +46,7 @@ class AuthViewModel: ObservableObject {
                 self.password = ""
                 self.repeatedPassword = ""
             } catch {
-//                errorHandler.handleError(error: error)
-                print(error)
+                errorHandler.handleError(error: error)
             }
         }
     }
@@ -56,7 +58,7 @@ class AuthViewModel: ObservableObject {
                 self.email = ""
                 self.password = ""
             } catch {
-                print(error)
+                errorHandler.handleError(error: error)
             }
         }
     }
@@ -66,7 +68,7 @@ class AuthViewModel: ObservableObject {
             try manager.logoutUser()
             user = nil
         } catch {
-            print(error.localizedDescription)
+            errorHandler.handleError(error: error)
         }
     }
     
@@ -76,13 +78,14 @@ class AuthViewModel: ObservableObject {
                 try await manager.deleteUser(user: user!)
                 user = nil
             } catch {
-                print(error)
+                errorHandler.handleError(error: error)
             }
         }
     }
     func resetPassword(email: String) {
         guard !email.isEmpty else {
             print("Die Emailadresse darf nicht leer sein")
+            errorHandler.showError.toggle()
             return
         }
         manager.resetPassword(email: email)

@@ -11,6 +11,7 @@ import Foundation
 class ProductViewModel: ObservableObject {
     
     private let client = HttpClient()
+    
     var productIndex: Int = 0
     @Published var products: [Product] = []
     @Published var categories: [Category] = []

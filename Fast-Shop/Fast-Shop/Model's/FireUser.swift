@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class FireUser: ObservableObject, Codable, Identifiable {
+class FireUser: Codable, Identifiable {
     @DocumentID var id: String?
     let firstName: String
     let secondName: String

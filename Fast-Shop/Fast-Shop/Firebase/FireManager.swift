@@ -45,7 +45,7 @@ class FireManager {
 
 //MARK: Adress-Section
     
-//    func addAdress(adress: Adress) async throws {
-//        try store.collection("adresses").document(auth.currentUser!.uid).setData(adress)
-//    }
+    func addAdress(adress: FireUser) async throws {
+    
+    }
 }

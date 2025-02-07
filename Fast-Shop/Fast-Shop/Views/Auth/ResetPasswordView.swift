@@ -11,6 +11,8 @@ struct ResetPasswordView: View {
     
     @Environment(\.dismiss) var dismiss
     @ObservedObject var authViewModel: AuthViewModel
+    @ObservedObject private var errorHandler = ErrorHandler.shared
+
     var body: some View {
         VStack(alignment: .leading) {
             Text("E-mail")
@@ -34,8 +36,6 @@ struct ResetPasswordView: View {
                 .cornerRadius(3)
         }
         .padding()
-        
-        
     }
 }
 

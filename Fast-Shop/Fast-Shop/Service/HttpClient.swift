@@ -21,9 +21,9 @@ class HttpClient {
             let products = try JSONDecoder().decode([Product].self, from: data)
             return products
         } catch {
-            print(error)
+            throw error
         }
-            return []
+//            return []
     }
     
     func getCategories() async throws -> [Category] {
@@ -36,9 +36,10 @@ class HttpClient {
             let categoriesData = try JSONDecoder().decode([Category].self, from: data)
             return categoriesData
         } catch {
-            print(ErrorEnum.localizedDescription)
+//            print(ErrorEnum.localizedDescription)
+            throw error
         }
-        return []
+//        return []
     }
     
     func getCategorieFiltered(id: String) async throws -> [Product] {
@@ -50,9 +51,10 @@ class HttpClient {
             let categoriesData = try JSONDecoder().decode([Product].self, from: data)
             return categoriesData
         } catch {
-            print(ErrorEnum.localizedDescription)
+//            print(ErrorEnum.localizedDescription)
+            throw error
         }
-        return []
+//        return []
     }
     
     func searchTitle(title: String) async throws -> [Product] {
@@ -64,9 +66,10 @@ class HttpClient {
             let titleSearched = try JSONDecoder().decode([Product].self, from: data)
             return titleSearched
         } catch {
-            print(ErrorEnum.localizedDescription)
+//            print(ErrorEnum.localizedDescription)
+            throw error
         }
-        return []
+//        return []
     }
     
     func minMaxPriceFiltered(searchText: String, preisArray: [CGFloat], selectedCategory: String) async throws -> [Product] {
