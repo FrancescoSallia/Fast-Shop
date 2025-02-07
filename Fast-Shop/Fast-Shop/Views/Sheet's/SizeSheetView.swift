@@ -26,12 +26,11 @@ struct SizeSheetView: View {
                     Text(item.rawValue)
                         .bold()
                         .foregroundStyle(item.rawValue == viewModel.selectedSize ? .white : .black)
-
                 }
                 .onTapGesture {
                     viewModel.selectedSize = item.rawValue
-//                    print("ausgewählte größe vm: \(viewModel.selectedSize), ausgewählte größe: \(item.rawValue)")
-//                    viewModel.selectedProduct = product
+                    viewModel.showAlertSuccessfullAdded = true
+
                     let addNewCartProduct = Product(
                         id: product.id,
                         title: product.title,

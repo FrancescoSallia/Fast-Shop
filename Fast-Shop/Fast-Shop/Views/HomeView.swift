@@ -25,8 +25,6 @@ struct HomeView: View {
                                 AsyncImage(url: URL(string: item.images[0])) { pic in
                                      pic
                                     .resizable()
-//                                    .scaledToFill()
-//                                    .frame(width: 400, height: 620)
                                     .frame(width: 400, height: 700)
                                     .onScrollVisibilityChange { isVisible in
                                         if isVisible {
@@ -93,7 +91,6 @@ struct HomeView: View {
             }
         }
     }
-
 }
 #Preview {
     HomeView(isScrolling: .constant(true))
