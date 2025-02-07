@@ -11,9 +11,9 @@ import Foundation
 class HttpClient {
     
     
-    func getProducts() async throws -> [Product] {
+    func getProducts(firstIndex: Int, lastIndex: Int) async throws -> [Product] {
 //        guard let url = URL(string: "http://localhost:3001/products") else {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products") else {
+        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products?offset=\(firstIndex)&limit=\(lastIndex)") else {
             throw ErrorEnum.invalidURL
         }
         do {
@@ -25,6 +25,7 @@ class HttpClient {
         }
             return []
     }
+    
     func getCategories() async throws -> [Category] {
 //        guard let url = URL(string: "http://localhost:3001/categories") else {
         guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
@@ -39,6 +40,7 @@ class HttpClient {
         }
         return []
     }
+    
     func getCategorieFiltered(id: String) async throws -> [Product] {
         guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?categoryId=\(id)") else {
            throw ErrorEnum.invalidURL
@@ -66,6 +68,7 @@ class HttpClient {
         }
         return []
     }
+    
     func minMaxPriceFiltered(searchText: String, preisArray: [CGFloat], selectedCategory: String) async throws -> [Product] {
         guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?title=\(searchText)&price_min=\(String(format: "%.2f", preisArray[0]))&price_max=\(String(format: "%.2f", preisArray[1]))&categoryId=\(selectedCategory)") else {throw ErrorEnum.invalidURL}
        do {
