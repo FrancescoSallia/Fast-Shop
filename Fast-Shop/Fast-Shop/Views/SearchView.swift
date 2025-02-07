@@ -14,10 +14,10 @@ struct SearchView: View {
         price: 20.0,
         description: "Test Description",
         images: [
-        "https://i.imgur.com/R3iobJA.jpeg",
-        "https://i.imgur.com/Wv2KTsf.jpeg",
-        "https://i.imgur.com/76HAxcA.jpeg"
-      ],
+            "https://i.imgur.com/R3iobJA.jpeg",
+            "https://i.imgur.com/Wv2KTsf.jpeg",
+            "https://i.imgur.com/76HAxcA.jpeg",
+        ],
         category: Category(
             id: 1,
             name: "Tools",
@@ -41,7 +41,8 @@ struct SearchView: View {
                                 viewModel.filteredID = String(index.id)
                                 if !viewModel.filterIsActive {
                                     Task {
-                                        try await viewModel.getCategorieFilteredFromAPI()
+                                        try await viewModel
+                                            .getCategorieFilteredFromAPI()
                                     }
                                 } else {
                                     Task {
@@ -51,7 +52,9 @@ struct SearchView: View {
                             } label: {
                                 if viewModel.filteredID == "0" {
                                     Text("\(index.name)")
-                                } else if viewModel.filteredID == String(index.id) {
+                                } else if viewModel.filteredID
+                                    == String(index.id)
+                                {
                                     Text("\(index.name)")
                                         .underline()
                                 } else {
@@ -71,30 +74,43 @@ struct SearchView: View {
                     LazyVGrid(columns: columns, spacing: -10) {
                         ForEach(viewModel.products) { filteredProduct in
                             NavigationLink(destination: {
-                                ProductDetailView(product: filteredProduct, viewModel: viewModel)
+                                ProductDetailView(
+                                    product: filteredProduct,
+                                    viewModel: viewModel)
                             }) {
                                 VStack {
                                     HStack {
                                         ZStack(alignment: .bottom) {
-                                            AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
+                                            AsyncImage(
+                                                url: URL(
+                                                    string:
+                                                        filteredProduct.images[
+                                                            0])
+                                            ) { pic in
                                                 pic
                                                     .resizable()
-                                                    .frame(maxWidth: 400, maxHeight: 250)
+                                                    .frame(
+                                                        maxWidth: 400,
+                                                        maxHeight: 250)
                                             } placeholder: {
                                                 ProgressView()
                                             }
                                             Button {
-                                                viewModel.selectedProduct = filteredProduct
+                                                viewModel.selectedProduct =
+                                                    filteredProduct
                                                 viewModel.showSheet.toggle()
-                                            }label: {
-                                                Image(systemName: "plus.circle.fill")
-                                                    .padding(.bottom)
-                                                    .foregroundStyle(.yellow)
+                                            } label: {
+                                                Image(
+                                                    systemName:
+                                                        "plus.circle.fill"
+                                                )
+                                                .padding(.bottom)
+                                                .foregroundStyle(.yellow)
                                             }
                                         }
                                     }
-                                    .padding(.horizontal,3)
-                                    
+                                    .padding(.horizontal, 3)
+
                                     VStack {
                                         HStack {
                                             Text("\(filteredProduct.title)")
@@ -102,13 +118,15 @@ struct SearchView: View {
                                             //frame machen
                                             Image(systemName: "bookmark")
                                         }
-                                        
+
                                         HStack {
-                                            Text("\(filteredProduct.price.formatted())€")
-                                                .font(.footnote)
-                                                .frame(width: 150)
-                                                .padding(.bottom, 30)
-                                            
+                                            Text(
+                                                "\(filteredProduct.price.formatted())€"
+                                            )
+                                            .font(.footnote)
+                                            .frame(width: 150)
+                                            .padding(.bottom, 30)
+
                                             Spacer()
                                         }
                                         .padding(.horizontal)
@@ -116,13 +134,13 @@ struct SearchView: View {
                                 }
                             }
                             .tint(.black)
-                            .onAppear {
-                                if viewModel.isLastItem(product: filteredProduct) {
-                                    Task {
-                                        try await viewModel.getProductsFromAPI()
-                                    }
-                                }
-                            }
+                            //                            .onAppear {
+                            //                                if viewModel.isLastItem(product: filteredProduct) {
+                            //                                    Task {
+                            //                                        try await viewModel.getProductsFromAPI()
+                            //                                    }
+                            //                                }
+                            //                            }
                         }
                     }
                 }
@@ -131,51 +149,65 @@ struct SearchView: View {
                 if !viewModel.filterIsActive {
                     Task {
                         try await viewModel.getCategorieFilteredFromAPI()
-                       }
+                    }
                 } else {
                     Task {
                         try await viewModel.minMaxPriceFiltered()
-                       }
+                    }
                 }
-                        
+
             }
             .toolbar(content: {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         viewModel.showFilterSheet.toggle()
-                    } label:{
+                    } label: {
                         Image(systemName: "line.3.horizontal.decrease.circle")
                     }
                 }
             })
         }
-        .sheet(isPresented: $viewModel.showSheet, content: {
-//            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? viewModel.testProduct )
-            SelectedItemSheetView(viewModel: viewModel)
-                .presentationDetents([.height(600)])
-//                .presentationDetents([.medium, .large])
-        })
-        .sheet(isPresented: $viewModel.showFilterSheet, content: {
-            FilterSheetView(viewModel: viewModel)
-//                .presentationDetents([.height(600)])
-                .presentationDetents([.medium, .large])
-        })
-        .searchable(text: $viewModel.searchedText, placement: .navigationBarDrawer(displayMode: .always) ,prompt: "Search...")
-        .onChange(of: viewModel.searchedText, {
-            Task {
-                try await viewModel.getCategorieFilteredFromAPI()
+        .sheet(
+            isPresented: $viewModel.showSheet,
+            content: {
+                //            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? viewModel.testProduct )
+                SelectedItemSheetView(viewModel: viewModel)
+                    .presentationDetents([.height(600)])
+                //                .presentationDetents([.medium, .large])
             }
-        })
+        )
+        .sheet(
+            isPresented: $viewModel.showFilterSheet,
+            content: {
+                FilterSheetView(viewModel: viewModel)
+                    //                .presentationDetents([.height(600)])
+                    .presentationDetents([.medium, .large])
+            }
+        )
+        .searchable(
+            text: $viewModel.searchedText,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Search..."
+        )
+        .onChange(
+            of: viewModel.searchedText,
+            {
+                Task {
+                    try await viewModel.getCategorieFilteredFromAPI()
+                }
+            }
+        )
         .onAppear {
             if !viewModel.filterIsActive {
                 Task {
+                    //                    try await viewModel.getProductsFromAPI()
                     try await viewModel.getCategoriesFromAPI()
                     try await viewModel.getCategorieFilteredFromAPI()
-                   }
+                }
             } else {
                 Task {
                     try await viewModel.minMaxPriceFiltered()
-                   }
+                }
             }
         }
     }
@@ -183,4 +215,3 @@ struct SearchView: View {
 #Preview {
     SearchView(viewModel: ProductViewModel())
 }
-

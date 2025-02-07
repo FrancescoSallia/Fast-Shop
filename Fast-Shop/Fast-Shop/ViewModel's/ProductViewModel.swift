@@ -157,14 +157,18 @@ class ProductViewModel: ObservableObject {
 
     
     //MARK: API Calls
-    func getProductsFromAPI() async throws {
-        let result = try await client.getProducts(firstIndex: productIndex, lastIndex: 10)
-        self.products.append(contentsOf: result)
+//    func getProductsFromAPI() async throws {
+//        let result = try await client.getProducts(firstIndex: productIndex, lastIndex: 10)
+//        self.products.append(contentsOf: result)
 //        self.products = try await client.getProducts(firstIndex: productIndex, lastIndex: productIndex + 10)
-        productIndex += 10
-        if result.count == 0 {
-            showProgressView = false
-        }
+//        productIndex += 10
+//        if result.count == 0 {
+//            showProgressView = false
+//        }
+//    }
+
+    func getProductsFromAPI() async throws {
+        self.products = try await client.getProducts()
     }
     
     func getCategoriesFromAPI() async throws {
@@ -190,12 +194,12 @@ class ProductViewModel: ObservableObject {
         self.products = try await client.getCategorieFiltered(id: filteredID)
     }
     
-    func isLastItem(product: Product) -> Bool {
-        if let index = self.products.lastIndex(where: {$0.id == product.id}) {
-            return index == self.products.count - 1
-        }
-        return false
-    }
+//    func isLastItem(product: Product) -> Bool {
+//        if let index = self.products.lastIndex(where: {$0.id == product.id}) {
+//            return index == self.products.count - 1
+//        }
+//        return false
+//    }
     
     
     

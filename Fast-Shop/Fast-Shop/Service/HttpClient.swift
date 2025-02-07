@@ -11,12 +11,12 @@ import SwiftUICore
 
 class HttpClient {
     
-    //TODO: Soll man hier die fehler auch behandelt werden? ist es für den User relevant das die API nicht funktioniert?
+//TODO: Soll man hier die fehler auch behandelt werden? ist es für den User relevant das die API nicht funktioniert?
 //    @ObservedObject var errorHandler = ErrorHandler.shared
 
-    func getProducts(firstIndex: Int, lastIndex: Int) async throws -> [Product] {
-//        guard let url = URL(string: "http://localhost:3001/products") else {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products?offset=\(firstIndex)&limit=\(lastIndex)") else {
+    func getProducts() async throws -> [Product] {
+        guard let url = URL(string: "http://localhost:3001/products") else {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products?offset=\(firstIndex)&limit=\(lastIndex)") else {
             throw ErrorEnum.invalidURL
         }
         do {
@@ -24,14 +24,30 @@ class HttpClient {
             let products = try JSONDecoder().decode([Product].self, from: data)
             return products
         } catch {
+            print(error)
             throw error
         }
 //            return []
     }
     
+//    func getProducts(firstIndex: Int, lastIndex: Int) async throws -> [Product] {
+////        guard let url = URL(string: "http://localhost:3001/products") else {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products?offset=\(firstIndex)&limit=\(lastIndex)") else {
+//            throw ErrorEnum.invalidURL
+//        }
+//        do {
+//            let (data, _) = try await URLSession.shared.data(from: url)
+//            let products = try JSONDecoder().decode([Product].self, from: data)
+//            return products
+//        } catch {
+//            throw error
+//        }
+////            return []
+//    }
+    
     func getCategories() async throws -> [Category] {
-//        guard let url = URL(string: "http://localhost:3001/categories") else {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
+        guard let url = URL(string: "http://localhost:3001/categories") else {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
            throw ErrorEnum.invalidURL
         }
         do {
