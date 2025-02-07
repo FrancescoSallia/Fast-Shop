@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 
 class FireManager {
+    
     static let shared = FireManager()
 
     var currentUser: User? {
@@ -22,6 +23,7 @@ class FireManager {
     private let auth = Auth.auth()
     let store = Firestore.firestore()
     
+//MARK: Auth-Section
     func registerUser(email: String, password: String) async throws -> User {
         let result = try await auth.createUser(withEmail: email, password: password)
         return result.user
@@ -40,4 +42,10 @@ class FireManager {
         auth.sendPasswordReset(withEmail: email)
         
     }
+
+//MARK: Adress-Section
+    
+//    func addAdress(adress: Adress) async throws {
+//        try store.collection("adresses").document(auth.currentUser!.uid).setData(adress)
+//    }
 }
