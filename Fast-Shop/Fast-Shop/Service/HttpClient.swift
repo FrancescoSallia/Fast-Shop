@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import SwiftUICore
 
 
 class HttpClient {
     
-    
+    //TODO: Soll man hier die fehler auch behandelt werden? ist es für den User relevant das die API nicht funktioniert?
+//    @ObservedObject var errorHandler = ErrorHandler.shared
+
     func getProducts(firstIndex: Int, lastIndex: Int) async throws -> [Product] {
 //        guard let url = URL(string: "http://localhost:3001/products") else {
         guard let url = URL(string: "https://api.escuelajs.co/api/v1/products?offset=\(firstIndex)&limit=\(lastIndex)") else {
