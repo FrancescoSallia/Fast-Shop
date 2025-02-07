@@ -200,7 +200,7 @@ struct SearchView: View {
         .onAppear {
             if !viewModel.filterIsActive {
                 Task {
-                    //                    try await viewModel.getProductsFromAPI()
+                    //try await viewModel.getProductsFromAPI()
                     try await viewModel.getCategoriesFromAPI()
                     try await viewModel.getCategorieFilteredFromAPI()
                 }
