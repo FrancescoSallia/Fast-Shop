@@ -61,7 +61,7 @@ class ProductViewModel: ObservableObject {
     @Published var testProducteArray: [Product] = [
         Product(
         id: 1,
-        title: "Classic Navy Blue Baseball Cap",
+        title: "Classic Navy Blue Baseball Cap, Classic Navy Blue Baseball Cap",
         price: 20.0,
         description: "Test Description",
         images: [

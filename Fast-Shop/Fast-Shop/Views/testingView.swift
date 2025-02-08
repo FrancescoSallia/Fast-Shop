@@ -15,27 +15,26 @@ struct testingView: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .frame(maxWidth: .infinity, maxHeight: 250)
+                .frame(maxWidth: .infinity, maxHeight: 52)
                 .foregroundStyle(.white)
                 .border(.black)
             
             HStack {
-                Image("pants")
-                    .resizable()
-                    .frame(maxWidth: 200,maxHeight: 248)
-                
-                Spacer()
-                
-                VStack(alignment: .leading, spacing: 15) {
-                    Text("\(viewModel.testProduct.title)")
-                        .font(.headline)
-                    Text("\(viewModel.testProduct.price.formatted())€")
-                        .font(.caption)
+                Button("Einkaufskorb"){
+                    
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(width: 200)
+                
+                Button("Einkaufskorb"){
+                    
+                }
+                .padding()
+                .frame(width: 200)
+                .background(Color.black)
+
                 
             }
-            
+                        
         }
     }
 }
