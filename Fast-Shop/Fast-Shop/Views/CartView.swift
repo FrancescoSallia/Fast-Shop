@@ -10,7 +10,7 @@ import SwiftUI
 struct CartView: View {
     @ObservedObject var viewModel: ProductViewModel
     @State var sizes: [String] = ["XS","S", "M", "L", "XL", "XXL"]
-    @State var counter = 1
+    @State var counter = 0
 //    let columns = [GridItem(.flexible()), GridItem(.flexible())]
     let columns = [GridItem(.fixed(400.0))]
 
@@ -49,7 +49,8 @@ struct CartView: View {
             .padding(.top)
             
             if viewModel.showCart {
-                List(viewModel.user.cart, id: \.cartID) { product in
+//                List(viewModel.user.cart, id: \.cartID) { product in
+                ForEach(viewModel.testProducteArray) { product in
                     HStack (alignment: .top) {
                         AsyncImage(url: URL(string: product.images[0])) { image in
                             image
@@ -90,71 +91,45 @@ struct CartView: View {
                             
                             VStack(alignment: .leading) {
                                 Text(product.title)
-//                                    .font(.footnote)
-//                                    .padding(.top, 40)
-//                                    .padding(.leading, 20)
-//                                    .frame(width: 160)
-                                
-                                //                                    .padding(.trailing, 70)
-                                
                                 Text("\(product.price.formatted()) EUR")
-//                                    .font(.footnote)
-//                                    .fontWeight(.thin)
-//                                    .padding(.top, 20)
-//                                    .padding(.trailing, 65)
-//                                    .padding(.bottom)
                                 Text(product.size ?? "keine Größe")
-//                                    .font(.footnote)
-//                                    .fontWeight(.thin)
-//                                    .padding(.top, 20)
-//                                    .padding(.trailing, 65)
-//                                    .padding(.bottom)
+
+                                HStack(spacing: 0) {
+                                    Button("-") {
+                                        counter -= 1
+
+    //                                                                        if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
+    //                                                                            viewModel.user.cart[index].numberOfProducts? -= 1
+    //                                                                        }
+    //                                    Task {
+    //                                        try await viewModel.getProductsFromAPI()
+    //                                    }
+                                    }
+                                    .padding()
+                                    .border(.black)
+                                    .frame(maxHeight: .infinity)
+    //                                Text("\(product.numberOfProducts ?? 0)")
+                                    Text("\(counter)")
+                                    .padding()
+                                    .border(.black)
+                                    .frame(maxHeight: .infinity)
+                                    Button("+") {
+                                        counter += 1
+    //                                    if let index = viewModel.user.cart.firstIndex(where: {$0.cartID == product.cartID}) {
+    //                                        viewModel.user.cart[index].numberOfProducts? += 1
+    //                                    }
+    //                                    Task {
+    //                                        try await viewModel.getProductsFromAPI()
+    //                                    }
+                                    }
+                                    .padding()
+                                    .border(.black)
+                                    .frame(maxHeight: .infinity)
+                                }
+                                .offset(y: -30)
                             }
                             .frame(maxWidth: 200, alignment: .leading)
                             
-                            HStack {
-                                ZStack {
-                                    Rectangle()
-                                        .frame(width: 30, height: 30)
-                                        .foregroundStyle(.white)
-                                        .border(.black)
-                                    
-                                    //FIXME: Wenn beide buttons if let index funktion an ist, denn wird die anzahl weder erhöht noch reduziert
-                                    Button("-") {
-                                        //                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
-                                        //                                        viewModel.user.cart[index].numberOfProducts? -= 1
-                                        //                                    }
-                                        Task {
-                                            try await viewModel.getProductsFromAPI()
-                                        }
-                                    }
-                                    .tint(.primary)
-                                }
-                                ZStack {
-                                    Rectangle()
-                                        .frame(width: 30, height: 30)
-                                        .foregroundStyle(.white)
-                                        .border(.black)
-                                    Text("\(product.numberOfProducts ?? 0)")
-                                        .fontDesign(.serif)
-                                        .fontWeight(.thin)
-                                }
-                                ZStack {
-                                    Rectangle()
-                                        .frame(width: 30, height: 30)
-                                        .foregroundStyle(.white)
-                                        .border(.black)
-                                    Button("+") {
-                                        if let index = viewModel.user.cart.firstIndex(where: {$0.cartID == product.cartID}) {
-                                            viewModel.user.cart[index].numberOfProducts? += 1
-                                        }
-                                        Task {
-                                            try await viewModel.getProductsFromAPI()
-                                        }
-                                    }
-                                    .tint(.primary)
-                                }
-                            }
                         }
                         .padding(.top)
                     }
@@ -181,7 +156,13 @@ struct CartView: View {
                         .tint(.yellow)
                     }
                 }
-                .listStyle(.plain)
+//                .listStyle(.plain)
+                
+                
+                
+                
+                
+                
             } else {
                 List(viewModel.user.favorite, id: \.cartID) { product in
                     HStack (alignment: .top) {

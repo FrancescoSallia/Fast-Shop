@@ -167,7 +167,11 @@ class ProductViewModel: ObservableObject {
 //        }
 //    }
 
-    func getProductsFromAPI() async throws {
+//    func getProductsFromAPI() async throws {
+//        self.products = try await client.getProducts()
+//    }
+    
+        func getProductsFromAPI() async throws {
         self.products = try await client.getProducts()
     }
     

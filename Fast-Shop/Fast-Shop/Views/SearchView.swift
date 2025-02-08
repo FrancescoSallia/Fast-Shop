@@ -134,13 +134,13 @@ struct SearchView: View {
                                 }
                             }
                             .tint(.black)
-                            //                            .onAppear {
-                            //                                if viewModel.isLastItem(product: filteredProduct) {
-                            //                                    Task {
-                            //                                        try await viewModel.getProductsFromAPI()
-                            //                                    }
-                            //                                }
-                            //                            }
+//                                                        .onAppear {
+//                                                            if viewModel.isLastItem(product: filteredProduct) {
+//                                                                Task {
+//                                                                    try await viewModel.getProductsFromAPI()
+//                                                                }
+//                                                            }
+//                                                        }
                         }
                     }
                 }
