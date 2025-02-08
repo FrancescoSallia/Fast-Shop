@@ -8,26 +8,33 @@
 import SwiftUI
 
 struct testingView: View {
+    
     @ObservedObject var viewModel: ProductViewModel
     @State var count = 0
+    
     var body: some View {
-        HStack(spacing: 0) {
-            Button("-") {
-                count -= 1
+        ZStack {
+            Rectangle()
+                .frame(maxWidth: .infinity, maxHeight: 250)
+                .foregroundStyle(.white)
+                .border(.black)
+            
+            HStack {
+                Image("pants")
+                    .resizable()
+                    .frame(maxWidth: 200,maxHeight: 248)
+                
+                Spacer()
+                
+                VStack(alignment: .leading, spacing: 15) {
+                    Text("\(viewModel.testProduct.title)")
+                        .font(.headline)
+                    Text("\(viewModel.testProduct.price.formatted())€")
+                        .font(.caption)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
             }
-            .padding()
-            .border(.black)
-            .frame(maxHeight: .infinity)
-            Text("\(count)")
-            .padding()
-            .border(.black)
-            .frame(maxHeight: .infinity)
-            Button("+") {
-                count += 1
-            }
-            .padding()
-            .border(.black)
-            .frame(maxHeight: .infinity)
             
         }
     }
