@@ -50,10 +50,11 @@ struct CartView: View {
                 .padding(-10)
             }
             .padding(.top)
-
+            //FIXME: bei mehreren items geht die ganze leiste nach oben, schau es dir nochmal an!!
+            
             if viewModel.showCart {
-                //                ForEach(viewModel.user.cart, id: \.cartID) { product in
-                ForEach(viewModel.testProducteArray) { product in
+                ForEach(viewModel.user.cart, id: \.cartID) { product in
+//                ForEach(viewModel.testProducteArray) { product in
                     ZStack {
                         Rectangle()
                             .frame(maxWidth: .infinity, maxHeight: 250)
@@ -66,13 +67,7 @@ struct CartView: View {
                                     .resizable()
                                     .frame(maxWidth: 200, maxHeight: 248)
                             } placeholder: {
-                                if !product.images.isEmpty {
-                                    Image("pants")
-                                        .resizable()
-                                        .frame(maxWidth: 190, maxHeight: 240)
-                                } else {
-                                    ProgressView()
-                                }
+                               ProgressView()
                             }
                             VStack {
                                 HStack(alignment: .lastTextBaseline) {
@@ -189,17 +184,19 @@ struct CartView: View {
                         }
                     }
                 }
-                .listStyle(.plain)
-                Spacer()
-                Spacer()
+//                .listStyle(.plain)
+//                Spacer()
+//                Spacer()
             } else {
-                List(viewModel.user.favorite, id: \.cartID) { product in
-                    //                ForEach(viewModel.testProducteArray) { product in
+                ForEach(viewModel.user.favorite, id: \.cartID) { product in
+//                  ForEach(viewModel.testProducteArray) { product in
                     ZStack {
                         Rectangle()
                             .frame(maxWidth: .infinity, maxHeight: 250)
                             .foregroundStyle(.white)
                             .border(.black)
+                            .padding(.top, 4) // muss mit Hstack angepasst werden, bei veränderung!
+
                         HStack {
                             AsyncImage(url: URL(string: product.images[0])) {
                                 image in
@@ -207,14 +204,9 @@ struct CartView: View {
                                     .resizable()
                                     .frame(maxWidth: 200, maxHeight: 248)
                             } placeholder: {
-                                if !product.images.isEmpty {
-                                    Image("pants")
-                                        .resizable()
-                                        .frame(maxWidth: 190, maxHeight: 240)
-                                } else {
-                                    ProgressView()
-                                }
+                                ProgressView()
                             }
+                            
                             VStack {
                                 HStack(alignment: .lastTextBaseline) {
                                     Spacer()
@@ -254,11 +246,12 @@ struct CartView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
                             }
-                            .padding(.top)
+//                            .padding(.top)
                         }
+                        .padding(.top, 4) // muss mit rectangle immer angepasst werden
                         .swipeActions {
                             Button(role: .destructive) {
-                                viewModel.user.cart.removeAll(where: {
+                                viewModel.user.favorite.removeAll(where: {
                                     $0.cartID == product.cartID
                                 })
                                 Task {
@@ -268,22 +261,22 @@ struct CartView: View {
                                 Label("Delete", systemImage: "trash")
                             }
                             Button {
-                                if let addToFavorite = viewModel.user.cart
+                                if let addToCart = viewModel.user.favorite
                                     .first(where: {
                                         $0.cartID == product.cartID
                                     })
                                 {
-                                    viewModel.user.favorite.append(
-                                        addToFavorite)
-                                    viewModel.user.cart.removeAll(where: {
-                                        $0.cartID == addToFavorite.cartID
+                                    viewModel.user.cart.append(
+                                        addToCart)
+                                    viewModel.user.favorite.removeAll(where: {
+                                        $0.cartID == addToCart.cartID
                                     })
                                     Task {
                                         try await viewModel.getProductsFromAPI()
                                     }
                                 }
                             } label: {
-                                Label("Favorite", systemImage: "flag")
+                                Label("Warenkorb", systemImage: "cart")
                             }
                             .tint(.yellow)
                         }
@@ -295,6 +288,7 @@ struct CartView: View {
                     }
                 }
             }
+            
             if viewModel.showCart {
                 VStack {
                     VStack {
