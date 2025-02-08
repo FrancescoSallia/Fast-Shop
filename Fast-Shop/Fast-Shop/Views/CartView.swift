@@ -9,58 +9,62 @@ import SwiftUI
 
 struct CartView: View {
     @ObservedObject var viewModel: ProductViewModel
-    @State var sizes: [String] = ["XS","S", "M", "L", "XL", "XXL"]
-//    @State var counter = 0
-//    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @State var sizes: [String] = ["XS", "S", "M", "L", "XL", "XXL"]
+    //    @State var counter = 0
+    //    let columns = [GridItem(.flexible()), GridItem(.flexible())]
     let columns = [GridItem(.fixed(400.0))]
 
-    
     var body: some View {
         NavigationStack {
             HStack {
-                Button("EINKAUFSKORB\(viewModel.user.cart.count == 0 ? "" : "(\(viewModel.user.cart.count))")") {
+                Button(
+                    "EINKAUFSKORB\(viewModel.user.cart.count == 0 ? "" : "(\(viewModel.user.cart.count))")"
+                ) {
                     viewModel.showCart = true
                 }
                 .font(.footnote)
                 .frame(height: 4)
                 .padding()
-                .padding(.horizontal,35)
+                .padding(.horizontal, 35)
                 .border(.black)
                 .background(viewModel.showCart ? Color.black : Color.white)
                 .tint(viewModel.showCart ? .white : .black)
-                .padding(.leading,-20)
+                .padding(.leading, -20)
                 Button {
                     viewModel.showCart = false
-                }label: {
+                } label: {
                     HStack {
                         Text("FAVORITEN")
-                        Image(systemName: viewModel.showCart ? "bookmark" : "bookmark.fill")
+                        Image(
+                            systemName: viewModel.showCart
+                                ? "bookmark" : "bookmark.fill")
                     }
                 }
                 .font(.footnote)
                 .frame(height: 4)
                 .padding()
-                .padding(.horizontal,37)
+                .padding(.horizontal, 37)
                 .border(.black)
                 .background(viewModel.showCart ? Color.white : Color.black)
                 .tint(viewModel.showCart ? .black : .white)
                 .padding(-10)
             }
             .padding(.top)
-            
+
             if viewModel.showCart {
-                ForEach(viewModel.user.cart, id: \.cartID) { product in
-//                ForEach(viewModel.testProducteArray) { product in
-                        ZStack {
-                            Rectangle()
-                                .frame(maxWidth: .infinity, maxHeight: 250)
-                                .foregroundStyle(.white)
-                                .border(.black)
+                //                ForEach(viewModel.user.cart, id: \.cartID) { product in
+                ForEach(viewModel.testProducteArray) { product in
+                    ZStack {
+                        Rectangle()
+                            .frame(maxWidth: .infinity, maxHeight: 250)
+                            .foregroundStyle(.white)
+                            .border(.black)
                         HStack {
-                            AsyncImage(url: URL(string: product.images[0])) { image in
+                            AsyncImage(url: URL(string: product.images[0])) {
+                                image in
                                 image
                                     .resizable()
-                                    .frame(maxWidth: 200,maxHeight: 248)
+                                    .frame(maxWidth: 200, maxHeight: 248)
                             } placeholder: {
                                 if !product.images.isEmpty {
                                     Image("pants")
@@ -81,68 +85,82 @@ struct CartView: View {
                                             .frame(maxWidth: 15, maxHeight: 22)
                                     }
                                     .padding(.horizontal)
-                                    Button{
+                                    Button {
                                         //Placeholder
-                                    } label:{
+                                    } label: {
                                         Image(systemName: "xmark")
                                             .resizable()
                                             .frame(maxWidth: 15, maxHeight: 20)
                                     }
                                 }
-                                .padding(.top, 10)
+//                                .padding(.top, 10)
                                 .padding(.horizontal)
-                                .frame(maxWidth: 200, alignment: .trailingLastTextBaseline)
+                                .frame(
+                                    maxWidth: 200,
+                                    alignment: .trailingLastTextBaseline
+                                )
                                 .tint(.black)
-                                
+
                                 VStack(alignment: .leading, spacing: 10) {
                                     Text(product.title)
                                         .frame(maxWidth: 150, maxHeight: 50)
                                         .padding(.vertical, 5)
                                     Text("\(product.price.formatted()) EUR")
                                     Text(product.size ?? "keine Größe")
-                                    
+
                                     HStack(spacing: 0) {
                                         Button("-") {
-                                            
-                                                                                                                    if let index = viewModel.user.cart.firstIndex(where: {$0.id == product.id}) {
-                                                                                                                        viewModel.user.cart[index].numberOfProducts? -= 1
-                                                                                                                    }
-                                                                                Task {
-                                                                                    try await viewModel.getProductsFromAPI()
-                                                                                }
+
+                                            if let index = viewModel.user.cart
+                                                .firstIndex(where: {
+                                                    $0.id == product.id
+                                                })
+                                            {
+                                                viewModel.user.cart[index]
+                                                    .numberOfProducts? -= 1
+                                            }
+                                            Task {
+                                                try await viewModel
+                                                    .getProductsFromAPI()
+                                            }
                                         }
                                         .tint(.primary)
                                         .padding()
                                         .border(.black)
-                                        .frame(maxHeight: .infinity)
                                         Text("\(product.numberOfProducts ?? 0)")
                                             .padding()
                                             .border(.black)
-                                            .frame(maxHeight: .infinity)
                                         Button("+") {
-                                                                                if let index = viewModel.user.cart.firstIndex(where: {$0.cartID == product.cartID}) {
-                                                                                    viewModel.user.cart[index].numberOfProducts? += 1
-                                                                                }
-                                                                                Task {
-                                                                                    try await viewModel.getProductsFromAPI()
-                                                                                }
+                                            if let index = viewModel.user.cart
+                                                .firstIndex(where: {
+                                                    $0.cartID == product.cartID
+                                                })
+                                            {
+                                                viewModel.user.cart[index]
+                                                    .numberOfProducts? += 1
+                                            }
+                                            Task {
+                                                try await viewModel
+                                                    .getProductsFromAPI()
+                                            }
                                         }
                                         .tint(.primary)
                                         .padding()
                                         .border(.black)
-                                        .frame(maxHeight: .infinity)
                                     }
                                     .padding(.bottom)
                                 }
                                 .padding(.top)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                
+
                             }
                             .padding(.top)
                         }
                         .swipeActions {
                             Button(role: .destructive) {
-                                viewModel.user.cart.removeAll(where: {$0.cartID == product.cartID})
+                                viewModel.user.cart.removeAll(where: {
+                                    $0.cartID == product.cartID
+                                })
                                 Task {
                                     try await viewModel.getProductsFromAPI()
                                 }
@@ -150,9 +168,16 @@ struct CartView: View {
                                 Label("Delete", systemImage: "trash")
                             }
                             Button {
-                                if let addToFavorite = viewModel.user.cart.first(where: {$0.cartID == product.cartID}) {
-                                    viewModel.user.favorite.append(addToFavorite)
-                                    viewModel.user.cart.removeAll(where: {$0.cartID == addToFavorite.cartID})
+                                if let addToFavorite = viewModel.user.cart
+                                    .first(where: {
+                                        $0.cartID == product.cartID
+                                    })
+                                {
+                                    viewModel.user.favorite.append(
+                                        addToFavorite)
+                                    viewModel.user.cart.removeAll(where: {
+                                        $0.cartID == addToFavorite.cartID
+                                    })
                                     Task {
                                         try await viewModel.getProductsFromAPI()
                                     }
@@ -169,88 +194,100 @@ struct CartView: View {
                 Spacer()
             } else {
                 List(viewModel.user.favorite, id: \.cartID) { product in
-//                ForEach(viewModel.testProducteArray) { product in
+                    //                ForEach(viewModel.testProducteArray) { product in
                     ZStack {
                         Rectangle()
                             .frame(maxWidth: .infinity, maxHeight: 250)
                             .foregroundStyle(.white)
                             .border(.black)
-                    HStack {
-                        AsyncImage(url: URL(string: product.images[0])) { image in
-                            image
-                                .resizable()
-                                .frame(maxWidth: 200,maxHeight: 248)
-                        } placeholder: {
-                            if !product.images.isEmpty {
-                                Image("pants")
+                        HStack {
+                            AsyncImage(url: URL(string: product.images[0])) {
+                                image in
+                                image
                                     .resizable()
-                                    .frame(maxWidth: 190, maxHeight: 240)
-                            } else {
-                                ProgressView()
-                            }
-                        }
-                        VStack {
-                            HStack(alignment: .lastTextBaseline) {
-                                Spacer()
-                                Button {
-                                    //placeholder
-                                } label: {
-                                    Image(systemName: "cart")
+                                    .frame(maxWidth: 200, maxHeight: 248)
+                            } placeholder: {
+                                if !product.images.isEmpty {
+                                    Image("pants")
                                         .resizable()
-                                        .frame(maxWidth: 18, maxHeight: 22)
+                                        .frame(maxWidth: 190, maxHeight: 240)
+                                } else {
+                                    ProgressView()
                                 }
+                            }
+                            VStack {
+                                HStack(alignment: .lastTextBaseline) {
+                                    Spacer()
+                                    Button {
+                                        //placeholder
+                                    } label: {
+                                        Image(systemName: "cart")
+                                            .resizable()
+                                            .frame(maxWidth: 18, maxHeight: 22)
+                                    }
+                                    .padding(.horizontal)
+                                    Button {
+                                        //Placeholder
+                                    } label: {
+                                        Image(systemName: "xmark")
+                                            .resizable()
+                                            .frame(maxWidth: 15, maxHeight: 20)
+                                    }
+                                }
+                                .padding(.top, 10)
                                 .padding(.horizontal)
-                                Button{
-                                    //Placeholder
-                                } label:{
-                                    Image(systemName: "xmark")
-                                        .resizable()
-                                        .frame(maxWidth: 15, maxHeight: 20)
+                                .frame(
+                                    maxWidth: 200,
+                                    alignment: .trailingLastTextBaseline
+                                )
+                                .tint(.black)
+
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text(product.title)
+                                        .frame(maxWidth: 150, maxHeight: 50)
+                                        .padding(.vertical, 5)
+                                    Text("\(product.price.formatted()) EUR")
+                                    Text(product.size ?? "keine Größe")
+
                                 }
-                            }
-                            .padding(.top, 10)
-                            .padding(.horizontal)
-                            .frame(maxWidth: 200, alignment: .trailingLastTextBaseline)
-                            .tint(.black)
-                            
-                            VStack(alignment: .leading, spacing: 10) {
-                                Text(product.title)
-                                    .frame(maxWidth: 150, maxHeight: 50)
-                                    .padding(.vertical, 5)
-                                Text("\(product.price.formatted()) EUR")
-                                Text(product.size ?? "keine Größe")
-                                
-                               
+                                .padding(.top)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
                             }
                             .padding(.top)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            
                         }
-                        .padding(.top)
-                    }
-                    .swipeActions {
-                        Button(role: .destructive) {
-                            viewModel.user.cart.removeAll(where: {$0.cartID == product.cartID})
-                            Task {
-                                try await viewModel.getProductsFromAPI()
-                            }
-                        } label: {
-                            Label("Delete", systemImage: "trash")
-                        }
-                        Button {
-                            if let addToFavorite = viewModel.user.cart.first(where: {$0.cartID == product.cartID}) {
-                                viewModel.user.favorite.append(addToFavorite)
-                                viewModel.user.cart.removeAll(where: {$0.cartID == addToFavorite.cartID})
+                        .swipeActions {
+                            Button(role: .destructive) {
+                                viewModel.user.cart.removeAll(where: {
+                                    $0.cartID == product.cartID
+                                })
                                 Task {
                                     try await viewModel.getProductsFromAPI()
                                 }
+                            } label: {
+                                Label("Delete", systemImage: "trash")
                             }
-                        } label: {
-                            Label("Favorite", systemImage: "flag")
+                            Button {
+                                if let addToFavorite = viewModel.user.cart
+                                    .first(where: {
+                                        $0.cartID == product.cartID
+                                    })
+                                {
+                                    viewModel.user.favorite.append(
+                                        addToFavorite)
+                                    viewModel.user.cart.removeAll(where: {
+                                        $0.cartID == addToFavorite.cartID
+                                    })
+                                    Task {
+                                        try await viewModel.getProductsFromAPI()
+                                    }
+                                }
+                            } label: {
+                                Label("Favorite", systemImage: "flag")
+                            }
+                            .tint(.yellow)
                         }
-                        .tint(.yellow)
                     }
-                }
                 }
                 .onAppear {
                     Task {
@@ -265,11 +302,13 @@ struct CartView: View {
                             Text("Total:")
                             Spacer()
                             //                        Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + $1.price }))€")
-                            Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
+                            Text(
+                                "\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR"
+                            )
                         }
                         .font(.headline)
                         .padding()
-                        
+
                         HStack {
                             Spacer()
                             Text("INKL. MWST.")
