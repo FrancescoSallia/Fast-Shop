@@ -100,7 +100,7 @@ class ProductViewModel: ObservableObject {
         numberOfProducts: 0
     ),
         Product(
-        id: 1,
+        id: 3,
         title: "Classic Navy Blue Baseball Cap, Classic Navy Blue Baseball Cap",
         price: 20.0,
         description: "Test Description",
