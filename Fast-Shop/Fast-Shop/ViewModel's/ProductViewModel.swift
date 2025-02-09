@@ -98,6 +98,26 @@ class ProductViewModel: ObservableObject {
         ), isFavorite: false,
         size: "",
         numberOfProducts: 0
+    ),
+        Product(
+        id: 1,
+        title: "Classic Navy Blue Baseball Cap, Classic Navy Blue Baseball Cap",
+        price: 20.0,
+        description: "Test Description",
+        images: [
+        "https://i.imgur.com/R3iobJA.jpeg",
+        "https://i.imgur.com/Wv2KTsf.jpeg",
+        "https://i.imgur.com/76HAxcA.jpeg"
+      ],
+        category: Category(
+            id: 1,
+            name: "Tools",
+            image: "tools.png",
+            creationAt: "2025-01-24T08:29:50.000Z",
+            updatedAt: "2025-01-24T09:42:00.000Z"
+        ), isFavorite: false,
+        size: "",
+        numberOfProducts: 0
     )
 ]
     @Published var selectedSize: String = ""
