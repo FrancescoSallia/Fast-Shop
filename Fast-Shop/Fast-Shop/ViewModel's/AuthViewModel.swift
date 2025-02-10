@@ -42,6 +42,7 @@ class AuthViewModel: ObservableObject {
         Task {
             do {
                 user = try await manager.registerUser(email: email, password: password)
+                try await manager.createFireUser(email: email)
                 self.email = ""
                 self.password = ""
                 self.repeatedPassword = ""

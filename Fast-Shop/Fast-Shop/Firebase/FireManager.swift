@@ -43,20 +43,12 @@ class FireManager {
         
     }
 
-//MARK: Adress-Section
+//MARK: Firestore-Section
     
-//    func createFireUser() async throws {
-//        let fireUser = FireUser(
-//            firstName: String,
-//            secondName: String,
-//            card: [Product],
-//            favorite: [Product],
-//            email: String,
-//            password: String,
-//            adress: String,
-//            houseNumber: String,
-//            plz: String,
-//            location: String
-//        )
-//    }
+    func createFireUser(email: String) async throws {
+        let fireUser = FireUser(email: email)
+        try store
+            .collection("user")
+            .addDocument(from: fireUser)
+    }
 }

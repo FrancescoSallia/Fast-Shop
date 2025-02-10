@@ -38,8 +38,8 @@ struct SizeSheetView: View {
                         description: product.description,
                         images: product.images,
                         category: product.category,
-                        size: viewModel.selectedSize,
-                        cartID: nil
+                        size: viewModel.selectedSize
+                        
                     )
                     viewModel.selectedProduct = addNewCartProduct
                     
@@ -50,9 +50,9 @@ struct SizeSheetView: View {
                         updatedProduct.numberOfProducts? += 1
                         viewModel.selectedSize = ""
 
-                        viewModel.user.cart[index] = updatedProduct
+                        viewModel.user.cart[index] = updatedProduct // hier wird das test product mitgegeben fals die liste leer ist!
                     } else {
-                        viewModel.selectedProduct.cartID = UUID()
+                        viewModel.selectedProduct.cartID = UUID().uuidString
                         viewModel.user.cart.append(viewModel.selectedProduct)
                         viewModel.selectedSize = ""
 

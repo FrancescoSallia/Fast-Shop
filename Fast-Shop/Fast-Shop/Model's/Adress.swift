@@ -7,10 +7,12 @@
 
 import Foundation
 
-//struct Adress: Codable {
-//    
-//    var adress: String
-//    var houseNumber: String
-//    var plz: String
-//    var location: String
-//}
+struct Adress: Codable {
+    
+    let firstName: String
+    let secondName: String
+    let street: String
+    var houseNumber: String
+    var plz: String
+    var location: String
+}

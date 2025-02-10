@@ -135,7 +135,16 @@ class ProductViewModel: ObservableObject {
     @Published var showProgressView: Bool = true
     
     //MARK: User
-    @Published var user = FireUser(firstName: "John", secondName: "Mustermann")
+    @Published var user = FireUser(
+        email: "Test@test.de", adress: Adress(
+            firstName: "John",
+            secondName: "Test",
+            street: "MusterStraße",
+            houseNumber: "2",
+            plz: "13335",
+            location: "Berlin"
+        )
+    )
     @Published var selectedPayOption: String = "apple-pay"
 
     

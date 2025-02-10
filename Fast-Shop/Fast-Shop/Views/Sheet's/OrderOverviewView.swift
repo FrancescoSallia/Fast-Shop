@@ -87,15 +87,15 @@ struct OrderOverviewView: View {
                         }
                         .padding(.bottom)
                         HStack {
-                            Text(viewModel.user.firstName)
+                            Text(viewModel.user.adress?.firstName ?? "NO NAME")
                                 .textCase(.uppercase)
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.black)
                         }
-                        Text("\(viewModel.user.adress) \(viewModel.user.houseNumber)")
+                        Text("\(viewModel.user.adress?.street ?? "NO STREET") \(viewModel.user.adress?.houseNumber ?? "NO HOUSENUMBER")")
                             .textCase(.uppercase)
-                        Text("\(viewModel.user.plz) \(viewModel.user.location)")
+                        Text("\(viewModel.user.adress?.plz ?? "NO PLZ") \(viewModel.user.adress?.location ?? "NO LOCATION")")
                             .textCase(.uppercase)
                     }
                     .padding()

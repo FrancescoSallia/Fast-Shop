@@ -31,16 +31,16 @@ struct AdressView: View {
                         .padding(.trailing, 8)
                     VStack (alignment: .leading){
                         HStack {
-                            Text(viewModel.user.firstName)
-                            Text(viewModel.user.secondName)
+                            Text(viewModel.user.adress?.firstName ?? "NO NAME")
+                            Text(viewModel.user.adress?.secondName ?? "No Second Name")
                         }
                         HStack {
-                            Text(viewModel.user.adress)
-                            Text(viewModel.user.houseNumber)
+                            Text(viewModel.user.adress?.street ?? "NO STREET")
+                            Text(viewModel.user.adress?.houseNumber ?? "NO HOUSENUMBER")
                         }
                         HStack {
-                            Text("\(viewModel.user.plz),")
-                            Text(viewModel.user.location)
+                            Text("\(viewModel.user.adress?.plz ?? "NO PLZ"),")
+                            Text(viewModel.user.adress?.location ?? "NO LOCATION")
                         }
                     }
                 }
