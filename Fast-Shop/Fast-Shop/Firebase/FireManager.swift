@@ -45,7 +45,18 @@ class FireManager {
 
 //MARK: Adress-Section
     
-    func addAdress(adress: FireUser) async throws {
-    
-    }
+//    func createFireUser() async throws {
+//        let fireUser = FireUser(
+//            firstName: String,
+//            secondName: String,
+//            card: [Product],
+//            favorite: [Product],
+//            email: String,
+//            password: String,
+//            adress: String,
+//            houseNumber: String,
+//            plz: String,
+//            location: String
+//        )
+//    }
 }
