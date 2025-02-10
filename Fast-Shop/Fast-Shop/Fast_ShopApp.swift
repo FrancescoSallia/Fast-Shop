@@ -18,6 +18,7 @@ struct Fast_ShopApp: App {
     
     @StateObject var viewModel = ProductViewModel()
     @StateObject var authViewModel = AuthViewModel()
+    @StateObject var viewModelFirestore = FirestoreViewModel()
     @State var showTab: Bool = true
     @State var isLogged: Bool = false
 
@@ -33,7 +34,7 @@ struct Fast_ShopApp: App {
                                 //                        APITestView()
                             }
                             Tab("Search", systemImage: "magnifyingglass"){
-                                SearchView(viewModel: viewModel)
+                                SearchView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                                     .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
                                         IsSuccessfullSheet(viewModel: viewModel)
                                             .presentationDetents([.height(60)])

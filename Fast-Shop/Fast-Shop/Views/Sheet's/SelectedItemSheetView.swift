@@ -10,6 +10,7 @@ import SwiftUI
 struct SelectedItemSheetView: View {
     
     @ObservedObject var viewModel = ProductViewModel()
+    @ObservedObject var viewModelFirestore = FirestoreViewModel()
     
     let sizes: [String] = ["XS","S", "M", "L", "XL", "XXL"]
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
@@ -66,6 +67,7 @@ struct SelectedItemSheetView: View {
               
 //                viewModel.selectedProduct = newProduct
                 viewModel.user.cart.append(newProduct)
+                viewModelFirestore.updateUserCart(product: newProduct)
                 viewModel.showSheet = false
                 if viewModel.selectedProduct.category.id != 1 {
                     viewModel.showAlertSuccessfullAdded = true

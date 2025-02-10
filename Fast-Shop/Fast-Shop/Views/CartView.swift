@@ -59,147 +59,148 @@ struct CartView: View {
                 VStack {
                 if viewModel.showCart {
                     //ForEach(viewModel.user.cart, id: \.cartID) { product in
-                    ForEach(viewModel.testProducteArray) { product in
-                        ZStack {
-                            Rectangle()
-                                //                                        .fill(.clear)
-                                .frame(maxWidth: .infinity, maxHeight: 250)
-                                .foregroundStyle(.clear)
-                                .border(.black)
-                            HStack {
-                                AsyncImage(url: URL(string: product.images[0]))
-                                {
-                                    image in
-                                    image
-                                        .resizable()
-                                        .frame(maxWidth: 200, maxHeight: 248)
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                VStack {
-                                    HStack(alignment: .lastTextBaseline) {
-                                        Spacer()
-                                        Button {
-                                            //placeholder
-                                        } label: {
-                                            Image(systemName: "bookmark")
-                                                .resizable()
-                                                .frame(
-                                                    maxWidth: 15, maxHeight: 22)
-                                        }
-                                        .padding(.horizontal)
-                                        Button {
-                                            //Placeholder
-                                        } label: {
-                                            Image(systemName: "xmark")
-                                                .resizable()
-                                                .frame(
-                                                    maxWidth: 15, maxHeight: 20)
-                                        }
+                            ForEach(viewModel.testProducteArray) { product in
+                                ZStack {
+                                    Rectangle()
+                                    //                                        .fill(.clear)
+                                        .frame(maxWidth: .infinity, maxHeight: 250)
+                                        .foregroundStyle(.clear)
+                                        .border(.black)
+                                HStack {
+                                    AsyncImage(url: URL(string: product.images[0]))
+                                    {
+                                        image in
+                                        image
+                                            .resizable()
+                                            .frame(maxWidth: 200, maxHeight: 248)
+                                    } placeholder: {
+                                        ProgressView()
                                     }
-                                    //                                .padding(.top, 10)
-                                    .padding(.horizontal)
-                                    .frame(
-                                        maxWidth: 200,
-                                        alignment: .trailingLastTextBaseline
-                                    )
-                                    .tint(.black)
-
-                                    VStack(alignment: .leading, spacing: 10) {
-                                        Text(product.title)
-                                            .frame(maxWidth: 150, maxHeight: 50)
-                                            .padding(.vertical, 5)
-                                        Text("\(product.price.formatted()) EUR")
-                                        Text(product.size ?? "keine Größe")
-
-                                        HStack(spacing: 0) {
-                                            Button("-") {
-
-                                                if let index = viewModel.user
-                                                    .cart
-                                                    .firstIndex(where: {
-                                                        $0.id == product.id
-                                                    })
-                                                {
-                                                    viewModel.user.cart[index]
-                                                        .numberOfProducts? -= 1
-                                                }
-                                                Task {
-                                                    try await viewModel
-                                                        .getProductsFromAPI()
-                                                }
+                                    VStack {
+                                        HStack(alignment: .lastTextBaseline) {
+                                            Spacer()
+                                            Button {
+                                                //placeholder
+                                            } label: {
+                                                Image(systemName: "bookmark")
+                                                    .resizable()
+                                                    .frame(
+                                                        maxWidth: 15, maxHeight: 22)
                                             }
-                                            .tint(.primary)
-                                            .padding()
-                                            .border(.black)
-                                            Text(
-                                                "\(product.numberOfProducts ?? 0)"
-                                            )
-                                            .padding()
-                                            .border(.black)
-                                            Button("+") {
-                                                if let index = viewModel.user
-                                                    .cart
-                                                    .firstIndex(where: {
-                                                        $0.cartID
-                                                            == product.cartID
-                                                    })
-                                                {
-                                                    viewModel.user.cart[index]
-                                                        .numberOfProducts? += 1
-                                                }
-                                                Task {
-                                                    try await viewModel
-                                                        .getProductsFromAPI()
-                                                }
+                                            .padding(.horizontal)
+                                            Button {
+                                                //Placeholder
+                                            } label: {
+                                                Image(systemName: "xmark")
+                                                    .resizable()
+                                                    .frame(
+                                                        maxWidth: 15, maxHeight: 20)
                                             }
-                                            .tint(.primary)
-                                            .padding()
-                                            .border(.black)
                                         }
-                                        .padding(.bottom)
+                                        //                                .padding(.top, 10)
+                                        .padding(.horizontal)
+                                        .frame(
+                                            maxWidth: 200,
+                                            alignment: .trailingLastTextBaseline
+                                        )
+                                        .tint(.black)
+                                        
+                                        VStack(alignment: .leading, spacing: 10) {
+                                            Text(product.title)
+                                                .frame(maxWidth: 150, maxHeight: 50)
+                                                .padding(.vertical, 5)
+                                            Text("\(product.price.formatted()) EUR")
+                                            Text(product.size ?? "keine Größe")
+                                            
+                                            HStack(spacing: 0) {
+                                                Button("-") {
+                                                    
+                                                    if let index = viewModel.user
+                                                        .cart
+                                                        .firstIndex(where: {
+                                                            $0.id == product.id
+                                                        })
+                                                    {
+                                                        viewModel.user.cart[index]
+                                                            .numberOfProducts? -= 1
+                                                    }
+                                                    Task {
+                                                        try await viewModel
+                                                            .getProductsFromAPI()
+                                                    }
+                                                }
+                                                .tint(.primary)
+                                                .padding()
+                                                .border(.black)
+                                                Text(
+                                                    "\(product.numberOfProducts ?? 0)"
+                                                )
+                                                .padding()
+                                                .border(.black)
+                                                Button("+") {
+                                                    if let index = viewModel.user
+                                                        .cart
+                                                        .firstIndex(where: {
+                                                            $0.cartID
+                                                            == product.cartID
+                                                        })
+                                                    {
+                                                        viewModel.user.cart[index]
+                                                            .numberOfProducts? += 1
+                                                    }
+                                                    Task {
+                                                        try await viewModel
+                                                            .getProductsFromAPI()
+                                                    }
+                                                }
+                                                .tint(.primary)
+                                                .padding()
+                                                .border(.black)
+                                            }
+                                            .padding(.bottom)
+                                        }
+                                        .padding(.top)
+                                        .frame(
+                                            maxWidth: .infinity, alignment: .leading
+                                        )
+                                        
                                     }
                                     .padding(.top)
-                                    .frame(
-                                        maxWidth: .infinity, alignment: .leading
-                                    )
-
                                 }
-                                .padding(.top)
-                            }
-                            .swipeActions {
-                                Button(role: .destructive) {
-                                    viewModel.user.cart.removeAll(where: {
-                                        $0.cartID == product.cartID
-                                    })
-                                    Task {
-                                        try await viewModel.getProductsFromAPI()
-                                    }
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                                Button {
-                                    if let addToFavorite = viewModel.user.cart
-                                        .first(where: {
+                                .swipeActions {
+                                    Button(role: .destructive) {
+                                        viewModel.user.cart.removeAll(where: {
                                             $0.cartID == product.cartID
                                         })
-                                    {
-                                        viewModel.user.favorite.append(
-                                            addToFavorite)
-                                        viewModel.user.cart.removeAll(where: {
-                                            $0.cartID == addToFavorite.cartID
-                                        })
                                         Task {
-                                            try await viewModel
-                                                .getProductsFromAPI()
+                                            try await viewModel.getProductsFromAPI()
                                         }
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
                                     }
-                                } label: {
-                                    Label("Favorite", systemImage: "flag")
+                                    Button {
+                                        if let addToFavorite = viewModel.user.cart
+                                            .first(where: {
+                                                $0.cartID == product.cartID
+                                            })
+                                        {
+                                            viewModel.user.favorite.append(
+                                                addToFavorite)
+                                            viewModel.user.cart.removeAll(where: {
+                                                $0.cartID == addToFavorite.cartID
+                                            })
+                                            Task {
+                                                try await viewModel
+                                                    .getProductsFromAPI()
+                                            }
+                                        }
+                                    } label: {
+                                        Label("Favorite", systemImage: "flag")
+                                    }
+                                    .tint(.yellow)
                                 }
-                                .tint(.yellow)
                             }
-                        }
+                        
                     }
 
                     //                .listStyle(.plain)

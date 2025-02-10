@@ -6,3 +6,19 @@
 //
 
 import Foundation
+
+@MainActor
+class FirestoreViewModel: ObservableObject {
+    
+    let firestore = FireManager.shared
+    
+    func updateUserCart(product: Product) {
+        Task {
+            do {
+                try await firestore.updateUserCart(product: product)
+            } catch {
+                fatalError("update Cart failed")
+            }
+        }
+    }
+}

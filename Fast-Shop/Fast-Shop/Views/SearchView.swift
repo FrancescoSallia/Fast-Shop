@@ -28,6 +28,7 @@ struct SearchView: View {
         size: "",
         numberOfProducts: 0)
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
@@ -171,7 +172,7 @@ struct SearchView: View {
             isPresented: $viewModel.showSheet,
             content: {
                 //            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? viewModel.testProduct )
-                SelectedItemSheetView(viewModel: viewModel)
+                SelectedItemSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                     .presentationDetents([.height(600)])
                 //                .presentationDetents([.medium, .large])
             }
@@ -213,5 +214,5 @@ struct SearchView: View {
     }
 }
 #Preview {
-    SearchView(viewModel: ProductViewModel())
+    SearchView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())
 }

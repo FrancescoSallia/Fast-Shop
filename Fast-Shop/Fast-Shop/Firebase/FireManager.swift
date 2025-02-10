@@ -48,7 +48,51 @@ class FireManager {
     func createFireUser(email: String) async throws {
         let fireUser = FireUser(email: email)
         try store
-            .collection("user")
+            .collection("users")
             .addDocument(from: fireUser)
+    }
+    
+    func productToDictionary(product: Product) -> [String: Any] {
+      return [
+        "id": product.id,
+        "title": product.title,
+        "price": product.price,
+        "description": product.description,
+        "images": product.images,
+        "category": product.category,
+        "isFavorite": product.isFavorite ?? false,
+        "size": product.size ?? SizesEnum.S,
+        "numberOfProducts": product.numberOfProducts ?? 0,
+        "cartID": product.cartID ?? "keine cartID"
+      ]
+    }
+    
+    func updateUserCart(product: Product) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let productData = productToDictionary(product: product)
+        let userRef = store.collection("users").document(uid)
+       
+//        let newProduct = Product(
+//            id: product.id,
+//            title: product.title,
+//            price: product.price,
+//            description: product.description,
+//            images: product.images,
+//            category: product.category,
+//            isFavorite: product.isFavorite,
+//            size: product.size,
+//            numberOfProducts: product.numberOfProducts,
+//            cartID: product.cartID
+//        )
+       
+        do {
+            try await userRef
+                .updateData(["cart": FieldValue.arrayUnion([productData])])
+//                .setData(from: product)
+        } catch let error {
+          print("Error writing city to Firestore: \(error)")
+        }
     }
 }
