@@ -82,7 +82,8 @@ struct CartView: View {
                                         HStack(alignment: .lastTextBaseline) {
                                             Spacer()
                                             Button {
-                                                //placeholder
+                                                viewModelFirestore.updateUserFavorite(product: product)
+                                                viewModelFirestore.deleteUserCart(product: product)
                                             } label: {
                                                 Image(systemName: "bookmark")
                                                     .resizable()
@@ -234,7 +235,8 @@ struct CartView: View {
                                     HStack(alignment: .lastTextBaseline) {
                                         Spacer()
                                         Button {
-                                            //placeholder
+                                            viewModelFirestore.updateUserCart(product: product)
+                                            viewModelFirestore.deleteUserFavorite(product: product)
                                         } label: {
                                             Image(systemName: "cart")
                                                 .resizable()
