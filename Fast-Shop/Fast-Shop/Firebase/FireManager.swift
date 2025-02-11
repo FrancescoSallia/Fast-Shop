@@ -98,6 +98,21 @@ class FireManager {
        
     }
     
+    func deleteUserFavorite(product: Product) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Favorite")
+        
+        do {
+            try await userRef
+                .document() 
+                .delete()
+        } catch {
+            print(error)
+        }
+    }
+    
 //    func getCartProducts() async throws -> [Product] {
 //        guard let uid = currentUser?.uid else {
 //            fatalError("no current user")
