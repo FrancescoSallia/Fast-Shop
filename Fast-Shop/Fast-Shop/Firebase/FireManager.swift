@@ -52,46 +52,52 @@ class FireManager {
             .addDocument(from: fireUser)
     }
     
-//    func productToDictionary(product: Product) -> [String: Any] {
-//      return [
-//        "id": product.id,
-//        "title": product.title,
-//        "price": product.price,
-//        "description": product.description,
-//        "images": product.images,
-//        "category": product.category,
-//        "isFavorite": product.isFavorite ?? false,
-//        "size": product.size ?? SizesEnum.S,
-//        "numberOfProducts": product.numberOfProducts ?? 0,
-//        "cartID": product.cartID ?? "keine cartID"
-//      ]
-//    }
-    
     func updateUserCart(product: Product) async throws {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
-//        let productData = productToDictionary(product: product)
+        var eigeneID = ""
         let userRef = store.collection("users").document(uid).collection("Cart")
         
         do {
+            eigeneID = product.fireID!
            try userRef
-                .addDocument(from: product)
+                .document(eigeneID)
+                .setData(from: product)
         } catch {
             print(error)
         }
        
     }
+    
+    func deleteUserCart(product: Product) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Cart")
+        
+        do {
+            try await userRef
+                .document(product.fireID!)
+                .delete()
+        } catch {
+            print(error)
+        }
+    }
+    
     func updateUserFavorite(product: Product) async throws {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
 //        let productData = productToDictionary(product: product)
+        var eigeneID = ""
         let userRef = store.collection("users").document(uid).collection("Favorite")
         
         do {
-           try userRef
-                .addDocument(from: product)
+            eigeneID = product.fireID!
+            try userRef
+                .document(eigeneID)
+                .setData(from: product)
         } catch {
             print(error)
         }
@@ -106,27 +112,12 @@ class FireManager {
         
         do {
             try await userRef
-                .document() 
+                .document(product.fireID!)
                 .delete()
         } catch {
             print(error)
         }
     }
-    
-//    func getCartProducts() async throws -> [Product] {
-//        guard let uid = currentUser?.uid else {
-//            fatalError("no current user")
-//        }
-//        let userRef = store.collection("users").document(uid).collection("Cart")
-//        
-//        return try await userRef
-//            .whereField("isFavorite", isEqualTo: false)
-//                .getDocuments()
-//                .documents
-//                .map {
-//                    try $0.data(as: Product.self)
-//                }
-//    }
     
     func cartSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) {
         guard let uid = currentUser?.uid else {

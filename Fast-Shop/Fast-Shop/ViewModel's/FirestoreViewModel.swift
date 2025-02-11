@@ -30,6 +30,22 @@ class FirestoreViewModel: ObservableObject  {
         }
     }
     
+    func deleteUserCart(product: Product) {
+        if let index = cartList.firstIndex(where: { $0.id == product.id}) {
+            let deleteProduct = cartList[index]
+            Task {
+               do {
+                   print("delete ID: \(deleteProduct)")
+                   try await firestore.deleteUserCart(product: deleteProduct)
+               } catch {
+                   fatalError("delete Favorite item failed")
+               }
+           }
+            
+        }
+        
+    }
+    
     func updateUserFavorite(product: Product) {
         Task {
             do {

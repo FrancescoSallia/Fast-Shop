@@ -91,7 +91,7 @@ struct CartView: View {
                                             }
                                             .padding(.horizontal)
                                             Button {
-                                                //Placeholder
+                                                viewModelFirestore.deleteUserCart(product: product)
                                             } label: {
                                                 Image(systemName: "xmark")
                                                     .resizable()

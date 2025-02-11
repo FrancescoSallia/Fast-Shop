@@ -9,7 +9,7 @@ import Foundation
 
 struct Product: Identifiable, Codable {
     
-   
+    var fireID: String? = UUID().uuidString
     let id: Int
     let title: String
     let price: Double
