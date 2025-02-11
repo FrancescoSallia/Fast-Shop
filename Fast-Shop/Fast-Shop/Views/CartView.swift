@@ -329,7 +329,8 @@ struct CartView: View {
                             Spacer()
                             //                        Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + $1.price }))€")
                             Text(
-                                "\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR"
+//                                "\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR"
+                                "\(String(format: "%.2f", viewModelFirestore.cartList.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR"
                             )
                         }
                         .font(.headline)

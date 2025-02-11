@@ -15,8 +15,8 @@ class FirestoreViewModel: ObservableObject  {
     @Published var favoriteList: [Product] = []
     
     init() {
-        cartSnapshotListener()
-        favoriteSnapshotListener()
+//        cartSnapshotListener()
+//        favoriteSnapshotListener()
     }
     
     func updateUserCart(product: Product) {

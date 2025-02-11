@@ -6,12 +6,21 @@
 //
 
 import SwiftUI
+import Toast
 
 struct ProductDetailView: View {
     
     let product: Product
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    
+    let toast = Toast.default(
+        image: UIImage(systemName: "checkmark.circle.fill")!,
+        imageTint: .systemGreen,
+        title: "Zum Warenkorb hinzugefügt",
+        config: .init(
+            direction: .bottom
+        ))
 
     var body: some View {
         NavigationStack {
@@ -88,6 +97,7 @@ struct ProductDetailView: View {
 //            if viewModel.showAlertSuccessfullAdded {
 //
 //            }
+            
             HStack() {
                 ZStack {
                     Rectangle()
@@ -162,7 +172,9 @@ struct ProductDetailView: View {
         })
         .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
             IsSuccessfullSheet(viewModel: viewModel)
-                .presentationDetents([.height(60)])
+//                .presentationDetents([.height(60)])
+                .presentationDetents([.height(0)])
+                .hidden()
         })
         .onAppear {
             Task {
@@ -170,6 +182,7 @@ struct ProductDetailView: View {
             }
         }
     }
+
 }
 #Preview {
     ProductDetailView(product: ProductViewModel().testProduct, viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())

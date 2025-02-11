@@ -34,11 +34,12 @@ struct SelectedItemSheetView: View {
                         }
                     }
                 }
+                .padding(.bottom)
             }
             .padding(.leading)
             //FIXME: Mit den Kleidungen funktioniert das mit einfügen im warenkorb und löschen/favorisieren auch wenn man andere größen eingibt. jetzt muss es nur noch bei den anderen kategorien funktionieren!
             
-            if viewModel.selectedProduct.category.id == 1 {
+            if viewModel.selectedProduct.category.id != 1 {
                 SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
                 
             } else if viewModel.selectedProduct.category.id == 2{
@@ -52,25 +53,37 @@ struct SelectedItemSheetView: View {
             } else {
                 Text("Andere Dinge")
             }
-            Button("HINZUFÜGEN") {
-                let newProduct = Product(
-                    id: viewModel.selectedProduct.id,
-                    title: viewModel.selectedProduct.title,
-                    price: viewModel.selectedProduct.price,
-                    description: viewModel.selectedProduct.description,
-                    images: viewModel.selectedProduct.images,
-                    category: viewModel.selectedProduct.category,
-                    isFavorite: false,
-                    size: viewModel.selectedSize,
-                    numberOfProducts: 1
-                )
-              
-//                viewModel.selectedProduct = newProduct
-                viewModel.user.cart.append(newProduct)
-                viewModelFirestore.updateUserCart(product: newProduct)
-                viewModel.showSheet = false
-                if viewModel.selectedProduct.category.id != 1 {
-                    viewModel.showAlertSuccessfullAdded = true
+            if viewModel.selectedProduct.category.id == 1 {
+                Button {
+                    let newProduct = Product(
+                        id: viewModel.selectedProduct.id,
+                        title: viewModel.selectedProduct.title,
+                        price: viewModel.selectedProduct.price,
+                        description: viewModel.selectedProduct.description,
+                        images: viewModel.selectedProduct.images,
+                        category: viewModel.selectedProduct.category,
+                        isFavorite: false,
+                        size: viewModel.selectedSize,
+                        numberOfProducts: 1
+                    )
+                    
+                    //                viewModel.selectedProduct = newProduct
+                    viewModel.user.cart.append(newProduct)
+                    viewModelFirestore.updateUserCart(product: newProduct)
+                    viewModel.showSheet = false
+                    if viewModel.selectedProduct.category.id != 1 {
+                        viewModel.showAlertSuccessfullAdded = true
+                    }
+                } label: {
+                    HStack {
+                        Text("HINZUFÜGEN")
+                        Image(systemName: "cart.fill")
+                    }
+                    .tint(.white)
+                    .padding()
+                    .background(.black)
+                    .clipShape(.rect(cornerRadius: 4))
+                    .padding()
                 }
             }
         }
