@@ -82,26 +82,67 @@ class FireManager {
         }
        
     }
+    func updateUserFavorite(product: Product) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+//        let productData = productToDictionary(product: product)
+        let userRef = store.collection("users").document(uid).collection("Favorite")
+        
+        do {
+           try userRef
+                .addDocument(from: product)
+        } catch {
+            print(error)
+        }
+       
+    }
     
-    func getCartProducts() async throws -> [Product]{
+//    func getCartProducts() async throws -> [Product] {
+//        guard let uid = currentUser?.uid else {
+//            fatalError("no current user")
+//        }
+//        let userRef = store.collection("users").document(uid).collection("Cart")
+//        
+//        return try await userRef
+//            .whereField("isFavorite", isEqualTo: false)
+//                .getDocuments()
+//                .documents
+//                .map {
+//                    try $0.data(as: Product.self)
+//                }
+//    }
+    
+    func cartSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
         let userRef = store.collection("users").document(uid).collection("Cart")
         
-        return try await userRef
-            .whereField("isFavorite", isEqualTo: false)
-                .getDocuments()
-                .documents
-                .map {
-                    try $0.data(as: Product.self)
+        userRef
+            .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
+                if let error = error {
+                    print("Error listening for changes: \(error)")
+                    compleation([], error)
+                    return
                 }
+                guard let snapshot else {
+                    fatalError("snapshot ist leer")
+                }
+                let products = snapshot
+                    .documents
+                    .compactMap { product in
+                        try? product.data(as: Product.self)
+                    }
+                compleation(products, nil)
+            }
     }
-    func addSnapShotListener(compleation: @escaping ([Product], Error?) -> Void) {
+    
+    func favoriteSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
-        let userRef = store.collection("users").document(uid).collection("Cart")
+        let userRef = store.collection("users").document(uid).collection("Favorite")
         
         userRef
             .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in

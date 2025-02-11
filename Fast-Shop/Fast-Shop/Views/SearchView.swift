@@ -77,7 +77,7 @@ struct SearchView: View {
                             NavigationLink(destination: {
                                 ProductDetailView(
                                     product: filteredProduct,
-                                    viewModel: viewModel)
+                                    viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                             }) {
                                 VStack {
                                     HStack {

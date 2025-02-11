@@ -56,12 +56,12 @@ struct CartView: View {
             //FIXME: bei mehreren items geht die ganze leiste nach oben, schau es dir nochmal an!!
 
             //FIXME: Die ScrollView verhindert das man auf die Buttons klicken kann!!
-//            ScrollView {
+            ScrollView {
                 VStack {
                 if viewModel.showCart {
 //                    ForEach(viewModel.user.cart, id: \.cartID) { product in
-//                        ForEach(viewModelFirestore.cartList, id: \.cartID) { product in
-                    List(viewModel.testProducteArray) { product in
+                        ForEach(viewModelFirestore.cartList, id: \.cartID) { product in
+//                    List(viewModel.testProducteArray) { product in
                                 ZStack {
                                     Rectangle()
                                     //.fill(.clear)
@@ -205,11 +205,12 @@ struct CartView: View {
                         
                     }
 
-                                    .listStyle(.plain)
+//                                    .listStyle(.plain)
                     //                Spacer()
                     //                Spacer()
                 } else {
-                    ForEach(viewModel.user.favorite, id: \.cartID) { product in
+//                    ForEach(viewModel.user.favorite, id: \.cartID) { product in
+                    ForEach(viewModelFirestore.favoriteList, id: \.cartID) { product in
                         //                  ForEach(viewModel.testProducteArray) { product in
                         ZStack {
                             Rectangle()
@@ -317,7 +318,7 @@ struct CartView: View {
                     }
                 }
                                 }
-//            }
+            }
             Spacer()
                 
             if viewModel.showCart {

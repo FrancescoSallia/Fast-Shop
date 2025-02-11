@@ -39,7 +39,7 @@ struct SelectedItemSheetView: View {
             //FIXME: Mit den Kleidungen funktioniert das mit einfügen im warenkorb und löschen/favorisieren auch wenn man andere größen eingibt. jetzt muss es nur noch bei den anderen kategorien funktionieren!
             
             if viewModel.selectedProduct.category.id == 1 {
-                SizeSheetView(viewModel: viewModel, product: viewModel.selectedProduct)
+                SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
                 
             } else if viewModel.selectedProduct.category.id == 2{
                 Text("Electronik")
@@ -67,8 +67,7 @@ struct SelectedItemSheetView: View {
               
 //                viewModel.selectedProduct = newProduct
                 viewModel.user.cart.append(newProduct)
-                viewModelFirestore.updateUserCart(product: newProduct
-                )
+                viewModelFirestore.updateUserCart(product: newProduct)
                 viewModel.showSheet = false
                 if viewModel.selectedProduct.category.id != 1 {
                     viewModel.showAlertSuccessfullAdded = true

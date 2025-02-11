@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SizeSheetView: View {
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
     var product: Product
 
@@ -54,6 +55,7 @@ struct SizeSheetView: View {
                     } else {
                         viewModel.selectedProduct.cartID = UUID().uuidString
                         viewModel.user.cart.append(viewModel.selectedProduct)
+                        viewModelFirestore.updateUserCart(product: viewModel.selectedProduct)
                         viewModel.selectedSize = ""
 
                     }
@@ -69,7 +71,7 @@ struct SizeSheetView: View {
 }
 
 #Preview {
-    SizeSheetView(viewModel: ProductViewModel(), product: ProductViewModel().testProduct)
+    SizeSheetView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel(), product: ProductViewModel().testProduct)
 }
 
 

@@ -12,15 +12,28 @@ class FirestoreViewModel: ObservableObject  {
     
     let firestore = FireManager.shared
     @Published var cartList: [Product] = []
+    @Published var favoriteList: [Product] = []
     
     init() {
-//        addSnapShotListener()
+        cartSnapshotListener()
+        favoriteSnapshotListener()
     }
     
     func updateUserCart(product: Product) {
         Task {
             do {
                 try await firestore.updateUserCart(product: product)
+//                getCartProducts()
+            } catch {
+                fatalError("update Cart failed")
+            }
+        }
+    }
+    
+    func updateUserFavorite(product: Product) {
+        Task {
+            do {
+                try await firestore.updateUserFavorite(product: product)
 //                getCartProducts()
             } catch {
                 fatalError("update Cart failed")
@@ -37,13 +50,24 @@ class FirestoreViewModel: ObservableObject  {
 //        }
 //    }
     
-    private func addSnapShotListener() {
-        firestore.addSnapShotListener { products, error in
+    private func cartSnapshotListener() {
+        firestore.cartSnapshotListener { products, error in
             if let error = error {
                 print(error)
                 return
             }
             self.cartList = products
+            
+        }
+    }
+    
+    private func favoriteSnapshotListener() {
+        firestore.favoriteSnapshotListener { products, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            self.favoriteList = products
             
         }
     }

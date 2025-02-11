@@ -11,6 +11,7 @@ struct ProductDetailView: View {
     
     let product: Product
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
 
     var body: some View {
         NavigationStack {
@@ -137,6 +138,7 @@ struct ProductDetailView: View {
                             }
                         } else {
                             viewModel.user.favorite.append(addNewFavoriteProduct)
+                            viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                             Task {
                                 try await viewModel.getProductsFromAPI()
                             }
@@ -155,7 +157,7 @@ struct ProductDetailView: View {
 
         }
         .sheet(isPresented: $viewModel.showSizes, content: {
-            SizeSheetView(viewModel: viewModel, product: product)
+            SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
                 .presentationDetents([(.medium)])
         })
         .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
@@ -170,5 +172,5 @@ struct ProductDetailView: View {
     }
 }
 #Preview {
-    ProductDetailView(product: ProductViewModel().testProduct, viewModel: ProductViewModel())
+    ProductDetailView(product: ProductViewModel().testProduct, viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())
 }
