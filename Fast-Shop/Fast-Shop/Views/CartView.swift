@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CartView: View {
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
     @State var sizes: [String] = ["XS", "S", "M", "L", "XL", "XXL"]
     //    @State var counter = 0
     //    let columns = [GridItem(.flexible()), GridItem(.flexible())]
@@ -55,14 +56,15 @@ struct CartView: View {
             //FIXME: bei mehreren items geht die ganze leiste nach oben, schau es dir nochmal an!!
 
             //FIXME: Die ScrollView verhindert das man auf die Buttons klicken kann!!
-            ScrollView {
+//            ScrollView {
                 VStack {
                 if viewModel.showCart {
-                    //ForEach(viewModel.user.cart, id: \.cartID) { product in
-                            ForEach(viewModel.testProducteArray) { product in
+//                    ForEach(viewModel.user.cart, id: \.cartID) { product in
+//                        ForEach(viewModelFirestore.cartList, id: \.cartID) { product in
+                    List(viewModel.testProducteArray) { product in
                                 ZStack {
                                     Rectangle()
-                                    //                                        .fill(.clear)
+                                    //.fill(.clear)
                                         .frame(maxWidth: .infinity, maxHeight: 250)
                                         .foregroundStyle(.clear)
                                         .border(.black)
@@ -203,7 +205,7 @@ struct CartView: View {
                         
                     }
 
-                    //                .listStyle(.plain)
+                                    .listStyle(.plain)
                     //                Spacer()
                     //                Spacer()
                 } else {
@@ -315,7 +317,7 @@ struct CartView: View {
                     }
                 }
                                 }
-            }
+//            }
             Spacer()
                 
             if viewModel.showCart {
@@ -359,5 +361,5 @@ struct CartView: View {
     }
 }
 #Preview {
-    CartView(viewModel: ProductViewModel())
+    CartView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())
 }

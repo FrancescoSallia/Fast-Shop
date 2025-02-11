@@ -41,7 +41,7 @@ struct Fast_ShopApp: App {
                                     })
                             }
                             Tab("Cart", systemImage: "bag"){
-                                CartView(viewModel: viewModel)
+                                CartView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                                 //                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
                             }
                             Tab("Settings", systemImage: "person"){
@@ -54,6 +54,7 @@ struct Fast_ShopApp: App {
                 }
             .onAppear {
                 authViewModel.checkLoggedIn()
+                
             }
         }
 

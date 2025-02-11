@@ -73,49 +73,38 @@ struct testingView: View {
         numberOfProducts: 0
     )
 ]
-    
+
     var body: some View {
-        ZStack {
-                    Color.blue.ignoresSafeArea() // Blauer Hintergrund
-                    
+      
+//        ScrollView {
+        List {
+            ForEach(testProducteArray) { item in
+                HStack {
+                    AsyncImage(url: URL(string: item.images.first ?? "NO Image")) { pic in
+                        pic
+                            .image?.resizable()
+                            .frame(maxWidth: 160, maxHeight: 230)
+                    }
                     VStack {
-                        List {
-                            ForEach(testProducteArray) { item in
-                                HStack {
-                                    Button(action: {
-                                    }) {
-                                        Image(systemName: "plus.circle.fill")
-                                            .foregroundColor(.green)
-                                            .font(.title)
-                                    }
-                                    
-                                    Text("TEst")
-                                        .font(.title)
-                                        .frame(minWidth: 50)
-                                    
-                                    Button(action: {
-                                    }) {
-                                        Image(systemName: "minus.circle.fill")
-                                            .foregroundColor(.red)
-                                            .font(.title)
-                                    }
-                                }
-                                .swipeActions {
-                                    Button(role: .destructive) {
-                                        
-                                    } label: {
-                                        Label("Löschen", systemImage: "trash")
-                                    }
-                                }
+                        Text(item.title)
+                        
+                        HStack {
+                            Button("-") {
+                                
+                            }
+                            Text("0")
+                            Button("+") {
+                                
                             }
                         }
-                        .scrollContentBackground(.hidden) // Entfernt Hintergrund der Liste
-                        .background(Color.blue) // Setzt Hintergrund der Liste
                     }
+                    //                }
                 }
+            }
+            .listStyle(.plain)
+        }
     }
 }
-
 #Preview {
     testingView(viewModel: ProductViewModel())
 }

@@ -67,7 +67,8 @@ struct SelectedItemSheetView: View {
               
 //                viewModel.selectedProduct = newProduct
                 viewModel.user.cart.append(newProduct)
-                viewModelFirestore.updateUserCart(product: newProduct)
+                viewModelFirestore.updateUserCart(product: newProduct
+                )
                 viewModel.showSheet = false
                 if viewModel.selectedProduct.category.id != 1 {
                     viewModel.showAlertSuccessfullAdded = true
