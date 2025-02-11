@@ -178,7 +178,7 @@ struct ProductDetailView: View {
         })
         .onAppear {
             Task {
-                try await viewModel.getProductsFromAPI()
+//                try await viewModel.getProductsFromAPI()
             }
         }
     }

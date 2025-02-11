@@ -117,7 +117,33 @@ struct SearchView: View {
                                             Text("\(filteredProduct.title)")
                                                 .font(.footnote)
                                             //frame machen
-                                            Image(systemName: "bookmark")
+                                            Button {
+                                                let addNewFavoriteProduct = Product(
+                                                    id: filteredProduct.id,
+                                                    title: filteredProduct.title,
+                                                    price: filteredProduct.price,
+                                                    description: filteredProduct.description,
+                                                    images: filteredProduct.images,
+                                                    category: filteredProduct.category,
+                                                    isFavorite: true,
+                                                    size: viewModel.selectedSize
+                                                )
+                                                if let index = viewModel.user.favorite.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
+                                                    viewModel.user.favorite[index].isFavorite?.toggle()
+                                                    Task {
+                                                        try await viewModel.getProductsFromAPI()
+                                                    }
+                                                } else {
+                                                    viewModel.user.favorite.append(addNewFavoriteProduct)
+                                                    viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
+                                                    Task {
+                                                        try await viewModel.getProductsFromAPI()
+                                                    }
+                                                }
+                                            } label: {
+//                                                Image(systemName: filteredProduct.isFavorite ? "bookmark.fill" : "bookmark")
+                                                Image(systemName: "bookmark")
+                                            }
                                         }
 
                                         HStack {
