@@ -19,7 +19,7 @@ struct CartView: View {
         NavigationStack {
             HStack {
                 Button(
-                    "EINKAUFSKORB\(viewModel.user.cart.count == 0 ? "" : "(\(viewModel.user.cart.count))")"
+                    "EINKAUFSKORB\(viewModelFirestore.cartList.count == 0 ? "" : "(\(viewModelFirestore.cartList.count))")"
                 ) {
                     viewModel.showCart = true
                 }
@@ -118,13 +118,12 @@ struct CartView: View {
                                             HStack(spacing: 0) {
                                                 Button("-") {
                                                     
-                                                    if let index = viewModel.user
-                                                        .cart
+                                                    if let index = viewModelFirestore.cartList
                                                         .firstIndex(where: {
                                                             $0.id == product.id
                                                         })
                                                     {
-                                                        viewModel.user.cart[index]
+                                                        viewModelFirestore.cartList[index]
                                                             .numberOfProducts? -= 1
                                                     }
                                                     Task {
@@ -141,14 +140,12 @@ struct CartView: View {
                                                 .padding()
                                                 .border(.black)
                                                 Button("+") {
-                                                    if let index = viewModel.user
-                                                        .cart
-                                                        .firstIndex(where: {
+                                                    if let index = viewModelFirestore.cartList.firstIndex(where: {
                                                             $0.cartID
                                                             == product.cartID
                                                         })
                                                     {
-                                                        viewModel.user.cart[index]
+                                                        viewModelFirestore.cartList[index]
                                                             .numberOfProducts? += 1
                                                     }
                                                     Task {
@@ -172,7 +169,7 @@ struct CartView: View {
                                 }
                                 .swipeActions {
                                     Button(role: .destructive) {
-                                        viewModel.user.cart.removeAll(where: {
+                                        viewModelFirestore.cartList.removeAll(where: {
                                             $0.cartID == product.cartID
                                         })
                                         Task {
@@ -182,14 +179,14 @@ struct CartView: View {
                                         Label("Delete", systemImage: "trash")
                                     }
                                     Button {
-                                        if let addToFavorite = viewModel.user.cart
+                                        if let addToFavorite = viewModelFirestore.cartList
                                             .first(where: {
                                                 $0.cartID == product.cartID
                                             })
                                         {
                                             viewModel.user.favorite.append(
                                                 addToFavorite)
-                                            viewModel.user.cart.removeAll(where: {
+                                            viewModelFirestore.cartList.removeAll(where: {
                                                 $0.cartID == addToFavorite.cartID
                                             })
                                             Task {
@@ -295,7 +292,7 @@ struct CartView: View {
                                             $0.cartID == product.cartID
                                         })
                                     {
-                                        viewModel.user.cart.append(
+                                        viewModelFirestore.cartList.append(
                                             addToCart)
                                         viewModel.user.favorite.removeAll(
                                             where: {
