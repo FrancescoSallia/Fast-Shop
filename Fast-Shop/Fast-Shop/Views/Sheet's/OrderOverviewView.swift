@@ -89,16 +89,40 @@ struct OrderOverviewView: View {
                         }
                         .padding(.bottom)
                         HStack {
-                            Text(viewModel.user.adress?.firstName ?? "NO NAME")
-                                .textCase(.uppercase)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.black)
+                            if viewModelAdress.selectedAdressOption == "" {
+                                HStack {
+                                    Text("Wähle eine Lieferadresse aus um fortzufahren!")
+                                        .foregroundStyle(.red)
+                                        .textCase(.uppercase)
+                                        .font(.footnote)
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.black)
+                                }
+                                .padding(.horizontal)
+                            }
+                            if let index = viewModelFirestore.adressList.firstIndex(where: { $0.adressID == viewModelAdress.selectedAdressOption }) {
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text("\(viewModelFirestore.adressList[index].firstName)")
+                                            .textCase(.uppercase)
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .foregroundColor(.black)
+                                    }
+                                    Text("\(viewModelFirestore.adressList[index].street)")
+                                        .textCase(.uppercase)
+                                    Text("\(viewModelFirestore.adressList[index].plz) \(viewModelFirestore.adressList[index].location)")
+                                        .textCase(.uppercase)
+                                }
+                                .padding(.horizontal)
+
+                            
+                            
                         }
-                        Text("\(viewModel.user.adress?.street ?? "NO STREET") \(viewModel.user.adress?.houseNumber ?? "NO HOUSENUMBER")")
-                            .textCase(.uppercase)
-                        Text("\(viewModel.user.adress?.plz ?? "NO PLZ") \(viewModel.user.adress?.location ?? "NO LOCATION")")
-                            .textCase(.uppercase)
+                      
+                     
+                        }
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -193,12 +217,13 @@ struct OrderOverviewView: View {
             ZStack {
                 Rectangle()
                     .frame(maxWidth: .infinity, maxHeight: 50)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(viewModelAdress.selectedAdressOption == "" ? .clear : .black)
                 Button("Zahlung Autorisieren") {
                     //
                 }
                 .tint(.white)
                 .textCase(.uppercase)
+                .disabled(viewModelAdress.selectedAdressOption == "" ? true : false)
             }
             //        .padding(-8)
         }

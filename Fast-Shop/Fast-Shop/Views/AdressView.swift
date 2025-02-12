@@ -25,10 +25,10 @@ struct AdressView: View {
                 Text("Wunschadresse")
             }
         }
-        ScrollView {
+//        ScrollView {
             VStack(alignment: .leading) {
-                ForEach(viewModelFirestore.adressList, id: \.adressID) { adress in
-//                ForEach(viewModel.testAdressArray, id: \.adressID) { adress in
+                List(viewModelFirestore.adressList, id: \.adressID) { adress in
+//                List(viewModel.testAdressArray, id: \.adressID) { adress in
                 HStack {
                     Image(systemName: viewModel.selectedAdressOption == adress.adressID ? "largecircle.fill.circle" : "circle")
                         .padding(.trailing, 8)
@@ -53,7 +53,17 @@ struct AdressView: View {
                         }
                     }
                 }
+                .swipeActions(allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        viewModelFirestore.deleteUserAdress(adress: adress)
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+
+
                 }
+            }
+             .listStyle(.plain)
                 HStack {
                     Button {
                         withAnimation(.easeInOut(duration: 0.25)) {
@@ -70,8 +80,8 @@ struct AdressView: View {
                     .tint(.primary)
                     
                 }
-                .padding()
-                
+                .padding(.leading, 55)
+
                 if viewModel.showTextFields {
                     VStack {
                         TextField("Vorname", text: $viewModel.firstName)
@@ -148,7 +158,7 @@ struct AdressView: View {
             }
             .padding()
             .frame(maxWidth: .infinity)
-        }
+//        }
     }
 }
 

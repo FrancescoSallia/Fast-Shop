@@ -36,6 +36,14 @@ class AdressViewModel: ObservableObject {
             houseNumber: "123a",
             plz: "11223",
             location: "München"
+        ),
+        Adress(
+            firstName: "John",
+            secondName: "mustermann",
+            street: "musterstrasse45",
+            houseNumber: "173b",
+            plz: "13478",
+            location: "Hamburg"
         )
         
     ]
