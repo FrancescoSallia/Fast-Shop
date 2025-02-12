@@ -146,7 +146,6 @@ class ProductViewModel: ObservableObject {
         )
     )
     @Published var selectedPayOption: String = "apple-pay"
-
     
     //MARK: Cart
     @Published var showCart = true
@@ -234,5 +233,7 @@ class ProductViewModel: ObservableObject {
 //        return false
 //    }
     
+    
+  
     
 }

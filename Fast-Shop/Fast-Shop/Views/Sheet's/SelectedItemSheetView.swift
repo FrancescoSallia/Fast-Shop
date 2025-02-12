@@ -12,9 +12,7 @@ struct SelectedItemSheetView: View {
     @ObservedObject var viewModel = ProductViewModel()
     @ObservedObject var viewModelFirestore = FirestoreViewModel()
     
-    let sizes: [String] = ["XS","S", "M", "L", "XL", "XXL"]
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
-//    let productSelected: Product
     
     var body: some View {
         VStack {
@@ -39,21 +37,49 @@ struct SelectedItemSheetView: View {
             .padding(.leading)
             //FIXME: Mit den Kleidungen funktioniert das mit einfügen im warenkorb und löschen/favorisieren auch wenn man andere größen eingibt. jetzt muss es nur noch bei den anderen kategorien funktionieren!
             
-            if viewModel.selectedProduct.category.id != 1 {
+            if viewModel.selectedProduct.category.id == 1 {
+                Text("\(viewModel.selectedProduct.description)")
+                    .font(.footnote)
+                    .italic()
+                    .padding(.horizontal)
                 SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
                 
             } else if viewModel.selectedProduct.category.id == 2{
-                Text("Electronik")
+//                Text("Electronik")
+                Text("\(viewModel.selectedProduct.description)")
+                    .font(.footnote)
+                    .italic()
+                    .padding()
+                
             } else if viewModel.selectedProduct.category.id == 3{
-                Text("Möbel")
+//                Text("Möbel")
+                Text("\(viewModel.selectedProduct.description)")
+                    .font(.footnote)
+                    .italic()
+                    .padding()
+
             } else if viewModel.selectedProduct.category.id == 4{
-                Text("Schuhe")
+//                Text("Schuhe")
+                Text("\(viewModel.selectedProduct.description)")
+                    .font(.footnote)
+                    .italic()
+                    .padding()
+
             } else if viewModel.selectedProduct.category.id == 5{
-                Text("Miscellaneous")
+//                Text("Miscellaneous")
+                Text("\(viewModel.selectedProduct.description)")
+                    .font(.footnote)
+                    .italic()
+                    .padding()
+
             } else {
-                Text("Andere Dinge")
+//                Text("Andere Dinge")
+                Text("Keine Beschreibung")
+                    .font(.footnote)
+                    .italic()
+                    .padding()
             }
-            if viewModel.selectedProduct.category.id == 1 {
+            if viewModel.selectedProduct.category.id != 1 {
                 Button {
                     let newProduct = Product(
                         id: viewModel.selectedProduct.id,
@@ -71,9 +97,11 @@ struct SelectedItemSheetView: View {
 //                    viewModel.user.cart.append(newProduct)
                     viewModelFirestore.updateUserCart(product: newProduct)
                     viewModel.showSheet = false
-                    if viewModel.selectedProduct.category.id != 1 {
-                        viewModel.showAlertSuccessfullAdded = true
-                    }
+                    
+//                    if viewModel.selectedProduct.category.id == 1 {
+//                        viewModel.showAlertSuccessfullAdded = true
+//                    }
+                    
                 } label: {
                     HStack {
                         Text("HINZUFÜGEN")
