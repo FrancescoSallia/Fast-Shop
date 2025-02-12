@@ -128,13 +128,13 @@ struct SearchView: View {
                                                     isFavorite: true,
                                                     size: viewModel.selectedSize
                                                 )
-                                                if let index = viewModel.user.favorite.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-                                                    viewModel.user.favorite[index].isFavorite?.toggle()
+                                                if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
+                                                    viewModelFirestore.favoriteList[index].isFavorite?.toggle()
                                                     Task {
                                                         try await viewModel.getProductsFromAPI()
                                                     }
                                                 } else {
-                                                    viewModel.user.favorite.append(addNewFavoriteProduct)
+//                                                    viewModel.user.favorite.append(addNewFavoriteProduct)
                                                     viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                                                     Task {
                                                         try await viewModel.getProductsFromAPI()

@@ -167,38 +167,38 @@ struct CartView: View {
                                     }
                                     .padding(.top)
                                 }
-                                .swipeActions {
-                                    Button(role: .destructive) {
-                                        viewModelFirestore.cartList.removeAll(where: {
-                                            $0.cartID == product.cartID
-                                        })
-                                        Task {
-                                            try await viewModel.getProductsFromAPI()
-                                        }
-                                    } label: {
-                                        Label("Delete", systemImage: "trash")
-                                    }
-                                    Button {
-                                        if let addToFavorite = viewModelFirestore.cartList
-                                            .first(where: {
-                                                $0.cartID == product.cartID
-                                            })
-                                        {
-                                            viewModel.user.favorite.append(
-                                                addToFavorite)
-                                            viewModelFirestore.cartList.removeAll(where: {
-                                                $0.cartID == addToFavorite.cartID
-                                            })
-                                            Task {
-                                                try await viewModel
-                                                    .getProductsFromAPI()
-                                            }
-                                        }
-                                    } label: {
-                                        Label("Favorite", systemImage: "flag")
-                                    }
-                                    .tint(.yellow)
-                                }
+//                                .swipeActions {
+//                                    Button(role: .destructive) {
+//                                        viewModelFirestore.cartList.removeAll(where: {
+//                                            $0.cartID == product.cartID
+//                                        })
+//                                        Task {
+//                                            try await viewModel.getProductsFromAPI()
+//                                        }
+//                                    } label: {
+//                                        Label("Delete", systemImage: "trash")
+//                                    }
+//                                    Button {
+//                                        if let addToFavorite = viewModelFirestore.cartList
+//                                            .first(where: {
+//                                                $0.cartID == product.cartID
+//                                            })
+//                                        {
+//                                            viewModel.user.favorite.append(
+//                                                addToFavorite)
+//                                            viewModelFirestore.cartList.removeAll(where: {
+//                                                $0.cartID == addToFavorite.cartID
+//                                            })
+//                                            Task {
+//                                                try await viewModel
+//                                                    .getProductsFromAPI()
+//                                            }
+//                                        }
+//                                    } label: {
+//                                        Label("Favorite", systemImage: "flag")
+//                                    }
+//                                    .tint(.yellow)
+//                                }
                             }
                         
                     }
@@ -275,39 +275,39 @@ struct CartView: View {
                                 //                            .padding(.top)
                             }
                             .padding(.top, 4)  // muss mit rectangle immer angepasst werden
-                            .swipeActions {
-                                Button(role: .destructive) {
-                                    viewModel.user.favorite.removeAll(where: {
-                                        $0.cartID == product.cartID
-                                    })
-                                    Task {
-                                        try await viewModel.getProductsFromAPI()
-                                    }
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                                Button {
-                                    if let addToCart = viewModel.user.favorite
-                                        .first(where: {
-                                            $0.cartID == product.cartID
-                                        })
-                                    {
-                                        viewModelFirestore.cartList.append(
-                                            addToCart)
-                                        viewModel.user.favorite.removeAll(
-                                            where: {
-                                                $0.cartID == addToCart.cartID
-                                            })
-                                        Task {
-                                            try await viewModel
-                                                .getProductsFromAPI()
-                                        }
-                                    }
-                                } label: {
-                                    Label("Warenkorb", systemImage: "cart")
-                                }
-                                .tint(.yellow)
-                            }
+//                            .swipeActions {
+//                                Button(role: .destructive) {
+//                                    viewModel.user.favorite.removeAll(where: {
+//                                        $0.cartID == product.cartID
+//                                    })
+//                                    Task {
+//                                        try await viewModel.getProductsFromAPI()
+//                                    }
+//                                } label: {
+//                                    Label("Delete", systemImage: "trash")
+//                                }
+//                                Button {
+//                                    if let addToCart = viewModel.user.favorite
+//                                        .first(where: {
+//                                            $0.cartID == product.cartID
+//                                        })
+//                                    {
+//                                        viewModelFirestore.cartList.append(
+//                                            addToCart)
+//                                        viewModel.user.favorite.removeAll(
+//                                            where: {
+//                                                $0.cartID == addToCart.cartID
+//                                            })
+//                                        Task {
+//                                            try await viewModel
+//                                                .getProductsFromAPI()
+//                                        }
+//                                    }
+//                                } label: {
+//                                    Label("Warenkorb", systemImage: "cart")
+//                                }
+//                                .tint(.yellow)
+//                            }
                         }
                     }
                     .onAppear {
