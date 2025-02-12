@@ -10,20 +10,20 @@ import Toast
 
 struct IsSuccessfullSheet: View {
     @ObservedObject var viewModel: ProductViewModel
-//    let toast = Toast.default(
-//        image: UIImage(systemName: "checkmark.circle.fill")!,
-//        imageTint: .systemGreen,
-//        title: "Zum Warenkorb hinzugefügt",
-//        config: .init(
-//            direction: .bottom
-//        ))
-    
-    let toast = Toast.text(
-        "Zum Warenkorb Hinzugefügt!",
+    let toast = Toast.default(
+        image: UIImage(systemName: "checkmark.circle.fill")!,
+        imageTint: .systemGreen,
+        title: "Zum Warenkorb hinzugefügt",
         config: .init(
             direction: .bottom
-           )
-        )
+        ))
+    
+//    let toast = Toast.text(
+//        "Zum Warenkorb Hinzugefügt!",
+//        config: .init(
+//            direction: .bottom
+//           )
+//        )
     
 //    let toast = Toast.default(
 //        image: UIImage(systemName: "checkmark.circle.fill")!,
@@ -57,6 +57,9 @@ struct IsSuccessfullSheet: View {
             }
         }
         .ignoresSafeArea()
+//        .fullScreenCover(isPresented: Binding<Bool>) {
+//
+//        }
        
         
 //        VStack {
