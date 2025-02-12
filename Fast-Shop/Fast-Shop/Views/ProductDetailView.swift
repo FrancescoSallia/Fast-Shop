@@ -51,41 +51,6 @@ struct ProductDetailView: View {
                                     Text("inkl.MwSt.")
                                         .foregroundStyle(.gray)
                                 }
-//                                HStack() {
-//                                    Button("HINZUFÜGEN") {
-//                                        withAnimation {
-//                                            showAlert.toggle()
-//                                        }
-//                                        Task {
-//                                            try await Task.sleep(for: .seconds(3))
-//                                            withAnimation {
-//                                                showAlert = false
-//                                            }
-//                                        }
-//                                    }
-//                                    .frame(width: 280, height: 45)
-//                                    .border(Color.gray)
-//                                    .tint(.white)
-//                                    .background(Color.primary)
-//                                    
-//                                    Button {
-//                                        let addNewFavoriteProduct = Product(id: product.id, title: product.title, price: product.price, description: product.description, images: product.images, category: product.category, isFavorite: true, size: nil, numberOfProducts: nil)
-//                                        if viewModel.user.favorite.contains(where: { $0.id == addNewFavoriteProduct.id }) {
-//                                            viewModel.user.favorite.removeAll(where: { $0.id == addNewFavoriteProduct.id })
-//                                        } else {
-//                                            viewModel.user.favorite.append(addNewFavoriteProduct)
-//                                        }
-//                                    } label: {
-//                                        Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
-//                                    }
-//                                    .frame(width: 55, height: 45)
-//                                    .border(Color.gray)
-//                                    .tint(.white)
-//                                    .background(Color.primary)
-//                                    .padding(.leading, 12)
-//                                }
-//                                .padding(.top, 40)
-                                
                                 Text(product.description)
                                     .padding()
                                 

@@ -136,7 +136,7 @@ struct CartView: View {
                                                 .padding()
                                                 .border(.black)
                                                 Text(
-                                                    "\(product.numberOfProducts ?? 0)"
+                                                    "\(product.numberOfProducts ?? 1)"
                                                 )
                                                 .padding()
                                                 .border(.black)
@@ -350,7 +350,7 @@ struct CartView: View {
                     .border(Color.primary)
                     .padding(.bottom, -23)
                     NavigationLink("WEITER") {
-                        OrderOverviewView(viewModel: viewModel)
+                        OrderOverviewView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                     }
                     .padding()
                     .frame(minWidth: 410)

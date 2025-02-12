@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 class FireUser: Codable, Identifiable {
     @DocumentID var id: String?
-    var cart: [Product] = []
+//    var cart: [Product] = []
     var favorite: [Product] = []
     var email: String
     var password: String

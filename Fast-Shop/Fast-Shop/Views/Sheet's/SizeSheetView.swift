@@ -44,17 +44,17 @@ struct SizeSheetView: View {
                     )
                     viewModel.selectedProduct = addNewCartProduct
                     
-                    if let index = viewModel.user.cart.firstIndex(where: {
+                    if let index = viewModelFirestore.cartList.firstIndex(where: {
                         $0.id == viewModel.selectedProduct.id && $0.size == viewModel.selectedSize
                     }) {
-                        var updatedProduct = viewModel.user.cart[index]
+                        var updatedProduct = viewModelFirestore.cartList[index]
                         updatedProduct.numberOfProducts? += 1
                         viewModel.selectedSize = ""
 
-                        viewModel.user.cart[index] = updatedProduct // hier wird das test product mitgegeben fals die liste leer ist!
+                        viewModelFirestore.cartList[index] = updatedProduct // hier wird das test product mitgegeben fals die liste leer ist!
                     } else {
                         viewModel.selectedProduct.cartID = UUID().uuidString
-                        viewModel.user.cart.append(viewModel.selectedProduct)
+//                        viewModel.user.cart.append(viewModel.selectedProduct)
                         viewModelFirestore.updateUserCart(product: viewModel.selectedProduct)
                         viewModel.selectedSize = ""
 

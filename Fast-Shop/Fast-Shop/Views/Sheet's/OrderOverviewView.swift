@@ -10,11 +10,12 @@ import SwiftUI
 struct OrderOverviewView: View {
     let dummyArtikeln: [String] = ["tasche", "pants", "tshirt", "ring"]
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
 
     var body: some View {
         NavigationStack {
             VStack {
-                Text("\(viewModel.user.cart.count) Artikel")
+                Text("\(viewModelFirestore.cartList.count) Artikel")
                     .font(.footnote)
                     .textCase(.uppercase)
                 ScrollView {
@@ -31,7 +32,7 @@ struct OrderOverviewView: View {
                     
                     ScrollView(.horizontal) {
                         HStack {
-                            ForEach(viewModel.user.cart, id: \.cartID) { item in
+                            ForEach(viewModelFirestore.cartList, id: \.cartID) { item in
                                 AsyncImage(url: URL(string: item.images[0])) { item in
                                     item
                                         .resizable()
@@ -155,10 +156,12 @@ struct OrderOverviewView: View {
                     .frame(height: 2)
                     .background(Color.black)
                 HStack{
-                    Text("\(viewModel.user.cart.count) Artikel")
+                    Text("\(viewModelFirestore.cartList.count) Artikel")
                         .textCase(.uppercase)
                     Spacer()
-                    Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
+//                    Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
+                   Text("\(String(format: "%.2f", viewModelFirestore.cartList.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
+
                 }
                 .padding(.top)
                 .padding(.horizontal)
@@ -175,7 +178,7 @@ struct OrderOverviewView: View {
                         .textCase(.uppercase)
                         .bold()
                     Spacer()
-                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
+                    Text("\(String(format: "%.2f",viewModelFirestore.cartList.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
                     //Text("128,95 EUR")
                         .bold()
                 }
@@ -209,5 +212,5 @@ struct OrderOverviewView: View {
     }
 }
 #Preview {
-    OrderOverviewView(viewModel: ProductViewModel())
+    OrderOverviewView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())
 }
