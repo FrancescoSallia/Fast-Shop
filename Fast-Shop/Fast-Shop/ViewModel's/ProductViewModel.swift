@@ -156,7 +156,6 @@ class ProductViewModel: ObservableObject {
     var deliveryCost: Double {
         return Double(selectedDeliveryPrice.replacingOccurrences(of: ",", with: ".")) ?? 0.00
     }
-    @Published var showTextFields: Bool = false
     @Published var showOrderViewSheet: Bool = false
     @Published var showPayOptionViewSheet: Bool = false
 

@@ -9,6 +9,7 @@ import Foundation
 
 struct Adress: Codable {
     
+    var adressID: String = UUID().uuidString
     let firstName: String
     let secondName: String
     let street: String

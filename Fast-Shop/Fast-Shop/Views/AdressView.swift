@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AdressView: View {
     
-    @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModel: AdressViewModel
     
     var body: some View {
         ZStack {
@@ -25,27 +25,26 @@ struct AdressView: View {
             }
         }
         ScrollView {
-            VStack/*(alignment: .leading)*/ {
+            VStack {
+//                HStack {
+//                    Image(systemName: "largecircle.fill.circle")
+//                        .padding(.trailing, 8)
+//                    VStack (alignment: .leading) {
+//                        HStack {
+//                            Text(viewModel.user.adress?.firstName ?? "NO NAME")
+//                            Text(viewModel.user.adress?.secondName ?? "No Second Name")
+//                        }
+//                        HStack {
+//                            Text(viewModel.user.adress?.street ?? "NO STREET")
+//                            Text(viewModel.user.adress?.houseNumber ?? "NO HOUSENUMBER")
+//                        }
+//                        HStack {
+//                            Text("\(viewModel.user.adress?.plz ?? "NO PLZ"),")
+//                            Text(viewModel.user.adress?.location ?? "NO LOCATION")
+//                        }
+//                    }
+//                }
                 HStack {
-                    Image(systemName: "largecircle.fill.circle")
-                        .padding(.trailing, 8)
-                    VStack (alignment: .leading){
-                        HStack {
-                            Text(viewModel.user.adress?.firstName ?? "NO NAME")
-                            Text(viewModel.user.adress?.secondName ?? "No Second Name")
-                        }
-                        HStack {
-                            Text(viewModel.user.adress?.street ?? "NO STREET")
-                            Text(viewModel.user.adress?.houseNumber ?? "NO HOUSENUMBER")
-                        }
-                        HStack {
-                            Text("\(viewModel.user.adress?.plz ?? "NO PLZ"),")
-                            Text(viewModel.user.adress?.location ?? "NO LOCATION")
-                        }
-                    }
-                }
-                HStack {
-                    
                     Button {
                         withAnimation(.easeInOut(duration: 0.25)) {
                             viewModel.showTextFields.toggle()
@@ -127,5 +126,5 @@ struct AdressView: View {
 }
 
 #Preview {
-    AdressView(viewModel: ProductViewModel())
+    AdressView(viewModel: AdressViewModel())
 }

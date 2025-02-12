@@ -11,6 +11,7 @@ struct SettingsView: View {
     @State private var notificationsEnabled: Bool = true
     @State private var isDarkMode: Bool = false
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var authViewModel: AuthViewModel
 
     var body: some View {
@@ -22,7 +23,7 @@ struct SettingsView: View {
                             "Benachrichtigungen", isOn: $notificationsEnabled)
                         Toggle("Dunkler Modus", isOn: $isDarkMode)
                         NavigationLink(
-                            destination: AdressView(viewModel: viewModel)
+                            destination: AdressView(viewModel: viewModelAdress)
                         ) {
                             Text("Meine Adressen")
                         }
@@ -59,5 +60,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView(viewModel: ProductViewModel(), authViewModel: AuthViewModel())
+    SettingsView(viewModel: ProductViewModel(), viewModelAdress: AdressViewModel(), authViewModel: AuthViewModel())
 }

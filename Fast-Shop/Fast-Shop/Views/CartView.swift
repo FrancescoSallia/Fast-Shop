@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CartView: View {
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
     @State var sizes: [String] = ["XS", "S", "M", "L", "XL", "XXL"]
     //    @State var counter = 0
@@ -347,7 +348,7 @@ struct CartView: View {
                     .border(Color.primary)
                     .padding(.bottom, -23)
                     NavigationLink("WEITER") {
-                        OrderOverviewView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
+                        OrderOverviewView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
                     }
                     .padding()
                     .frame(minWidth: 410)
@@ -362,5 +363,5 @@ struct CartView: View {
     }
 }
 #Preview {
-    CartView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())
+    CartView(viewModel: ProductViewModel(), viewModelAdress: AdressViewModel(), viewModelFirestore: FirestoreViewModel())
 }

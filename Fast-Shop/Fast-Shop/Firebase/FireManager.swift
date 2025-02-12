@@ -168,4 +168,62 @@ class FireManager {
                 compleation(products, nil)
             }
     }
+    
+    
+    func updateUserAdress(adress: Adress) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        var eigeneID = ""
+        let userRef = store.collection("users").document(uid).collection("Adress")
+        
+        do {
+            eigeneID = adress.adressID
+           try userRef
+                .document(eigeneID)
+                .setData(from: adress)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func deleteUserAdress(adress: Adress) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Adress")
+        
+        do {
+            try await userRef
+                .document(adress.adressID)
+                .delete()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func adressSnapshotListener(compleation: @escaping ([Adress], Error?) -> Void) {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Adress")
+        
+        userRef
+            .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
+                if let error = error {
+                    print("Error listening for changes: \(error)")
+                    compleation([], error)
+                    return
+                }
+                guard let snapshot else {
+                    fatalError("snapshot ist leer")
+                }
+                let adress = snapshot
+                    .documents
+                    .compactMap { oneAdress in
+                        try? oneAdress.data(as: Adress.self)
+                    }
+                compleation(adress, nil)
+            }
+    }
 }

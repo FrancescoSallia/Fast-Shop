@@ -13,11 +13,13 @@ class FirestoreViewModel: ObservableObject  {
     let firestore = FireManager.shared
     @Published var cartList: [Product] = []
     @Published var favoriteList: [Product] = []
+    @Published var adressList: [Adress] = []
     @Published var isFavorited: Bool = false
     
     init() {
         cartSnapshotListener()
         favoriteSnapshotListener()
+        adressSnapshotListener()
     }
     
     func updateUserCart(product: Product) {
@@ -44,7 +46,6 @@ class FirestoreViewModel: ObservableObject  {
             }
             
         }
-        
     }
     
     func updateUserFavorite(product: Product) {
@@ -74,17 +75,6 @@ class FirestoreViewModel: ObservableObject  {
         
     }
     
-    
-    //    func getCartProducts() {
-    //        Task {
-    //            do {
-    //            self.cartList = try await firestore.getCartProducts()
-    //            } catch {
-    //                print(error)
-    //            }
-    //        }
-    //    }
-    
     private func cartSnapshotListener() {
         firestore.cartSnapshotListener { products, error in
             if let error = error {
@@ -92,7 +82,6 @@ class FirestoreViewModel: ObservableObject  {
                 return
             }
             self.cartList = products
-            
         }
     }
     
@@ -107,13 +96,38 @@ class FirestoreViewModel: ObservableObject  {
         }
     }
     
-//    func isFavorited(/*productIndex: Int,*/ selectedProduct: Product) -> Bool {
-//
-//        if let index = favoriteList.firstIndex(where: {$0.cartID == selectedProduct.cartID}) {
-//            favoriteList[index].isFavorite
-//        }
-//       
-//       
-//        
-//    }
+    func updateUserAdress(adress: Adress) {
+        Task {
+            do {
+                try await firestore.updateUserAdress(adress: adress)
+            } catch {
+                fatalError("update Cart failed")
+            }
+        }
+    }
+    
+    func deleteUserAdress(adress: Adress) {
+        if let index = adressList.firstIndex(where: { $0.adressID == adress.adressID}) {
+            let deleteAdress = adressList[index]
+            Task {
+                do {
+                    print("delete Adress: \(deleteAdress)")
+                    try await firestore.deleteUserAdress(adress: deleteAdress)
+                } catch {
+                    fatalError("delete Favorite item failed")
+                }
+            }
+            
+        }
+    }
+    
+    private func adressSnapshotListener() {
+        firestore.adressSnapshotListener { adress, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            self.adressList = adress
+        }
+    }
 }

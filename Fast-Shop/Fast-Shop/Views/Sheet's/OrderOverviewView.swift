@@ -10,6 +10,7 @@ import SwiftUI
 struct OrderOverviewView: View {
     let dummyArtikeln: [String] = ["tasche", "pants", "tshirt", "ring"]
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
 
     var body: some View {
@@ -76,7 +77,7 @@ struct OrderOverviewView: View {
                     
 //ADRESS SECTION
                     NavigationLink {
-                        AdressView(viewModel: viewModel)
+                        AdressView(viewModel: viewModelAdress)
                     } label: {
                     VStack(alignment: .leading) {
                         HStack {
@@ -212,5 +213,5 @@ struct OrderOverviewView: View {
     }
 }
 #Preview {
-    OrderOverviewView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())
+    OrderOverviewView(viewModel: ProductViewModel(), viewModelAdress: AdressViewModel(), viewModelFirestore: FirestoreViewModel())
 }

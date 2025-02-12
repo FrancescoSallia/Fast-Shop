@@ -17,6 +17,7 @@ struct Fast_ShopApp: App {
     }
     
     @StateObject var viewModel = ProductViewModel()
+    @StateObject var viewModelAdress = AdressViewModel()
     @StateObject var authViewModel = AuthViewModel()
     @StateObject var viewModelFirestore = FirestoreViewModel()
     @State var showTab: Bool = true
@@ -41,11 +42,11 @@ struct Fast_ShopApp: App {
 //                                    })
                             }
                             Tab("Cart", systemImage: "bag"){
-                                CartView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
+                                CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
                                 //                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
                             }
                             Tab("Settings", systemImage: "person"){
-                                SettingsView(viewModel: viewModel, authViewModel: authViewModel)
+                                SettingsView(viewModel: viewModel, viewModelAdress: viewModelAdress, authViewModel: authViewModel)
                                 //                          LogInScreenView()
                             }
                             
