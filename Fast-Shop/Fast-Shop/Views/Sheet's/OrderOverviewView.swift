@@ -77,7 +77,7 @@ struct OrderOverviewView: View {
                     
 //ADRESS SECTION
                     NavigationLink {
-                        AdressView(viewModel: viewModelAdress)
+                        AdressView(viewModel: viewModelAdress, viewModelFirestore: viewModelFirestore)
                     } label: {
                     VStack(alignment: .leading) {
                         HStack {

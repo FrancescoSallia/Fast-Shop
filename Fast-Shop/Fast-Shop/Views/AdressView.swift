@@ -10,6 +10,7 @@ import SwiftUI
 struct AdressView: View {
     
     @ObservedObject var viewModel: AdressViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
     
     var body: some View {
         ZStack {
@@ -25,25 +26,34 @@ struct AdressView: View {
             }
         }
         ScrollView {
-            VStack {
-//                HStack {
-//                    Image(systemName: "largecircle.fill.circle")
-//                        .padding(.trailing, 8)
-//                    VStack (alignment: .leading) {
-//                        HStack {
-//                            Text(viewModel.user.adress?.firstName ?? "NO NAME")
-//                            Text(viewModel.user.adress?.secondName ?? "No Second Name")
-//                        }
-//                        HStack {
-//                            Text(viewModel.user.adress?.street ?? "NO STREET")
-//                            Text(viewModel.user.adress?.houseNumber ?? "NO HOUSENUMBER")
-//                        }
-//                        HStack {
-//                            Text("\(viewModel.user.adress?.plz ?? "NO PLZ"),")
-//                            Text(viewModel.user.adress?.location ?? "NO LOCATION")
-//                        }
-//                    }
-//                }
+            VStack(alignment: .leading) {
+                ForEach(viewModelFirestore.adressList, id: \.adressID) { adress in
+//                ForEach(viewModel.testAdressArray, id: \.adressID) { adress in
+                HStack {
+                    Image(systemName: viewModel.selectedAdressOption == adress.adressID ? "largecircle.fill.circle" : "circle")
+                        .padding(.trailing, 8)
+                        .onTapGesture {
+                            
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                viewModel.selectedAdressOption = adress.adressID
+                            }
+                        }
+                    VStack (alignment: .leading) {
+                        HStack {
+                            Text("\(adress.firstName)")
+                            Text(adress.secondName)
+                        }
+                        HStack {
+                            Text(adress.street)
+                            Text(adress.houseNumber)
+                        }
+                        HStack {
+                            Text(adress.plz)
+                            Text(adress.location)
+                        }
+                    }
+                }
+                }
                 HStack {
                     Button {
                         withAnimation(.easeInOut(duration: 0.25)) {
@@ -64,32 +74,32 @@ struct AdressView: View {
                 
                 if viewModel.showTextFields {
                     VStack {
-                        TextField("Vorname", text: .constant(""))
+                        TextField("Vorname", text: $viewModel.firstName)
                             .padding()
                             .textFieldStyle(.plain)
                             .border(.primary.opacity(0.4))
                         
-                        TextField("Nachname", text: .constant(""))
+                        TextField("Nachname", text: $viewModel.secondName)
                             .padding()
                             .textFieldStyle(.plain)
                             .border(.primary.opacity(0.4))
                         
-                        TextField("Adresse", text: .constant(""))
+                        TextField("Adresse", text: $viewModel.street)
                             .padding()
                             .textFieldStyle(.plain)
                             .border(.primary.opacity(0.4))
                         
-                        TextField("Hausnummer", text: .constant(""))
+                        TextField("Hausnummer", text: $viewModel.houseNumber)
                             .padding()
                             .textFieldStyle(.plain)
                             .border(.primary.opacity(0.4))
                         
-                        TextField("PLZ", text: .constant(""))
+                        TextField("PLZ", text: $viewModel.plz)
                             .padding()
                             .textFieldStyle(.plain)
                             .border(.primary.opacity(0.4))
                         
-                        TextField("Ort", text: .constant(""))
+                        TextField("Ort", text: $viewModel.location)
                             .padding()
                             .textFieldStyle(.plain)
                             .border(.primary.opacity(0.4))
@@ -105,7 +115,24 @@ struct AdressView: View {
                             .foregroundStyle(.primary)
                             
                             Button("Speichern") {
+                                let newAdress = Adress(
+                                    firstName: viewModel.firstName,
+                                    secondName: viewModel.secondName,
+                                    street: viewModel.street,
+                                    houseNumber: viewModel.houseNumber,
+                                    plz: viewModel.plz,
+                                    location: viewModel.location
+                                )
+                                viewModelFirestore.updateUserAdress(adress: newAdress)
+                                
                                 withAnimation(.easeInOut(duration: 0.25)) {
+                                    viewModel.firstName = ""
+                                    viewModel.secondName = ""
+                                    viewModel.street = ""
+                                    viewModel.houseNumber = ""
+                                    viewModel.plz = ""
+                                    viewModel.location = ""
+                                    
                                     viewModel.showTextFields.toggle()
                                 }
                             }
@@ -126,5 +153,5 @@ struct AdressView: View {
 }
 
 #Preview {
-    AdressView(viewModel: AdressViewModel())
+    AdressView(viewModel: AdressViewModel(), viewModelFirestore: FirestoreViewModel())
 }
