@@ -75,8 +75,6 @@ struct SearchView: View {
                 VStack {
                     LazyVGrid(columns: columns, spacing: -10) {
                         ForEach(viewModel.products) { filteredProduct in
-                            let currentIndex = viewModel.products.firstIndex(where: { $0.id == filteredProduct.id }) ?? 0
-
                             NavigationLink(destination: {
                                 ProductDetailView(
                                     product: filteredProduct,
@@ -134,20 +132,19 @@ struct SearchView: View {
                                                 if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
                                                     viewModelFirestore.favoriteList[index].isFavorite?.toggle()
                                                     viewModel.productIndex = index
-                                                    Task {
-                                                        try await viewModel.getProductsFromAPI()
-                                                    }
+//                                                    Task {
+//                                                        try await viewModel.getProductsFromAPI()
+//                                                    }
                                                 } else {
 //                                                    viewModel.user.favorite.append(addNewFavoriteProduct)
-                                                    
                                                     viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
-                                                    Task {
-                                                        try await viewModel.getProductsFromAPI()
-                                                    }
+//                                                    Task {
+//                                                        try await viewModel.getProductsFromAPI()
+//                                                    }
                                                 }
                                             } label: {
 //                                                Image(systemName: filteredProduct.isFavorite ? "bookmark.fill" : "bookmark")
-                                                Image(systemName: viewModelFirestore.isFavorited(productIndex: currentIndex) ? "bookmark.fill" : "bookmark")
+                                                Image(systemName: filteredProduct.isFavorite == true ? "bookmark.fill" : "bookmark")
                                             }
                                         }
 

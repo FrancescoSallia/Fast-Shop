@@ -16,8 +16,8 @@ class FirestoreViewModel: ObservableObject  {
     @Published var isFavorited: Bool = false
     
     init() {
-//        cartSnapshotListener()
-//        favoriteSnapshotListener()
+        cartSnapshotListener()
+        favoriteSnapshotListener()
     }
     
     func updateUserCart(product: Product) {
@@ -107,12 +107,13 @@ class FirestoreViewModel: ObservableObject  {
         }
     }
     
-    func isFavorited(productIndex: Int) -> Bool {
-        // Prüfe, ob der Index gültig ist, um Abstürze zu vermeiden
-        guard productIndex >= 0 && productIndex < favoriteList.count else {
-            return false
-        }
-        
-        // Überprüfe, ob das Produkt favorisiert ist
-        return favoriteList[productIndex].isFavorite ?? false
-    }}
+//    func isFavorited(/*productIndex: Int,*/ selectedProduct: Product) -> Bool {
+//
+//        if let index = favoriteList.firstIndex(where: {$0.cartID == selectedProduct.cartID}) {
+//            favoriteList[index].isFavorite
+//        }
+//       
+//       
+//        
+//    }
+}
