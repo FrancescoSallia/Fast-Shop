@@ -30,7 +30,7 @@ struct SizeSheetView: View {
                 }
                 .onTapGesture {
                     viewModel.selectedSize = item.rawValue
-                    viewModel.showAlertSuccessfullAdded = true
+//                    viewModel.showAlertSuccessfullAdded = true
 
                     let addNewCartProduct = Product(
                         id: product.id,

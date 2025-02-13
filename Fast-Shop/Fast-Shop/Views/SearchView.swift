@@ -34,22 +34,15 @@ struct SearchView: View {
 
     var body: some View {
         NavigationStack {
-            if !viewModel.filterIsActive {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(viewModel.categories) { index in
                             Button {
-                                //viewModel.filterIsActive = false
+                                
                                 viewModel.filteredID = String(index.id)
-                                if !viewModel.filterIsActive {
-                                    Task {
-                                        try await viewModel
-                                            .getCategorieFilteredFromAPI()
-                                    }
-                                } else {
-                                    Task {
-                                        try await viewModel.minMaxPriceFiltered()
-                                    }
+                                Task {
+                                    try await viewModel
+                                        .getCategorieFromID(filterID: viewModel.filteredID)
                                 }
                             } label: {
                                 if viewModel.filteredID == "0" {
@@ -70,7 +63,7 @@ struct SearchView: View {
                     }
                     Divider()
                 }
-            }
+            
             ScrollView(showsIndicators: false) {
                 VStack {
                     LazyVGrid(columns: columns, spacing: -10) {
@@ -129,21 +122,15 @@ struct SearchView: View {
                                                     isFavorite: true,
                                                     size: viewModel.selectedSize
                                                 )
+                                                
                                                 if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
                                                     viewModelFirestore.favoriteList[index].isFavorite?.toggle()
                                                     viewModel.productIndex = index
-//                                                    Task {
-//                                                        try await viewModel.getProductsFromAPI()
-//                                                    }
                                                 } else {
-//                                                    viewModel.user.favorite.append(addNewFavoriteProduct)
+                                                    
                                                     viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
-//                                                    Task {
-//                                                        try await viewModel.getProductsFromAPI()
-//                                                    }
                                                 }
                                             } label: {
-//                                                Image(systemName: filteredProduct.isFavorite ? "bookmark.fill" : "bookmark")
                                                 Image(systemName: filteredProduct.isFavorite == true ? "bookmark.fill" : "bookmark")
                                             }
                                         }
@@ -163,54 +150,24 @@ struct SearchView: View {
                                 }
                             }
                             .tint(.black)
-//                                                        .onAppear {
-//                                                            if viewModel.isLastItem(product: filteredProduct) {
-//                                                                Task {
-//                                                                    try await viewModel.getProductsFromAPI()
-//                                                                }
-//                                                            }
-//                                                        }
-                        }
                     }
                 }
             }
-            .refreshable {
-                if !viewModel.filterIsActive {
-                    Task {
-                        try await viewModel.getCategorieFilteredFromAPI()
-                    }
-                } else {
-                    Task {
-                        try await viewModel.minMaxPriceFiltered()
-                    }
-                }
-
-            }
-            .toolbar(content: {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        viewModel.showFilterSheet.toggle()
-                    } label: {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                    }
-                }
-            })
-        }
+//            .toolbar(content: {
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    Button {
+//                        viewModel.showFilterSheet.toggle()
+//                    } label: {
+//                        Image(systemName: "line.3.horizontal.decrease.circle")
+//                    }
+//                }
+//            })
+//        }
         .sheet(
             isPresented: $viewModel.showSheet,
             content: {
-                //            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? viewModel.testProduct )
                 SelectedItemSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                     .presentationDetents([.height(600)])
-                //                .presentationDetents([.medium, .large])
-            }
-        )
-        .sheet(
-            isPresented: $viewModel.showFilterSheet,
-            content: {
-                FilterSheetView(viewModel: viewModel)
-                    //                .presentationDetents([.height(600)])
-                    .presentationDetents([.medium, .large])
             }
         )
         .searchable(
@@ -222,24 +179,19 @@ struct SearchView: View {
             of: viewModel.searchedText,
             {
                 Task {
-                    try await viewModel.getCategorieFilteredFromAPI()
+                   try await viewModel.searchFilterProducts(productList: viewModel.products, searchedText: viewModel.searchedText)
                 }
             }
         )
         .onAppear {
-            if !viewModel.filterIsActive {
-                Task {
-                    //try await viewModel.getProductsFromAPI()
-                    try await viewModel.getCategoriesFromAPI()
-                    try await viewModel.getCategorieFilteredFromAPI()
-                }
-            } else {
-                Task {
-                    try await viewModel.minMaxPriceFiltered()
-                }
+            Task {
+                try await viewModel.getCategoriesFromAPI()
+                try await viewModel.getCategorieFromID(filterID: viewModel.filteredID)
             }
         }
+      }
     }
+  }
 }
 #Preview {
     SearchView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())

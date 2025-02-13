@@ -73,21 +73,25 @@ struct ProductDetailView: View {
                         if viewModel.selectedProduct.category.id == 1 {
                             viewModel.showSizes = true
                             print("selected ID 1: \(viewModel.selectedProduct.category.id)")
-                        } else {
-                            print("selected ID ANDERE: \(viewModel.selectedProduct.category.id)")
-                            viewModel.showAlertSuccessfullAdded = true
                         }
-//                        if viewModel.showAlertSuccessfullAdded {
-////                            withAnimation {
-////                                viewModel.showAlertSuccessfullAdded.toggle()
-////                            }
-////                            Task {
-////                                try await Task.sleep(for: .seconds(3))
-////                                withAnimation {
-////                                    viewModel.showAlertSuccessfullAdded = false
-////                                }
-////                            }
-//                        }
+                        else {
+                            print("selected ID ANDERE: \(viewModel.selectedProduct.category.id)")
+                            
+                            let newProduct = Product(
+                                id: viewModel.selectedProduct.id,
+                                title: viewModel.selectedProduct.title,
+                                price: viewModel.selectedProduct.price,
+                                description: viewModel.selectedProduct.description,
+                                images: viewModel.selectedProduct.images,
+                                category: viewModel.selectedProduct.category,
+                                isFavorite: false,
+                                size: viewModel.selectedSize,
+                                numberOfProducts: 1
+                            )
+                            
+                            viewModelFirestore.updateUserCart(product: newProduct)
+                            viewModel.showSheet = false
+                        }
                     }
                     .tint(.white)
                 }
@@ -108,43 +112,31 @@ struct ProductDetailView: View {
                         )
                         if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
                             viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-                            Task {
-                                try await viewModel.getProductsFromAPI()
-                            }
+                            
+                            viewModel.getProductsFromAPI()
+                            
                         } else {
 //                            viewModel.user.favorite.append(addNewFavoriteProduct)
                             viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
-                            Task {
-                                try await viewModel.getProductsFromAPI()
-                            }
+                            
+                               viewModel.getProductsFromAPI()
                         }
                     } label: {
                         Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
                     }
                     .tint(.white)
                 }
-//                .buttonBorderShape(.roundedRectangle(radius: 0))
-//                .padding()
-//                .padding(.horizontal, 5)
-//                .border(Color.primary)
             }
-//            .padding(.top, 40)
 
         }
         .sheet(isPresented: $viewModel.showSizes, content: {
             SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
                 .presentationDetents([(.medium)])
         })
-        .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
-            IsSuccessfullSheet(viewModel: viewModel)
-//                .presentationDetents([.height(60)])
-                .presentationDetents([.height(0)])
-                .hidden()
-        })
         .onAppear {
-            Task {
-//                try await viewModel.getProductsFromAPI()
-            }
+//            Task {
+////                try await viewModel.getProductsFromAPI()
+//            }
         }
     }
 

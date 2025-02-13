@@ -20,8 +20,6 @@ struct Fast_ShopApp: App {
     @StateObject var viewModelAdress = AdressViewModel()
     @StateObject var authViewModel = AuthViewModel()
     @StateObject var viewModelFirestore = FirestoreViewModel()
-    @State var showTab: Bool = true
-    @State var isLogged: Bool = false
 
     var body: some Scene {
         WindowGroup {
@@ -31,7 +29,7 @@ struct Fast_ShopApp: App {
                 } else {
                         TabView {
                             Tab("Home", systemImage: "house.fill"){
-                                HomeView(isScrolling: $showTab)
+                                HomeView()
                                 //                        APITestView()
                             }
                             Tab("Search", systemImage: "magnifyingglass"){
@@ -55,14 +53,11 @@ struct Fast_ShopApp: App {
                 }
             .onAppear {
                 authViewModel.checkLoggedIn()
-                
             }
         }
 
     }
 }
-
-
 //    .overlay {
 //        if showTab {
 //            withAnimation {

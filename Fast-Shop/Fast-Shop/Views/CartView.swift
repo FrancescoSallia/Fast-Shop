@@ -127,10 +127,9 @@ struct CartView: View {
                                                         viewModelFirestore.cartList[index]
                                                             .numberOfProducts? -= 1
                                                     }
-                                                    Task {
-                                                        try await viewModel
-                                                            .getProductsFromAPI()
-                                                    }
+                                                   
+                                                         viewModel.getProductsFromAPI()
+                                                    
                                                 }
                                                 .disabled(product.numberOfProducts == 1)
                                                 .tint(.primary)
@@ -150,10 +149,8 @@ struct CartView: View {
                                                         viewModelFirestore.cartList[index]
                                                             .numberOfProducts? += 1
                                                     }
-                                                    Task {
-                                                        try await viewModel
-                                                            .getProductsFromAPI()
-                                                    }
+                                                    viewModel.getProductsFromAPI()
+                                                    
                                                 }
                                                 .tint(.primary)
                                                 .padding()
@@ -313,9 +310,8 @@ struct CartView: View {
                         }
                     }
                     .onAppear {
-                        Task {
-                            try await viewModel.getProductsFromAPI()
-                        }
+                            viewModel.getProductsFromAPI()
+                        
                     }
                 }
                                 }

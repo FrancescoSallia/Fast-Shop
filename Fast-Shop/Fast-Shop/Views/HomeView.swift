@@ -10,10 +10,7 @@ import SwiftUI
 struct HomeView: View {
     
     @ObservedObject var viewModel = ProductViewModel()
-//    @State var isLoading: Bool = false
-    @Binding var isScrolling: Bool
-//    @State var scrollPosition = ScrollPosition()
-    @State var categorieText: String = ""
+    @ObservedObject var errorHandler: ErrorHandler = .shared
 
     var body: some View {
         NavigationStack {
@@ -28,19 +25,20 @@ struct HomeView: View {
                                     .frame(width: 400, height: 700)
                                     .onScrollVisibilityChange { isVisible in
                                         if isVisible {
-                                            categorieText = item.category.name
+                                            viewModel.categorieText = item.category.name
                                             
                                         }
                                     }
                                 } placeholder: {
                                     ProgressView()
                                 }
-                                Text("Nie aus der Mode")
-                                    .font(.title3)
+                                Text("FAST-SHOP")
+                                    .font(.title)
                                     .fontDesign(.monospaced)
                                     .foregroundColor(.black)
                                     .padding()
                                     .offset(y: 140)
+                                    .frame(maxWidth: 350, maxHeight: 100)
                                 Text(item.category.name)
                                     .font(.largeTitle)
                                     .fontDesign(.serif)
@@ -53,28 +51,15 @@ struct HomeView: View {
 //                        .listStyle(.inset)
 //                        .scrollTransition(.interactive, axis: .vertical) { view, phase in
 ////                            view.offset(y: phase.value * -70)
+//                            view.scaleEffect(CGFloat(1 + phase.value * 0.2))
 //                        }
                     }
                     .padding()
                     .navigationBarTitleDisplayMode(.inline)
                     .ignoresSafeArea()
                 }
-                .onScrollGeometryChange(for: CGFloat.self, of: { geometry in
-                    geometry.contentOffset.y
-                }, action: { oldValue, newValue in
-                    if newValue > oldValue {
-                        withAnimation {
-                            isScrolling = false
-                        }
-                    }
-                    else {
-                        withAnimation {
-                            isScrolling = true
-                        }
-                    }
-                })
                 HStack(alignment: .firstTextBaseline) {
-                    Text("\(categorieText)")//Ihre Lieblingsmarken \n in einer App!
+                    Text("\(viewModel.categorieText)")//Ihre Lieblingsmarken \n in einer App!
                         .font(.largeTitle)
                         .fontDesign(.serif)
                         .frame(height: 90)
@@ -86,12 +71,17 @@ struct HomeView: View {
             }
         }
         .onAppear {
-            Task {
-                try await viewModel.getProductsFromAPI()
-            }
+              viewModel.getProductsFromAPI()
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }
 #Preview {
-    HomeView(isScrolling: .constant(true))
+    HomeView()
 }

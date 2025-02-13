@@ -10,7 +10,12 @@ import Foundation
 @MainActor
 class ProductViewModel: ObservableObject {
     
+    init() {
+        getProductsFromAPI()
+    }
+    
     private let client = HttpClient()
+    private let errorHandler = ErrorHandler.shared
     
     var productIndex: Int = 0
     @Published var products: [Product] = []
@@ -18,6 +23,8 @@ class ProductViewModel: ObservableObject {
     @Published var filteredID: String = "1"
     @Published var searchedText: String = ""
     @Published var showSheet: Bool = false
+    @Published var categorieText: String = ""
+
     @Published var selectedProduct: Product = Product(
         id: 1,
         title: "Classic Navy Blue Baseball Cap",
@@ -58,68 +65,68 @@ class ProductViewModel: ObservableObject {
         size: "",
         numberOfProducts: 0
     )
-    @Published var testProducteArray: [Product] = [
-        Product(
-        id: 1,
-        title: "Classic Navy Blue Baseball Cap, Classic Navy Blue Baseball Cap",
-        price: 20.0,
-        description: "Test Description",
-        images: [
-        "https://i.imgur.com/R3iobJA.jpeg",
-        "https://i.imgur.com/Wv2KTsf.jpeg",
-        "https://i.imgur.com/76HAxcA.jpeg"
-      ],
-        category: Category(
-            id: 1,
-            name: "Tools",
-            image: "tools.png",
-            creationAt: "2025-01-24T08:29:50.000Z",
-            updatedAt: "2025-01-24T09:42:00.000Z"
-        ), isFavorite: false,
-        size: "",
-        numberOfProducts: 0
-    ),
-        Product(
-        id: 2,
-        title: "Classic Navy Blue Baseball Cap",
-        price: 20.0,
-        description: "Test Description",
-        images: [
-        "https://i.imgur.com/R3iobJA.jpeg",
-        "https://i.imgur.com/Wv2KTsf.jpeg",
-        "https://i.imgur.com/76HAxcA.jpeg"
-      ],
-        category: Category(
-            id: 1,
-            name: "Tools",
-            image: "tools.png",
-            creationAt: "2025-01-24T08:29:50.000Z",
-            updatedAt: "2025-01-24T09:42:00.000Z"
-        ), isFavorite: false,
-        size: "",
-        numberOfProducts: 0
-    ),
-        Product(
-        id: 3,
-        title: "Classic Navy Blue Baseball Cap, Classic Navy Blue Baseball Cap",
-        price: 20.0,
-        description: "Test Description",
-        images: [
-        "https://i.imgur.com/R3iobJA.jpeg",
-        "https://i.imgur.com/Wv2KTsf.jpeg",
-        "https://i.imgur.com/76HAxcA.jpeg"
-      ],
-        category: Category(
-            id: 1,
-            name: "Tools",
-            image: "tools.png",
-            creationAt: "2025-01-24T08:29:50.000Z",
-            updatedAt: "2025-01-24T09:42:00.000Z"
-        ), isFavorite: false,
-        size: "",
-        numberOfProducts: 0
-    )
-]
+//    @Published var testProducteArray: [Product] = [
+//        Product(
+//        id: 1,
+//        title: "Classic Navy Blue Baseball Cap, Classic Navy Blue Baseball Cap",
+//        price: 20.0,
+//        description: "Test Description",
+//        images: [
+//        "https://i.imgur.com/R3iobJA.jpeg",
+//        "https://i.imgur.com/Wv2KTsf.jpeg",
+//        "https://i.imgur.com/76HAxcA.jpeg"
+//      ],
+//        category: Category(
+//            id: 1,
+//            name: "Tools",
+//            image: "tools.png",
+//            creationAt: "2025-01-24T08:29:50.000Z",
+//            updatedAt: "2025-01-24T09:42:00.000Z"
+//        ), isFavorite: false,
+//        size: "",
+//        numberOfProducts: 0
+//    ),
+//        Product(
+//        id: 2,
+//        title: "Classic Navy Blue Baseball Cap",
+//        price: 20.0,
+//        description: "Test Description",
+//        images: [
+//        "https://i.imgur.com/R3iobJA.jpeg",
+//        "https://i.imgur.com/Wv2KTsf.jpeg",
+//        "https://i.imgur.com/76HAxcA.jpeg"
+//      ],
+//        category: Category(
+//            id: 1,
+//            name: "Tools",
+//            image: "tools.png",
+//            creationAt: "2025-01-24T08:29:50.000Z",
+//            updatedAt: "2025-01-24T09:42:00.000Z"
+//        ), isFavorite: false,
+//        size: "",
+//        numberOfProducts: 0
+//    ),
+//        Product(
+//        id: 3,
+//        title: "Classic Navy Blue Baseball Cap, Classic Navy Blue Baseball Cap",
+//        price: 20.0,
+//        description: "Test Description",
+//        images: [
+//        "https://i.imgur.com/R3iobJA.jpeg",
+//        "https://i.imgur.com/Wv2KTsf.jpeg",
+//        "https://i.imgur.com/76HAxcA.jpeg"
+//      ],
+//        category: Category(
+//            id: 1,
+//            name: "Tools",
+//            image: "tools.png",
+//            creationAt: "2025-01-24T08:29:50.000Z",
+//            updatedAt: "2025-01-24T09:42:00.000Z"
+//        ), isFavorite: false,
+//        size: "",
+//        numberOfProducts: 0
+//    )
+//]
     @Published var selectedSize: String = ""
     @Published var showSizes: Bool = false
 
@@ -130,8 +137,8 @@ class ProductViewModel: ObservableObject {
     @Published var minMaxValues: [CGFloat] = [0.0, 100.0]
     @Published var selectedCategory : FilteredEnum = .allCategories
     @Published var showFilterSheet: Bool = false
-    @Published var filterIsActive: Bool = false
-    @Published var showAlertSuccessfullAdded = false
+//    @Published var filterIsActive: Bool = false
+//    @Published var showAlertSuccessfullAdded = false
     @Published var showProgressView: Bool = true
     
     //MARK: User
@@ -184,6 +191,46 @@ class ProductViewModel: ObservableObject {
 
     
     //MARK: API Calls
+    
+    func getProductsFromAPI() {
+        Task {
+            do {
+                self.products = try await client.getProducts()
+            } catch {
+                print("viewModel Error: \(error)")
+                errorHandler.handleError(error: error)
+            }
+        }
+    }
+    
+    func getCategoriesFromAPI() async throws {
+        self.categories = try await client.getCategories()
+    }
+    
+    func getCategorieFromID(filterID: String) async throws {
+        self.products = try await client.getCategorieFiltered(id: filteredID)
+    }
+    
+    func searchFilterProducts(productList: [Product], searchedText: String) async throws {
+        // Wenn das Suchfeld leer ist, zeige alle Produkte an
+        if searchedText.isEmpty {
+            self.products = try await client.getCategorieFiltered(id: filteredID)
+            return
+        }
+        
+        // Filtere die Produkte nach dem Titel
+        self.products = productList.filter { product in
+            product.title.lowercased().contains(searchedText.lowercased())
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 //    func getProductsFromAPI() async throws {
 //        let result = try await client.getProducts(firstIndex: productIndex, lastIndex: 10)
 //        self.products.append(contentsOf: result)
@@ -198,32 +245,21 @@ class ProductViewModel: ObservableObject {
 //        self.products = try await client.getProducts()
 //    }
     
-        func getProductsFromAPI() async throws {
-        self.products = try await client.getProducts()
-    }
     
-    func getCategoriesFromAPI() async throws {
-        self.categories = try await client.getCategories()
-    }
+//    func getCategorieFilteredFromAPI() async throws {
+//        if searchedText.isEmpty && filterIsActive == false {
+//            try await getCategorieFromID(filterID: filteredID)
+//        } else if filterIsActive == true {
+//            try await minMaxPriceFiltered()
+//        }
+//        else {
+//            self.products = try await client.searchTitle(title: searchedText)
+//        }
+//    }
     
-    func getCategorieFilteredFromAPI() async throws {
-        if searchedText.isEmpty && filterIsActive == false {
-            try await getCategorieFromID(filterID: filteredID)
-        } else if filterIsActive == true {
-            try await minMaxPriceFiltered()
-        }
-        else {
-            self.products = try await client.searchTitle(title: searchedText)
-        }
-    }
-    
-   func minMaxPriceFiltered() async throws {
-       self.products = try await client.minMaxPriceFiltered(searchText: searchedText, preisArray: minMaxValues, selectedCategory: filteredID)
-    }
-    
-   func getCategorieFromID(filterID: String) async throws {
-        self.products = try await client.getCategorieFiltered(id: filteredID)
-    }
+//   func minMaxPriceFiltered() async throws {
+//       self.products = try await client.minMaxPriceFiltered(searchText: searchedText, preisArray: minMaxValues, selectedCategory: filteredID)
+//    }
     
 //    func isLastItem(product: Product) -> Bool {
 //        if let index = self.products.lastIndex(where: {$0.id == product.id}) {
@@ -231,8 +267,5 @@ class ProductViewModel: ObservableObject {
 //        }
 //        return false
 //    }
-    
-    
   
-    
 }
