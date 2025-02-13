@@ -6,30 +6,60 @@
 //
 
 import SwiftUI
+import Toast
 
 struct IsSuccessfullSheet: View {
     @ObservedObject var viewModel: ProductViewModel
+    let toast = Toast.default(
+        image: UIImage(systemName: "checkmark.circle.fill")!,
+        imageTint: .systemGreen,
+        title: "Zum Warenkorb hinzugefügt",
+        config: .init(
+            direction: .bottom
+        ))
+    
+//    let toast = Toast.text(
+//        "Zum Warenkorb Hinzugefügt!",
+//        config: .init(
+//            direction: .bottom
+//           )
+//        )
+    
+//    let toast = Toast.default(
+//        image: UIImage(systemName: "checkmark.circle.fill")!,
+//        title: "Zum Warenkorb hinzugefügt",
+//        subtitle: ""
+//    )
+    
     var body: some View {
         
         ZStack {
-            Color.green.opacity(0.4)
+//            Color.green.opacity(0.4)
+            Color.clear
             Rectangle()
                 .frame(maxWidth: 406, maxHeight: 100)
                 .foregroundStyle(.clear)
             VStack {
                 HStack {
-                    Image(systemName: "checkmark.circle.fill")
-                    Text("Zum Warenkorb hinzugefügt")
-                    Button("Ansehen") {
-                        
-                    }
-                    .padding(.leading)
+//                    Image(systemName: "checkmark.circle.fill")
+//                    Text("Zum Warenkorb hinzugefügt")
+//                    Button("Ansehen") {
+//                        
+//                    }
+//                    .padding(.leading)
+                    Spacer()
+                    Text("test \(toast.show())")
+                        .padding(.top, 2000)
+                    
                 }
-                .padding(.top, 30)
-                Spacer()
+//                .padding(.top, 30)
+//                Spacer()
             }
         }
         .ignoresSafeArea()
+//        .fullScreenCover(isPresented: Binding<Bool>) {
+//
+//        }
        
         
 //        VStack {

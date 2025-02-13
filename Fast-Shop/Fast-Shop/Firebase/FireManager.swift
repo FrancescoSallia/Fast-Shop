@@ -43,9 +43,187 @@ class FireManager {
         
     }
 
-//MARK: Adress-Section
+//MARK: Firestore-Section
     
-//    func addAdress(adress: Adress) async throws {
-//        try store.collection("adresses").document(auth.currentUser!.uid).setData(adress)
-//    }
+    func createFireUser(email: String) async throws {
+        let fireUser = FireUser(email: email)
+        try store
+            .collection("users")
+            .addDocument(from: fireUser)
+    }
+    
+    func updateUserCart(product: Product) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        var eigeneID = ""
+        let userRef = store.collection("users").document(uid).collection("Cart")
+        
+        do {
+            eigeneID = product.fireID!
+           try userRef
+                .document(eigeneID)
+                .setData(from: product)
+        } catch {
+            print(error)
+        }
+       
+    }
+    
+    func deleteUserCart(product: Product) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Cart")
+        
+        do {
+            try await userRef
+                .document(product.fireID!)
+                .delete()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func updateUserFavorite(product: Product) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+//        let productData = productToDictionary(product: product)
+        var eigeneID = ""
+        let userRef = store.collection("users").document(uid).collection("Favorite")
+        
+        do {
+            eigeneID = product.fireID!
+            try userRef
+                .document(eigeneID)
+                .setData(from: product)
+        } catch {
+            print(error)
+        }
+       
+    }
+    
+    func deleteUserFavorite(product: Product) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Favorite")
+        
+        do {
+            try await userRef
+                .document(product.fireID!)
+                .delete()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func cartSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Cart")
+        
+        userRef
+            .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
+                if let error = error {
+                    print("Error listening for changes: \(error)")
+                    compleation([], error)
+                    return
+                }
+                guard let snapshot else {
+                    fatalError("snapshot ist leer")
+                }
+                let products = snapshot
+                    .documents
+                    .compactMap { product in
+                        try? product.data(as: Product.self)
+                    }
+                compleation(products, nil)
+            }
+    }
+    
+    func favoriteSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Favorite")
+        
+        userRef
+            .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
+                if let error = error {
+                    print("Error listening for changes: \(error)")
+                    compleation([], error)
+                    return
+                }
+                guard let snapshot else {
+                    fatalError("snapshot ist leer")
+                }
+                let products = snapshot
+                    .documents
+                    .compactMap { product in
+                        try? product.data(as: Product.self)
+                    }
+                compleation(products, nil)
+            }
+    }
+    
+    
+    func updateUserAdress(adress: Adress) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        var eigeneID = ""
+        let userRef = store.collection("users").document(uid).collection("Adress")
+        
+        do {
+            eigeneID = adress.adressID
+           try userRef
+                .document(eigeneID)
+                .setData(from: adress)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func deleteUserAdress(adress: Adress) async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Adress")
+        
+        do {
+            try await userRef
+                .document(adress.adressID)
+                .delete()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func adressSnapshotListener(compleation: @escaping ([Adress], Error?) -> Void) {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Adress")
+        
+        userRef
+            .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
+                if let error = error {
+                    print("Error listening for changes: \(error)")
+                    compleation([], error)
+                    return
+                }
+                guard let snapshot else {
+                    fatalError("snapshot ist leer")
+                }
+                let adress = snapshot
+                    .documents
+                    .compactMap { oneAdress in
+                        try? oneAdress.data(as: Adress.self)
+                    }
+                compleation(adress, nil)
+            }
+    }
 }

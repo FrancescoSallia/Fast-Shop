@@ -6,11 +6,21 @@
 //
 
 import SwiftUI
+import Toast
 
 struct ProductDetailView: View {
     
     let product: Product
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
+    
+    let toast = Toast.default(
+        image: UIImage(systemName: "checkmark.circle.fill")!,
+        imageTint: .systemGreen,
+        title: "Zum Warenkorb hinzugefügt",
+        config: .init(
+            direction: .bottom
+        ))
 
     var body: some View {
         NavigationStack {
@@ -41,41 +51,6 @@ struct ProductDetailView: View {
                                     Text("inkl.MwSt.")
                                         .foregroundStyle(.gray)
                                 }
-//                                HStack() {
-//                                    Button("HINZUFÜGEN") {
-//                                        withAnimation {
-//                                            showAlert.toggle()
-//                                        }
-//                                        Task {
-//                                            try await Task.sleep(for: .seconds(3))
-//                                            withAnimation {
-//                                                showAlert = false
-//                                            }
-//                                        }
-//                                    }
-//                                    .frame(width: 280, height: 45)
-//                                    .border(Color.gray)
-//                                    .tint(.white)
-//                                    .background(Color.primary)
-//                                    
-//                                    Button {
-//                                        let addNewFavoriteProduct = Product(id: product.id, title: product.title, price: product.price, description: product.description, images: product.images, category: product.category, isFavorite: true, size: nil, numberOfProducts: nil)
-//                                        if viewModel.user.favorite.contains(where: { $0.id == addNewFavoriteProduct.id }) {
-//                                            viewModel.user.favorite.removeAll(where: { $0.id == addNewFavoriteProduct.id })
-//                                        } else {
-//                                            viewModel.user.favorite.append(addNewFavoriteProduct)
-//                                        }
-//                                    } label: {
-//                                        Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
-//                                    }
-//                                    .frame(width: 55, height: 45)
-//                                    .border(Color.gray)
-//                                    .tint(.white)
-//                                    .background(Color.primary)
-//                                    .padding(.leading, 12)
-//                                }
-//                                .padding(.top, 40)
-                                
                                 Text(product.description)
                                     .padding()
                                 
@@ -87,6 +62,7 @@ struct ProductDetailView: View {
 //            if viewModel.showAlertSuccessfullAdded {
 //
 //            }
+            
             HStack() {
                 ZStack {
                     Rectangle()
@@ -97,21 +73,25 @@ struct ProductDetailView: View {
                         if viewModel.selectedProduct.category.id == 1 {
                             viewModel.showSizes = true
                             print("selected ID 1: \(viewModel.selectedProduct.category.id)")
-                        } else {
-                            print("selected ID ANDERE: \(viewModel.selectedProduct.category.id)")
-                            viewModel.showAlertSuccessfullAdded = true
                         }
-//                        if viewModel.showAlertSuccessfullAdded {
-////                            withAnimation {
-////                                viewModel.showAlertSuccessfullAdded.toggle()
-////                            }
-////                            Task {
-////                                try await Task.sleep(for: .seconds(3))
-////                                withAnimation {
-////                                    viewModel.showAlertSuccessfullAdded = false
-////                                }
-////                            }
-//                        }
+                        else {
+                            print("selected ID ANDERE: \(viewModel.selectedProduct.category.id)")
+                            
+                            let newProduct = Product(
+                                id: viewModel.selectedProduct.id,
+                                title: viewModel.selectedProduct.title,
+                                price: viewModel.selectedProduct.price,
+                                description: viewModel.selectedProduct.description,
+                                images: viewModel.selectedProduct.images,
+                                category: viewModel.selectedProduct.category,
+                                isFavorite: false,
+                                size: viewModel.selectedSize,
+                                numberOfProducts: 1
+                            )
+                            
+                            viewModelFirestore.updateUserCart(product: newProduct)
+                            viewModel.showSheet = false
+                        }
                     }
                     .tint(.white)
                 }
@@ -130,45 +110,37 @@ struct ProductDetailView: View {
                             isFavorite: true,
                             size: viewModel.selectedSize
                         )
-                        if let index = viewModel.user.favorite.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-                            viewModel.user.favorite[index].isFavorite?.toggle()
-                            Task {
-                                try await viewModel.getProductsFromAPI()
-                            }
+                        if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
+                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
+                            
+                            viewModel.getProductsFromAPI()
+                            
                         } else {
-                            viewModel.user.favorite.append(addNewFavoriteProduct)
-                            Task {
-                                try await viewModel.getProductsFromAPI()
-                            }
+//                            viewModel.user.favorite.append(addNewFavoriteProduct)
+                            viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
+                            
+                               viewModel.getProductsFromAPI()
                         }
                     } label: {
                         Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
                     }
                     .tint(.white)
                 }
-//                .buttonBorderShape(.roundedRectangle(radius: 0))
-//                .padding()
-//                .padding(.horizontal, 5)
-//                .border(Color.primary)
             }
-//            .padding(.top, 40)
 
         }
         .sheet(isPresented: $viewModel.showSizes, content: {
-            SizeSheetView(viewModel: viewModel, product: product)
+            SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
                 .presentationDetents([(.medium)])
         })
-        .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
-            IsSuccessfullSheet(viewModel: viewModel)
-                .presentationDetents([.height(60)])
-        })
         .onAppear {
-            Task {
-                try await viewModel.getProductsFromAPI()
-            }
+//            Task {
+////                try await viewModel.getProductsFromAPI()
+//            }
         }
     }
+
 }
 #Preview {
-    ProductDetailView(product: ProductViewModel().testProduct, viewModel: ProductViewModel())
+    ProductDetailView(product: ProductViewModel().testProduct, viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())
 }

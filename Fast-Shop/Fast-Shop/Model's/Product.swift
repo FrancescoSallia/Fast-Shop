@@ -9,7 +9,7 @@ import Foundation
 
 struct Product: Identifiable, Codable {
     
-   
+    var fireID: String? = UUID().uuidString
     let id: Int
     let title: String
     let price: Double
@@ -20,7 +20,7 @@ struct Product: Identifiable, Codable {
     var isFavorite: Bool? = false
     let size: String?
     var numberOfProducts: Int? = 1
-    var cartID: UUID? = UUID()
+    var cartID: String? = UUID().uuidString
 }
 
 
