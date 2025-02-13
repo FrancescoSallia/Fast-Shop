@@ -6,14 +6,17 @@
 //
 
 import Foundation
+import SwiftUICore
 
 
 class HttpClient {
     
-    
-    func getProducts(firstIndex: Int, lastIndex: Int) async throws -> [Product] {
-//        guard let url = URL(string: "http://localhost:3001/products") else {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products?offset=\(firstIndex)&limit=\(lastIndex)") else {
+//TODO: Soll man hier die fehler auch behandelt werden? ist es für den User relevant das die API nicht funktioniert?
+//    @ObservedObject var errorHandler = ErrorHandler.shared
+
+    func getProducts() async throws -> [Product] {
+        guard let url = URL(string: "http://localhost:3001/products") else {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products") else {
             throw ErrorEnum.invalidURL
         }
         do {
@@ -21,14 +24,13 @@ class HttpClient {
             let products = try JSONDecoder().decode([Product].self, from: data)
             return products
         } catch {
-            print(error)
+            throw error
         }
-            return []
     }
     
     func getCategories() async throws -> [Category] {
-//        guard let url = URL(string: "http://localhost:3001/categories") else {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
+        guard let url = URL(string: "http://localhost:3001/categories") else {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/categories") else {
            throw ErrorEnum.invalidURL
         }
         do {
@@ -36,13 +38,13 @@ class HttpClient {
             let categoriesData = try JSONDecoder().decode([Category].self, from: data)
             return categoriesData
         } catch {
-            print(ErrorEnum.localizedDescription)
+            throw error
         }
-        return []
     }
     
     func getCategorieFiltered(id: String) async throws -> [Product] {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?categoryId=\(id)") else {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?categoryId=\(id)") else {
+        guard let url = URL(string: "http://localhost:3001/products?category/id=\(id)") else {
            throw ErrorEnum.invalidURL
         }
         do {
@@ -50,9 +52,8 @@ class HttpClient {
             let categoriesData = try JSONDecoder().decode([Product].self, from: data)
             return categoriesData
         } catch {
-            print(ErrorEnum.localizedDescription)
+            throw error
         }
-        return []
     }
     
     func searchTitle(title: String) async throws -> [Product] {
@@ -64,22 +65,21 @@ class HttpClient {
             let titleSearched = try JSONDecoder().decode([Product].self, from: data)
             return titleSearched
         } catch {
-            print(ErrorEnum.localizedDescription)
+            throw error
         }
-        return []
     }
     
-    func minMaxPriceFiltered(searchText: String, preisArray: [CGFloat], selectedCategory: String) async throws -> [Product] {
-        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?title=\(searchText)&price_min=\(String(format: "%.2f", preisArray[0]))&price_max=\(String(format: "%.2f", preisArray[1]))&categoryId=\(selectedCategory)") else {throw ErrorEnum.invalidURL}
-       do {
-           let (data, _) = try await URLSession.shared.data(from: url)
-           let mixMaxFiltered = try JSONDecoder().decode([Product].self, from: data)
-           return mixMaxFiltered
-       } catch {
-           print(error)
-       }
-        return []
-   }
+//    func minMaxPriceFiltered(searchText: String, preisArray: [CGFloat], selectedCategory: String) async throws -> [Product] {
+//        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products/?title=\(searchText)&price_min=\(String(format: "%.2f", preisArray[0]))&price_max=\(String(format: "%.2f", preisArray[1]))&categoryId=\(selectedCategory)") else {throw ErrorEnum.invalidURL}
+//       do {
+//           let (data, _) = try await URLSession.shared.data(from: url)
+//           let mixMaxFiltered = try JSONDecoder().decode([Product].self, from: data)
+//           return mixMaxFiltered
+//       } catch {
+//           print(error)
+//       }
+//        return []
+//   }
 }
 
 

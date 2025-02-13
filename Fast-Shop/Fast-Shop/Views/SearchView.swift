@@ -14,10 +14,10 @@ struct SearchView: View {
         price: 20.0,
         description: "Test Description",
         images: [
-        "https://i.imgur.com/R3iobJA.jpeg",
-        "https://i.imgur.com/Wv2KTsf.jpeg",
-        "https://i.imgur.com/76HAxcA.jpeg"
-      ],
+            "https://i.imgur.com/R3iobJA.jpeg",
+            "https://i.imgur.com/Wv2KTsf.jpeg",
+            "https://i.imgur.com/76HAxcA.jpeg",
+        ],
         category: Category(
             id: 1,
             name: "Tools",
@@ -28,30 +28,28 @@ struct SearchView: View {
         size: "",
         numberOfProducts: 0)
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
+
 
     var body: some View {
         NavigationStack {
-            if !viewModel.filterIsActive {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(viewModel.categories) { index in
                             Button {
-                                //                            viewModel.filterIsActive = false
+                                
                                 viewModel.filteredID = String(index.id)
-                                if !viewModel.filterIsActive {
-                                    Task {
-                                        try await viewModel.getCategorieFilteredFromAPI()
-                                    }
-                                } else {
-                                    Task {
-                                        try await viewModel.minMaxPriceFiltered()
-                                    }
+                                Task {
+                                    try await viewModel
+                                        .getCategorieFromID(filterID: viewModel.filteredID)
                                 }
                             } label: {
                                 if viewModel.filteredID == "0" {
                                     Text("\(index.name)")
-                                } else if viewModel.filteredID == String(index.id) {
+                                } else if viewModel.filteredID
+                                    == String(index.id)
+                                {
                                     Text("\(index.name)")
                                         .underline()
                                 } else {
@@ -65,50 +63,86 @@ struct SearchView: View {
                     }
                     Divider()
                 }
-            }
+            
             ScrollView(showsIndicators: false) {
                 VStack {
                     LazyVGrid(columns: columns, spacing: -10) {
                         ForEach(viewModel.products) { filteredProduct in
                             NavigationLink(destination: {
-                                ProductDetailView(product: filteredProduct, viewModel: viewModel)
+                                ProductDetailView(
+                                    product: filteredProduct,
+                                    viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                             }) {
                                 VStack {
                                     HStack {
                                         ZStack(alignment: .bottom) {
-                                            AsyncImage(url: URL(string: filteredProduct.images[0])) { pic in
+                                            AsyncImage(
+                                                url: URL(
+                                                    string:
+                                                        filteredProduct.images[
+                                                            0])
+                                            ) { pic in
                                                 pic
                                                     .resizable()
-                                                    .frame(maxWidth: 400, maxHeight: 250)
+                                                    .frame(
+                                                        maxWidth: 400,
+                                                        maxHeight: 250)
                                             } placeholder: {
                                                 ProgressView()
                                             }
                                             Button {
-                                                viewModel.selectedProduct = filteredProduct
+                                                viewModel.selectedProduct =
+                                                    filteredProduct
                                                 viewModel.showSheet.toggle()
-                                            }label: {
-                                                Image(systemName: "plus.circle.fill")
-                                                    .padding(.bottom)
-                                                    .foregroundStyle(.yellow)
+                                            } label: {
+                                                Image(
+                                                    systemName:
+                                                        "plus.circle.fill"
+                                                )
+                                                .padding(.bottom)
+                                                .foregroundStyle(.yellow)
                                             }
                                         }
                                     }
-                                    .padding(.horizontal,3)
-                                    
+                                    .padding(.horizontal, 3)
+
                                     VStack {
                                         HStack {
                                             Text("\(filteredProduct.title)")
                                                 .font(.footnote)
                                             //frame machen
-                                            Image(systemName: "bookmark")
+                                            Button {
+                                                let addNewFavoriteProduct = Product(
+                                                    id: filteredProduct.id,
+                                                    title: filteredProduct.title,
+                                                    price: filteredProduct.price,
+                                                    description: filteredProduct.description,
+                                                    images: filteredProduct.images,
+                                                    category: filteredProduct.category,
+                                                    isFavorite: true,
+                                                    size: viewModel.selectedSize
+                                                )
+                                                
+                                                if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
+                                                    viewModelFirestore.favoriteList[index].isFavorite?.toggle()
+                                                    viewModel.productIndex = index
+                                                } else {
+                                                    
+                                                    viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
+                                                }
+                                            } label: {
+                                                Image(systemName: filteredProduct.isFavorite == true ? "bookmark.fill" : "bookmark")
+                                            }
                                         }
-                                        
+
                                         HStack {
-                                            Text("\(filteredProduct.price.formatted())€")
-                                                .font(.footnote)
-                                                .frame(width: 150)
-                                                .padding(.bottom, 30)
-                                            
+                                            Text(
+                                                "\(filteredProduct.price.formatted())€"
+                                            )
+                                            .font(.footnote)
+                                            .frame(width: 150)
+                                            .padding(.bottom, 30)
+
                                             Spacer()
                                         }
                                         .padding(.horizontal)
@@ -116,71 +150,49 @@ struct SearchView: View {
                                 }
                             }
                             .tint(.black)
-                            .onAppear {
-                                if viewModel.isLastItem(product: filteredProduct) {
-                                    Task {
-                                        try await viewModel.getProductsFromAPI()
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             }
-            .refreshable {
-                if !viewModel.filterIsActive {
-                    Task {
-                        try await viewModel.getCategorieFilteredFromAPI()
-                       }
-                } else {
-                    Task {
-                        try await viewModel.minMaxPriceFiltered()
-                       }
-                }
-                        
+//            .toolbar(content: {
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    Button {
+//                        viewModel.showFilterSheet.toggle()
+//                    } label: {
+//                        Image(systemName: "line.3.horizontal.decrease.circle")
+//                    }
+//                }
+//            })
+//        }
+        .sheet(
+            isPresented: $viewModel.showSheet,
+            content: {
+                SelectedItemSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
+                    .presentationDetents([.height(600)])
             }
-            .toolbar(content: {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        viewModel.showFilterSheet.toggle()
-                    } label:{
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                    }
+        )
+        .searchable(
+            text: $viewModel.searchedText,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Search..."
+        )
+        .onChange(
+            of: viewModel.searchedText,
+            {
+                Task {
+                   try await viewModel.searchFilterProducts(productList: viewModel.products, searchedText: viewModel.searchedText)
                 }
-            })
-        }
-        .sheet(isPresented: $viewModel.showSheet, content: {
-//            SelectedItemSheetView(productSelected: viewModel.selectedProduct ?? viewModel.testProduct )
-            SelectedItemSheetView(viewModel: viewModel)
-                .presentationDetents([.height(600)])
-//                .presentationDetents([.medium, .large])
-        })
-        .sheet(isPresented: $viewModel.showFilterSheet, content: {
-            FilterSheetView(viewModel: viewModel)
-//                .presentationDetents([.height(600)])
-                .presentationDetents([.medium, .large])
-        })
-        .searchable(text: $viewModel.searchedText, placement: .navigationBarDrawer(displayMode: .always) ,prompt: "Search...")
-        .onChange(of: viewModel.searchedText, {
-            Task {
-                try await viewModel.getCategorieFilteredFromAPI()
             }
-        })
+        )
         .onAppear {
-            if !viewModel.filterIsActive {
-                Task {
-                    try await viewModel.getCategoriesFromAPI()
-                    try await viewModel.getCategorieFilteredFromAPI()
-                   }
-            } else {
-                Task {
-                    try await viewModel.minMaxPriceFiltered()
-                   }
+            Task {
+                try await viewModel.getCategoriesFromAPI()
+                try await viewModel.getCategorieFromID(filterID: viewModel.filteredID)
             }
         }
+      }
     }
+  }
 }
 #Preview {
-    SearchView(viewModel: ProductViewModel())
+    SearchView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())
 }
-

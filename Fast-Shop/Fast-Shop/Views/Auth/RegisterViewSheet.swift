@@ -11,6 +11,7 @@ struct RegisterViewSheet: View {
     @Environment(\.dismiss) var dismiss
 
     @ObservedObject var authViewModel: AuthViewModel
+    @ObservedObject private var errorHandler = ErrorHandler.shared
     @State var acceptTerms: Bool = false
     
     var body: some View {
@@ -68,6 +69,9 @@ struct RegisterViewSheet: View {
                   Spacer()
               }
               .padding()
+              .alert(isPresented: $errorHandler.showError) {
+                  Alert(title: Text("Error"), message: Text(errorHandler.errorMessage), dismissButton: .default(Text("OK")))
+              }
         
  
         

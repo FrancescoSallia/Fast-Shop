@@ -17,9 +17,9 @@ struct Fast_ShopApp: App {
     }
     
     @StateObject var viewModel = ProductViewModel()
+    @StateObject var viewModelAdress = AdressViewModel()
     @StateObject var authViewModel = AuthViewModel()
-    @State var showTab: Bool = true
-    @State var isLogged: Bool = false
+    @StateObject var viewModelFirestore = FirestoreViewModel()
 
     var body: some Scene {
         WindowGroup {
@@ -29,22 +29,22 @@ struct Fast_ShopApp: App {
                 } else {
                         TabView {
                             Tab("Home", systemImage: "house.fill"){
-                                HomeView(isScrolling: $showTab)
+                                HomeView()
                                 //                        APITestView()
                             }
                             Tab("Search", systemImage: "magnifyingglass"){
-                                SearchView(viewModel: viewModel)
-                                    .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
-                                        IsSuccessfullSheet(viewModel: viewModel)
-                                            .presentationDetents([.height(60)])
-                                    })
+                                SearchView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
+//                                    .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
+//                                        IsSuccessfullSheet(viewModel: viewModel)
+//                                            .presentationDetents([.height(60)])
+//                                    })
                             }
                             Tab("Cart", systemImage: "bag"){
-                                CartView(viewModel: viewModel)
+                                CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
                                 //                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
                             }
                             Tab("Settings", systemImage: "person"){
-                                SettingsView(viewModel: viewModel, authViewModel: authViewModel)
+                                SettingsView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore, authViewModel: authViewModel)
                                 //                          LogInScreenView()
                             }
                             
@@ -58,8 +58,6 @@ struct Fast_ShopApp: App {
 
     }
 }
-
-
 //    .overlay {
 //        if showTab {
 //            withAnimation {

@@ -10,28 +10,19 @@ import SwiftUI
 struct OrderOverviewView: View {
     let dummyArtikeln: [String] = ["tasche", "pants", "tshirt", "ring"]
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelAdress: AdressViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
 
     var body: some View {
         NavigationStack {
             VStack {
-                Text("\(viewModel.user.cart.count) Artikel")
+                Text("\(viewModelFirestore.cartList.count) Artikel")
                     .font(.footnote)
                     .textCase(.uppercase)
                 ScrollView {
-                    //                Text("Donnerstag 06, Februar - Freitag 08, Februar")
-                    
-//                    HStack {
-//                        Text("\(viewModel.user.cart.count) Artikel")
-//                            .font(.footnote)
-//                            .textCase(.uppercase)
-//                        Spacer()
-//                    }
-//                    .padding(.horizontal)
-                    
-                    
                     ScrollView(.horizontal) {
                         HStack {
-                            ForEach(viewModel.user.cart, id: \.cartID) { item in
+                            ForEach(viewModelFirestore.cartList, id: \.cartID) { item in
                                 AsyncImage(url: URL(string: item.images[0])) { item in
                                     item
                                         .resizable()
@@ -39,8 +30,6 @@ struct OrderOverviewView: View {
                                 } placeholder: {
                                     ProgressView()
                                 }
-                                
-                                
                             }
                         }
                     }
@@ -75,7 +64,7 @@ struct OrderOverviewView: View {
                     
 //ADRESS SECTION
                     NavigationLink {
-                        AdressView(viewModel: viewModel)
+                        AdressView(viewModel: viewModelAdress, viewModelFirestore: viewModelFirestore)
                     } label: {
                     VStack(alignment: .leading) {
                         HStack {
@@ -87,16 +76,35 @@ struct OrderOverviewView: View {
                         }
                         .padding(.bottom)
                         HStack {
-                            Text(viewModel.user.firstName)
-                                .textCase(.uppercase)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.black)
+                            if viewModelAdress.selectedAdressOption == "" {
+                                HStack {
+                                    Text("Wähle eine Lieferadresse aus um fortzufahren!")
+                                        .foregroundStyle(.red)
+                                        .textCase(.uppercase)
+                                        .font(.footnote)
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.black)
+                                }
+                                .padding(.horizontal)
+                            }
+                            if let index = viewModelFirestore.adressList.firstIndex(where: { $0.adressID == viewModelAdress.selectedAdressOption }) {
+                                VStack(alignment: .leading) {
+                                    HStack {
+                                        Text("\(viewModelFirestore.adressList[index].firstName)")
+                                            .textCase(.uppercase)
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .foregroundColor(.black)
+                                    }
+                                    Text("\(viewModelFirestore.adressList[index].street)")
+                                        .textCase(.uppercase)
+                                    Text("\(viewModelFirestore.adressList[index].plz) \(viewModelFirestore.adressList[index].location)")
+                                        .textCase(.uppercase)
+                                }
+                                .padding(.horizontal)
                         }
-                        Text("\(viewModel.user.adress) \(viewModel.user.houseNumber)")
-                            .textCase(.uppercase)
-                        Text("\(viewModel.user.plz) \(viewModel.user.location)")
-                            .textCase(.uppercase)
+                        }
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -144,7 +152,6 @@ struct OrderOverviewView: View {
                         }
                     }
                     
-                    
                     Divider()
                         .frame(height: 2)
                         .background(Color.black)
@@ -155,10 +162,12 @@ struct OrderOverviewView: View {
                     .frame(height: 2)
                     .background(Color.black)
                 HStack{
-                    Text("\(viewModel.user.cart.count) Artikel")
+                    Text("\(viewModelFirestore.cartList.count) Artikel")
                         .textCase(.uppercase)
                     Spacer()
-                    Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
+//                    Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
+                   Text("\(String(format: "%.2f", viewModelFirestore.cartList.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR")
+
                 }
                 .padding(.top)
                 .padding(.horizontal)
@@ -175,7 +184,7 @@ struct OrderOverviewView: View {
                         .textCase(.uppercase)
                         .bold()
                     Spacer()
-                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
+                    Text("\(String(format: "%.2f",viewModelFirestore.cartList.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
                     //Text("128,95 EUR")
                         .bold()
                 }
@@ -189,12 +198,13 @@ struct OrderOverviewView: View {
             ZStack {
                 Rectangle()
                     .frame(maxWidth: .infinity, maxHeight: 50)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(viewModelAdress.selectedAdressOption == "" ? .clear : .black)
                 Button("Zahlung Autorisieren") {
                     //
                 }
                 .tint(.white)
                 .textCase(.uppercase)
+                .disabled(viewModelAdress.selectedAdressOption == "" ? true : false)
             }
             //        .padding(-8)
         }
@@ -209,5 +219,5 @@ struct OrderOverviewView: View {
     }
 }
 #Preview {
-    OrderOverviewView(viewModel: ProductViewModel())
+    OrderOverviewView(viewModel: ProductViewModel(), viewModelAdress: AdressViewModel(), viewModelFirestore: FirestoreViewModel())
 }

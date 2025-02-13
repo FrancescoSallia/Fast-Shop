@@ -12,6 +12,7 @@ import SwiftUI
 struct LogInScreenView: View {
 
     @ObservedObject var authViewModel: AuthViewModel
+    @ObservedObject var errorHandler = ErrorHandler.shared
     var body: some View {
         NavigationStack {
             ZStack {
@@ -138,6 +139,9 @@ struct LogInScreenView: View {
                 .padding()
                 .padding(.top, 80)
             }
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(title: Text("Error"), message: Text(errorHandler.errorMessage), dismissButton: .default(Text("OK")))
         }
     }
 }

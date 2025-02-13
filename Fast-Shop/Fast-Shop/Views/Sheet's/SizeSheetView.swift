@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SizeSheetView: View {
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
     var product: Product
 
@@ -29,7 +30,7 @@ struct SizeSheetView: View {
                 }
                 .onTapGesture {
                     viewModel.selectedSize = item.rawValue
-                    viewModel.showAlertSuccessfullAdded = true
+//                    viewModel.showAlertSuccessfullAdded = true
 
                     let addNewCartProduct = Product(
                         id: product.id,
@@ -38,22 +39,23 @@ struct SizeSheetView: View {
                         description: product.description,
                         images: product.images,
                         category: product.category,
-                        size: viewModel.selectedSize,
-                        cartID: nil
+                        size: viewModel.selectedSize
+                        
                     )
                     viewModel.selectedProduct = addNewCartProduct
                     
-                    if let index = viewModel.user.cart.firstIndex(where: {
+                    if let index = viewModelFirestore.cartList.firstIndex(where: {
                         $0.id == viewModel.selectedProduct.id && $0.size == viewModel.selectedSize
                     }) {
-                        var updatedProduct = viewModel.user.cart[index]
+                        var updatedProduct = viewModelFirestore.cartList[index]
                         updatedProduct.numberOfProducts? += 1
                         viewModel.selectedSize = ""
 
-                        viewModel.user.cart[index] = updatedProduct
+                        viewModelFirestore.cartList[index] = updatedProduct // hier wird das test product mitgegeben fals die liste leer ist!
                     } else {
-                        viewModel.selectedProduct.cartID = UUID()
-                        viewModel.user.cart.append(viewModel.selectedProduct)
+                        viewModel.selectedProduct.cartID = UUID().uuidString
+//                        viewModel.user.cart.append(viewModel.selectedProduct)
+                        viewModelFirestore.updateUserCart(product: viewModel.selectedProduct)
                         viewModel.selectedSize = ""
 
                     }
@@ -69,7 +71,7 @@ struct SizeSheetView: View {
 }
 
 #Preview {
-    SizeSheetView(viewModel: ProductViewModel(), product: ProductViewModel().testProduct)
+    SizeSheetView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel(), product: ProductViewModel().testProduct)
 }
 
 
