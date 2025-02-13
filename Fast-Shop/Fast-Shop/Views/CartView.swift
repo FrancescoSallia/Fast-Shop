@@ -231,8 +231,14 @@ struct CartView: View {
                                     HStack(alignment: .lastTextBaseline) {
                                         Spacer()
                                         Button {
-                                            viewModelFirestore.updateUserCart(product: product)
-                                            viewModelFirestore.deleteUserFavorite(product: product)
+                                            if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == product.id }) {
+                                                var updatedProduct = viewModelFirestore.cartList[index]
+                                                viewModelFirestore.deleteUserFavorite(product: updatedProduct)
+                                            } else {
+                                                
+                                                viewModelFirestore.updateUserCart(product: product)
+                                                viewModelFirestore.deleteUserFavorite(product: product)
+                                            }
                                         } label: {
                                             Image(systemName: "cart")
                                                 .resizable()
