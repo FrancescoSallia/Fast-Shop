@@ -39,7 +39,7 @@ struct SearchView: View {
                     HStack {
                         ForEach(viewModel.categories) { index in
                             Button {
-                                //                            viewModel.filterIsActive = false
+                                //viewModel.filterIsActive = false
                                 viewModel.filteredID = String(index.id)
                                 if !viewModel.filterIsActive {
                                     Task {

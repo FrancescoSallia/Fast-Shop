@@ -20,17 +20,6 @@ struct OrderOverviewView: View {
                     .font(.footnote)
                     .textCase(.uppercase)
                 ScrollView {
-                    //                Text("Donnerstag 06, Februar - Freitag 08, Februar")
-                    
-//                    HStack {
-//                        Text("\(viewModel.user.cart.count) Artikel")
-//                            .font(.footnote)
-//                            .textCase(.uppercase)
-//                        Spacer()
-//                    }
-//                    .padding(.horizontal)
-                    
-                    
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(viewModelFirestore.cartList, id: \.cartID) { item in
@@ -41,8 +30,6 @@ struct OrderOverviewView: View {
                                 } placeholder: {
                                     ProgressView()
                                 }
-                                
-                                
                             }
                         }
                     }
@@ -116,12 +103,7 @@ struct OrderOverviewView: View {
                                         .textCase(.uppercase)
                                 }
                                 .padding(.horizontal)
-
-                            
-                            
                         }
-                      
-                     
                         }
                     }
                     .padding()
@@ -169,7 +151,6 @@ struct OrderOverviewView: View {
                             .padding(.top, -16)
                         }
                     }
-                    
                     
                     Divider()
                         .frame(height: 2)

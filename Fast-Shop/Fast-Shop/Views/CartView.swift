@@ -132,6 +132,7 @@ struct CartView: View {
                                                             .getProductsFromAPI()
                                                     }
                                                 }
+                                                .disabled(product.numberOfProducts == 1)
                                                 .tint(.primary)
                                                 .padding()
                                                 .border(.black)
