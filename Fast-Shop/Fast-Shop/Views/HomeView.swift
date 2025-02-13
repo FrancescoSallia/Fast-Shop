@@ -9,7 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @ObservedObject var viewModel = ProductViewModel()
+    @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var viewModelFirestore: FirestoreViewModel
     @ObservedObject var errorHandler: ErrorHandler = .shared
 
     var body: some View {
@@ -18,36 +19,49 @@ struct HomeView: View {
                 ScrollView {
                     VStack {
                         ForEach(viewModel.products) { item in
-                            ZStack {
-                                AsyncImage(url: URL(string: item.images[0])) { pic in
-                                     pic
-                                    .resizable()
-                                    .frame(width: 400, height: 700)
-                                    .onScrollVisibilityChange { isVisible in
-                                        if isVisible {
-                                            viewModel.categorieText = item.category.name
-                                            
-                                        }
+//                            NavigationLink {
+//                                ProductDetailView(product: item, viewModel: viewModel, viewModelFirestore: viewModelFirestore)
+//                            } label: {
+                                ZStack {
+                                    AsyncImage(url: URL(string: item.images[0])) { pic in
+                                        pic
+                                            .resizable()
+                                            .frame(width: 400, height: 700)
+                                            .onScrollVisibilityChange { isVisible in
+                                                if isVisible {
+                                                    viewModel.categorieText = item.category.name
+                                                    
+                                                }
+                                            }
+                                    } placeholder: {
+                                        ProgressView()
                                     }
-                                } placeholder: {
-                                    ProgressView()
+                                    Text("FAST-SHOP")
+                                        .font(.title)
+                                        .fontDesign(.monospaced)
+                                        .foregroundColor(.black)
+                                        .padding()
+                                        .offset(y: 140)
+                                        .frame(maxWidth: 350, maxHeight: 100)
+                                    Text(item.category.name)
+                                        .font(.largeTitle)
+                                        .fontDesign(.serif)
+                                        .foregroundColor(.black)
+                                        .padding()
+                                        .offset(y: 180)
+                                        .italic()
                                 }
-                                Text("FAST-SHOP")
-                                    .font(.title)
-                                    .fontDesign(.monospaced)
-                                    .foregroundColor(.black)
-                                    .padding()
-                                    .offset(y: 140)
-                                    .frame(maxWidth: 350, maxHeight: 100)
-                                Text(item.category.name)
-                                    .font(.largeTitle)
-                                    .fontDesign(.serif)
-                                    .foregroundColor(.black)
-                                    .padding()
-                                    .offset(y: 180)
-                                    .italic()
-                            }
-                      }
+                                .onTapGesture {
+                                    viewModel.selectedProduct = item
+                                    viewModel.showHomeDetailSheet = true
+                                }
+//                            }
+                                .sheet(isPresented: $viewModel.showHomeDetailSheet, content: {
+                                    ProductDetailView(product: viewModel.selectedProduct, viewModel: viewModel, viewModelFirestore: viewModelFirestore)
+                                })
+                            
+                        }
+                        
 //                        .listStyle(.inset)
 //                        .scrollTransition(.interactive, axis: .vertical) { view, phase in
 ////                            view.offset(y: phase.value * -70)
@@ -83,5 +97,5 @@ struct HomeView: View {
     }
 }
 #Preview {
-    HomeView()
+    HomeView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())
 }

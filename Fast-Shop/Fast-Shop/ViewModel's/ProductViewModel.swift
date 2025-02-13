@@ -23,6 +23,7 @@ class ProductViewModel: ObservableObject {
     @Published var filteredID: String = "1"
     @Published var searchedText: String = ""
     @Published var showSheet: Bool = false
+    @Published var showHomeDetailSheet: Bool = false
     @Published var categorieText: String = ""
 
     @Published var selectedProduct: Product = Product(
@@ -136,10 +137,8 @@ class ProductViewModel: ObservableObject {
     @Published var maxPrice = 100.0
     @Published var minMaxValues: [CGFloat] = [0.0, 100.0]
     @Published var selectedCategory : FilteredEnum = .allCategories
-    @Published var showFilterSheet: Bool = false
-//    @Published var filterIsActive: Bool = false
-//    @Published var showAlertSuccessfullAdded = false
-    @Published var showProgressView: Bool = true
+//    @Published var showProgressView: Bool = true
+    //    @Published var showFilterSheet: Bool = false
     
     //MARK: User
     @Published var user = FireUser(

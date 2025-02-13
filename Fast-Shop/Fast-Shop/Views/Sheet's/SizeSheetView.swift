@@ -31,6 +31,8 @@ struct SizeSheetView: View {
                 .onTapGesture {
                     viewModel.selectedSize = item.rawValue
 //                    viewModel.showAlertSuccessfullAdded = true
+                    viewModel.showHomeDetailSheet = false
+
 
                     let addNewCartProduct = Product(
                         id: product.id,
@@ -49,9 +51,11 @@ struct SizeSheetView: View {
                     }) {
                         var updatedProduct = viewModelFirestore.cartList[index]
                         updatedProduct.numberOfProducts? += 1
+                        viewModelFirestore.updateUserCart(product: updatedProduct)
+
                         viewModel.selectedSize = ""
 
-                        viewModelFirestore.cartList[index] = updatedProduct // hier wird das test product mitgegeben fals die liste leer ist!
+//                        viewModelFirestore.cartList[index] = updatedProduct // hier wird das test product mitgegeben fals die liste leer ist!
                     } else {
                         viewModel.selectedProduct.cartID = UUID().uuidString
 //                        viewModel.user.cart.append(viewModel.selectedProduct)

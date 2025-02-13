@@ -98,14 +98,27 @@ struct SelectedItemSheetView: View {
                             numberOfProducts: 1
                         )
                         
-                        //                viewModel.selectedProduct = newProduct
-    //                    viewModel.user.cart.append(newProduct)
-                        viewModelFirestore.updateUserCart(product: newProduct)
-                        viewModel.showSheet = false
+////                                        viewModel.selectedProduct = newProduct
+//    //                    viewModel.user.cart.append(newProduct)
+//                        viewModelFirestore.updateUserCart(product: newProduct)
+//                        viewModel.showSheet = false
+//                        
+//    //                    if viewModel.selectedProduct.category.id == 1 {
+//    //                        viewModel.showAlertSuccessfullAdded = true
+//    //                    }
                         
-    //                    if viewModel.selectedProduct.category.id == 1 {
-    //                        viewModel.showAlertSuccessfullAdded = true
-    //                    }
+                        if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == newProduct.id && $0.size == newProduct.size }) {
+                            var updatedProduct = viewModelFirestore.cartList[index]
+                            updatedProduct.numberOfProducts? += 1
+//                                viewModelFirestore.cartList[index].numberOfProducts? += 1
+                            viewModelFirestore.updateUserCart(product: updatedProduct)
+
+                        } else {
+                            viewModelFirestore.updateUserCart(product: newProduct)
+                        }
+                        viewModel.showSheet = false
+                        viewModel.showHomeDetailSheet = false
+                    
                         
                     } label: {
                         HStack {

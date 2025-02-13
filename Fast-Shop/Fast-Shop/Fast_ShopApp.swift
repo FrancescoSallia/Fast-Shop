@@ -29,8 +29,7 @@ struct Fast_ShopApp: App {
                 } else {
                         TabView {
                             Tab("Home", systemImage: "house.fill"){
-                                HomeView()
-                                //                        APITestView()
+                                HomeView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                             }
                             Tab("Search", systemImage: "magnifyingglass"){
                                 SearchView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)

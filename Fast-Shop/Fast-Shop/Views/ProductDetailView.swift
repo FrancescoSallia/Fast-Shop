@@ -10,7 +10,7 @@ import Toast
 
 struct ProductDetailView: View {
     
-    let product: Product
+    var product: Product
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
     
@@ -70,6 +70,7 @@ struct ProductDetailView: View {
                     
                     //FIXME: das alert zeigt zweimal an bei hinzufügen!
                     Button("HINZUFÜGEN") {
+                        viewModel.selectedProduct = product
                         if viewModel.selectedProduct.category.id == 1 {
                             viewModel.showSizes = true
                             print("selected ID 1: \(viewModel.selectedProduct.category.id)")
@@ -89,8 +90,17 @@ struct ProductDetailView: View {
                                 numberOfProducts: 1
                             )
                             
-                            viewModelFirestore.updateUserCart(product: newProduct)
+                            if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == newProduct.id && $0.size == newProduct.size }) {
+                                var updatedProduct = viewModelFirestore.cartList[index]
+                                updatedProduct.numberOfProducts? += 1
+//                                viewModelFirestore.cartList[index].numberOfProducts? += 1
+                                viewModelFirestore.updateUserCart(product: updatedProduct)
+
+                            } else {
+                                viewModelFirestore.updateUserCart(product: newProduct)
+                            }
                             viewModel.showSheet = false
+                            viewModel.showHomeDetailSheet = false
                         }
                     }
                     .tint(.white)
