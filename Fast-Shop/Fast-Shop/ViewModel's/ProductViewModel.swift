@@ -24,6 +24,7 @@ class ProductViewModel: ObservableObject {
     @Published var searchedText: String = ""
     @Published var showSheet: Bool = false
     @Published var showHomeDetailSheet: Bool = false
+    @Published var showLottieSuccessfullView: Bool = false
     @Published var categorieText: String = ""
 
     @Published var selectedProduct: Product = Product(

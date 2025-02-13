@@ -232,7 +232,7 @@ struct CartView: View {
                                         Spacer()
                                         Button {
                                             if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == product.id }) {
-                                                var updatedProduct = viewModelFirestore.cartList[index]
+                                                let updatedProduct = viewModelFirestore.cartList[index]
                                                 viewModelFirestore.deleteUserFavorite(product: updatedProduct)
                                             } else {
                                                 

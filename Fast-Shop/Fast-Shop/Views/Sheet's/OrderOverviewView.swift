@@ -12,6 +12,7 @@ struct OrderOverviewView: View {
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    @State private var navigateToHome = false
 
     var body: some View {
         NavigationStack {
@@ -200,7 +201,8 @@ struct OrderOverviewView: View {
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .foregroundStyle(viewModelAdress.selectedAdressOption == "" ? .clear : .black)
                 Button("Zahlung Autorisieren") {
-                    //
+                    viewModel.showLottieSuccessfullView.toggle()
+
                 }
                 .tint(.white)
                 .textCase(.uppercase)
@@ -216,7 +218,19 @@ struct OrderOverviewView: View {
             PayOptionViewSheet(viewModel: viewModel)
                 .presentationDetents([.medium])
         }
-    }
+        .fullScreenCover(isPresented: $viewModel.showLottieSuccessfullView) {
+            LottiesView()
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                        viewModel.showLottieSuccessfullView = false
+                        navigateToHome = true
+                    }
+                }
+                .navigationDestination(isPresented: $navigateToHome) {
+                    CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
+                }
+    } //TODO: Die Cart nach dem Erfolgreichen einkauf leeren und in den archiv packen
+  }
 }
 #Preview {
     OrderOverviewView(viewModel: ProductViewModel(), viewModelAdress: AdressViewModel(), viewModelFirestore: FirestoreViewModel())
