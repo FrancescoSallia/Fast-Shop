@@ -217,7 +217,7 @@ struct OrderOverviewView: View {
                             numberOfProducts: product.numberOfProducts,
                             cartID: product.cartID,
                             oldOrderID: UUID().uuidString,
-                            date: Date().formatted(date: .complete, time: .omitted)
+                            date: Date().formatted(.iso8601.year().month().day())
                         )
                         viewModelFirestore.updateUserOldOrder(product: oldProduct)
                         viewModelFirestore.deleteUserCart(product: product)

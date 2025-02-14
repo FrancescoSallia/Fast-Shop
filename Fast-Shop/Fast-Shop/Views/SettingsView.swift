@@ -28,7 +28,7 @@ struct SettingsView: View {
                             Text("Meine Adressen")
                         }
                         NavigationLink(
-                            destination: OldOrderView(viewModelFirestore: viewModelFirestore)
+                            destination: OldOrderView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                         ) {
                             Text("Meine Bestellungen")
                         }

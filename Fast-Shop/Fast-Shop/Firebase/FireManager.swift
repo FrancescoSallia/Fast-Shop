@@ -235,7 +235,7 @@ class FireManager {
         let userRef = store.collection("users").document(uid).collection("Old-Orders")
         
         do {
-            eigeneID = product.fireID!
+            eigeneID = product.oldOrderID!
            try userRef
                 .document(eigeneID)
                 .setData(from: product)
