@@ -22,11 +22,15 @@ struct SettingsView: View {
                     Section(header: Text("Einstellungen")) {
                         Toggle(
                             "Benachrichtigungen", isOn: $notificationsEnabled)
-                        Toggle("Dunkler Modus", isOn: $isDarkMode)
                         NavigationLink(
                             destination: AdressView(viewModel: viewModelAdress, viewModelFirestore: viewModelFirestore)
                         ) {
                             Text("Meine Adressen")
+                        }
+                        NavigationLink(
+                            destination: OldOrderView(viewModelFirestore: viewModelFirestore)
+                        ) {
+                            Text("Meine Bestellungen")
                         }
                     }
 
@@ -34,10 +38,6 @@ struct SettingsView: View {
                         Text(
                             "E-Mail: \(authViewModel.user?.email ?? "Keine User-Email")"
                         )
-                        //                                    Button(action: {}) {
-                        //                                        Text("Account löschen")
-                        //                                            .foregroundColor(.red)
-                        //                                    }
                     }
                 }
                 .navigationTitle("Einstellungen")

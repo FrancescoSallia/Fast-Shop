@@ -202,6 +202,27 @@ struct OrderOverviewView: View {
                     .foregroundStyle(viewModelAdress.selectedAdressOption == "" ? .clear : .black)
                 Button("Zahlung Autorisieren") {
                     viewModel.showLottieSuccessfullView.toggle()
+                    
+                    for product in viewModelFirestore.cartList {
+                        let oldProduct = Product(
+                            fireID: product.fireID,
+                            id: product.id,
+                            title: product.title,
+                            price: product.price,
+                            description: product.description,
+                            images: product.images,
+                            category: product.category,
+                            isFavorite: product.isFavorite,
+                            size: product.size,
+                            numberOfProducts: product.numberOfProducts,
+                            cartID: product.cartID,
+                            oldOrderID: UUID().uuidString,
+                            date: Date().formatted(date: .complete, time: .omitted)
+                        )
+                        viewModelFirestore.updateUserOldOrder(product: oldProduct)
+                        viewModelFirestore.deleteUserCart(product: product)
+                    }
+                    
 
                 }
                 .tint(.white)
@@ -228,12 +249,12 @@ struct OrderOverviewView: View {
                           navigateToHome = true
                     }
                 }
-                .navigationDestination(isPresented: $navigateToHome) {
-                    CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
-                }
     } //TODO: Die Cart nach dem Erfolgreichen einkauf leeren und in den archiv packen
+        .navigationDestination(isPresented: $navigateToHome) {
+            CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
+        }
   }
 }
-#Preview {
-    OrderOverviewView(viewModel: ProductViewModel(), viewModelAdress: AdressViewModel(), viewModelFirestore: FirestoreViewModel())
-}
+//#Preview {
+//    OrderOverviewView(viewModel: ProductViewModel(), viewModelAdress: AdressViewModel(), viewModelFirestore: FirestoreViewModel(), path: <#Binding<NavigationPath>#>)
+//}

@@ -16,6 +16,7 @@ struct CartView: View {
     //    let columns = [GridItem(.flexible()), GridItem(.flexible())]
     let columns = [GridItem(.fixed(400.0))]
 
+    
     var body: some View {
         NavigationStack {
             HStack {
@@ -201,10 +202,6 @@ struct CartView: View {
                             }
                         
                     }
-
-//                                    .listStyle(.plain)
-                    //                Spacer()
-                    //                Spacer()
                 } else {
 //                    ForEach(viewModel.user.favorite, id: \.cartID) { product in
                     ForEach(viewModelFirestore.favoriteList, id: \.cartID) { product in

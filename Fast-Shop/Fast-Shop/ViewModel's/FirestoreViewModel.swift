@@ -14,12 +14,14 @@ class FirestoreViewModel: ObservableObject  {
     @Published var cartList: [Product] = []
     @Published var favoriteList: [Product] = []
     @Published var adressList: [Adress] = []
+    @Published var oldOrderList: [Product] = []
     @Published var isFavorited: Bool = false
     
     init() {
         cartSnapshotListener()
         favoriteSnapshotListener()
         adressSnapshotListener()
+        oldOrderSnapshotListener()
     }
     
     func updateUserCart(product: Product) {
@@ -101,7 +103,7 @@ class FirestoreViewModel: ObservableObject  {
             do {
                 try await firestore.updateUserAdress(adress: adress)
             } catch {
-                fatalError("update Cart failed")
+                fatalError("update adress failed")
             }
         }
     }
@@ -128,6 +130,26 @@ class FirestoreViewModel: ObservableObject  {
                 return
             }
             self.adressList = adress
+        }
+    }
+    
+    func updateUserOldOrder(product: Product) {
+        Task {
+            do {
+                try await firestore.updateUserOldOrder(product: product)
+            } catch {
+                fatalError("update old-Order failed")
+            }
+        }
+    }
+    
+    private func oldOrderSnapshotListener() {
+        firestore.oldOrderSnapshotListener { oldOrder, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            self.oldOrderList = oldOrder
         }
     }
 }
