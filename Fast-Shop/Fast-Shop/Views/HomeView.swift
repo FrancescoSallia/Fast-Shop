@@ -18,7 +18,7 @@ struct HomeView: View {
             ZStack(alignment: .top) {
                 ScrollView {
                     VStack {
-                        ForEach(viewModel.products) { item in
+                        ForEach(viewModel.allProductsForHomeView) { item in
 //                            NavigationLink {
 //                                ProductDetailView(product: item, viewModel: viewModel, viewModelFirestore: viewModelFirestore)
 //                            } label: {
