@@ -166,7 +166,7 @@ struct SearchView: View {
         .sheet(
             isPresented: $viewModel.showSheet,
             content: {
-                SelectedItemSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
+                SelectedItemSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                     .presentationDetents([.height(600)])
             }
         )

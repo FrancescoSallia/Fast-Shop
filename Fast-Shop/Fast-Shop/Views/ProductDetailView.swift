@@ -140,7 +140,7 @@ struct ProductDetailView: View {
 
         }
         .sheet(isPresented: $viewModel.showSizes, content: {
-            SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
+            ClothesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
                 .presentationDetents([(.medium)])
         })
         .onAppear {

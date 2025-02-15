@@ -10,6 +10,7 @@ import SwiftUI
 struct OldOrderView: View {
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    @State var pickerOldOrder: String = "All"
     
     var groupedOrders: [(key: String, value: [Product])] {
         let grouped = Dictionary(grouping: viewModelFirestore.oldOrderList) { $0.date ?? "No Date" }
@@ -35,7 +36,7 @@ struct OldOrderView: View {
                             VStack(alignment: .leading) {
                                 Text(item.title)
                                     .font(.headline)
-                                Text(item.size == "" ? "" : "\(item.size!)")
+                                Text(item.size == "" ? "" : "Size: \(item.size!)")
                                     .font(.subheadline)
                                     .padding(.vertical)
                                 Text("Preis: \(String(format: "%.2f", item.price)) EUR")
@@ -59,6 +60,17 @@ struct OldOrderView: View {
             }
         }
         .navigationTitle("Old-Orders")
+        
+//        .toolbar {
+//            Picker(selection: $pickerOldOrder) {
+//                <#code#>
+//            } label: {
+//                Image(systemName: "line.3.horizontal.decrease")
+//                    .tint(.black)
+//            }
+//
+//        }
+        
     }
 }
 

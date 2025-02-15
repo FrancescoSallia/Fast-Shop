@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SelectedItemSheetView: View {
+struct SelectedItemSheet: View {
     
     @ObservedObject var viewModel = ProductViewModel()
     @ObservedObject var viewModelFirestore = FirestoreViewModel()
@@ -46,7 +46,7 @@ struct SelectedItemSheetView: View {
                     .padding(.bottom)
                     .padding(.horizontal)
                     .frame(maxHeight: 100)
-                SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
+                ClothesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
                 
             } else if viewModel.selectedProduct.category.id == 2{
 //                Text("Electronik")
@@ -54,7 +54,6 @@ struct SelectedItemSheetView: View {
                     .font(.footnote)
                     .italic()
                     .padding()
-                
             } else if viewModel.selectedProduct.category.id == 3{
 //                Text("Möbel")
                 Text("\(viewModel.selectedProduct.description)")
@@ -68,6 +67,7 @@ struct SelectedItemSheetView: View {
                     .font(.footnote)
                     .italic()
                     .padding()
+                ShoesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
 
             } else if viewModel.selectedProduct.category.id == 5{
 //                Text("Miscellaneous")
@@ -83,7 +83,7 @@ struct SelectedItemSheetView: View {
                     .italic()
                     .padding()
             }
-            if viewModel.selectedProduct.category.id != 1 {
+            if viewModel.selectedProduct.category.id != 1 , viewModel.selectedProduct.category.id != 4 {
                 HStack {
                     Button {
                         let newProduct = Product(
@@ -223,6 +223,6 @@ struct SelectedItemSheetView: View {
 //        ,size: "",
 //        numberOfProducts: 0)
 
-    SelectedItemSheetView(viewModel: ProductViewModel())
+    SelectedItemSheet(viewModel: ProductViewModel())
         
 }

@@ -115,7 +115,7 @@ struct CartView: View {
                                                 .frame(maxWidth: 150, maxHeight: 50)
                                                 .padding(.vertical, 5)
                                             Text("\(product.price.formatted()) EUR")
-                                            Text(product.size ?? "keine Größe")
+                                            Text("Size: \(product.size ?? "No Size")")
                                             
                                             HStack(spacing: 0) {
                                                 Button("-") {

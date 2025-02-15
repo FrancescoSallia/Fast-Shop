@@ -1,13 +1,13 @@
 //
-//  SizeSheetView.swift
+//  ShoesSizeSheet.swift
 //  Fast-Shop
 //
-//  Created by Francesco Sallia on 31.01.25.
+//  Created by Francesco Sallia on 15.02.25.
 //
 
 import SwiftUI
 
-struct SizeSheetView: View {
+struct ShoesSizeSheet: View {
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
@@ -17,19 +17,19 @@ struct SizeSheetView: View {
         Text("Wählen Sie eine Größe aus")
             .shadow(radius: 2, x: 0, y: 3)
         LazyVGrid(columns: columns) {
-            ForEach(SizesEnum.allCases, id: \.self) { item in
+            ForEach(ShoesSizeEnum.allCases, id: \.self) { item in
                 ZStack {
                     Rectangle()
                         .frame(width: 190, height: 60)
-                        .foregroundStyle(item.rawValue == viewModel.selectedSize ? .black : .white)
+                        .foregroundStyle(item.getSizeToString() == viewModel.selectedSize ? .black : .white)
                         .border(.black)
                         .shadow(radius: 2, x: 0, y: 3)
-                    Text(item.rawValue)
+                    Text(item.getSizeToString())
                         .bold()
-                        .foregroundStyle(item.rawValue == viewModel.selectedSize ? .white : .black)
+                        .foregroundStyle(item.getSizeToString() == viewModel.selectedSize ? .white : .black)
                 }
                 .onTapGesture {
-                    viewModel.selectedSize = item.rawValue
+                    viewModel.selectedSize = item.getSizeToString()
 //                    viewModel.showAlertSuccessfullAdded = true
                     viewModel.showHomeDetailSheet = false
 
@@ -72,27 +72,9 @@ struct SizeSheetView: View {
             
         }
     }
+
 }
 
 #Preview {
-    SizeSheetView(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel(), product: ProductViewModel().testProduct)
+    ShoesSizeSheet(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel(), product: ProductViewModel().testProduct)
 }
-
-
-
-//Text("Wählen Sie eine Größe aus")
-//    .shadow(radius: 2, x: 0, y: 3)
-//LazyVGrid(columns: columns) {
-//    ForEach(SizesEnum.allCases, id: \.self) { item in
-//        ZStack {
-//            Rectangle()
-//                .frame(width: 190, height: 60)
-//                .foregroundStyle(.white)
-//                .border(.black)
-//                .shadow(radius: 2, x: 0, y: 3)
-//            Text(item.rawValue)
-//                .bold()
-//        }
-//    }
-//    
-//}
