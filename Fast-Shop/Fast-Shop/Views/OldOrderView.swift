@@ -13,7 +13,7 @@ struct OldOrderView: View {
     
     var groupedOrders: [(key: String, value: [Product])] {
         let grouped = Dictionary(grouping: viewModelFirestore.oldOrderList) { $0.date ?? "No Date" }
-        return grouped.sorted { $0.key == $1.key }
+        return grouped.sorted { $0.key > $1.key }
     }
     
     var body: some View {
@@ -45,15 +45,16 @@ struct OldOrderView: View {
 
                     }
                     HStack {
+                        Text("Gesamt: ")
                         Spacer()
+                        Text("\(String(format: "%.2f", products.reduce(0) { $0 + (Double($1.numberOfProducts ?? 0) * $1.price) } + viewModel.deliveryCost)) EUR")
                         Image(systemName: "creditcard.fill")
                             .resizable()
                             .scaledToFit()
                             .frame(maxWidth: 30)
                             .tint(.black)
-                        Text("Gesamt: \(String(format: "%.2f",viewModelFirestore.oldOrderList.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
+                            .padding(.horizontal)
                     }
-                    .padding(.horizontal)
                 }
             }
         }
