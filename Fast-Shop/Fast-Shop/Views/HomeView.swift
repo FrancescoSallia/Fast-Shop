@@ -19,9 +19,6 @@ struct HomeView: View {
                 ScrollView {
                     VStack {
                         ForEach(viewModel.allProductsForHomeView) { item in
-//                            NavigationLink {
-//                                ProductDetailView(product: item, viewModel: viewModel, viewModelFirestore: viewModelFirestore)
-//                            } label: {
                                 ZStack {
                                     AsyncImage(url: URL(string: item.images[0])) { pic in
                                         pic
@@ -30,7 +27,6 @@ struct HomeView: View {
                                             .onScrollVisibilityChange { isVisible in
                                                 if isVisible {
                                                     viewModel.categorieText = item.category.name
-                                                    
                                                 }
                                             }
                                     } placeholder: {
@@ -59,10 +55,8 @@ struct HomeView: View {
                                 .sheet(isPresented: $viewModel.showHomeDetailSheet, content: {
                                     ProductDetailView(product: viewModel.selectedProduct, viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                                 })
-                            
                         }
                         
-//                        .listStyle(.inset)
 //                        .scrollTransition(.interactive, axis: .vertical) { view, phase in
 ////                            view.offset(y: phase.value * -70)
 //                            view.scaleEffect(CGFloat(1 + phase.value * 0.2))
