@@ -11,6 +11,8 @@ struct AdressView: View {
     
     @ObservedObject var viewModel: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
     
     var body: some View {
         ZStack {
@@ -159,6 +161,13 @@ struct AdressView: View {
             .padding()
             .frame(maxWidth: .infinity)
 //        }
+            .alert(isPresented: $errorHandler.showError) {
+                Alert(
+                    title: Text("Error"),
+                    message: Text(errorHandler.errorMessage),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
     }
 }
 

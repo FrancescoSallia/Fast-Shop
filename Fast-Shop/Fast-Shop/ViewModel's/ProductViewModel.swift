@@ -127,7 +127,6 @@ class ProductViewModel: ObservableObject {
         return dateFormatter.string(from: date)
     }
 
-    
     //MARK: API Calls
     
     func getProductsFromAPI() {
@@ -163,13 +162,7 @@ class ProductViewModel: ObservableObject {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
+ 
 //    func getProductsFromAPI() async throws {
 //        let result = try await client.getProducts(firstIndex: productIndex, lastIndex: 10)
 //        self.products.append(contentsOf: result)

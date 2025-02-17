@@ -14,6 +14,8 @@ struct SettingsView: View {
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
     @ObservedObject var authViewModel: AuthViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
 
     var body: some View {
         NavigationStack {
@@ -56,6 +58,13 @@ struct SettingsView: View {
                     .foregroundColor(.red)
             }
 
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

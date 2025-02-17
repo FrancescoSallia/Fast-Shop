@@ -29,8 +29,9 @@ struct SearchView: View {
         numberOfProducts: 0)
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @ObservedObject var errorHandler: ErrorHandler = .shared
 
+    let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         NavigationStack {
@@ -152,16 +153,6 @@ struct SearchView: View {
                     }
                 }
             }
-//            .toolbar(content: {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button {
-//                        viewModel.showFilterSheet.toggle()
-//                    } label: {
-//                        Image(systemName: "line.3.horizontal.decrease.circle")
-//                    }
-//                }
-//            })
-//        }
         .sheet(
             isPresented: $viewModel.showSheet,
             content: {
@@ -187,6 +178,13 @@ struct SearchView: View {
                 try await viewModel.getCategoriesFromAPI()
                 try await viewModel.getCategorieFromID(filterID: viewModel.filteredID)
             }
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
       }
     }

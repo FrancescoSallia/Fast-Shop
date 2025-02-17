@@ -10,6 +10,7 @@ import Lottie
 
 struct LottiesView: View {
     @State private var textOffset: CGFloat = 300  // Startet außerhalb des Bildschirms
+    @ObservedObject var errorHandler: ErrorHandler = .shared
 
     var body: some View {
         ZStack {
@@ -27,6 +28,13 @@ struct LottiesView: View {
                           .onAppear {
                               textOffset = 40  // Zielposition (Mitte des Bildschirms)
                           }
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

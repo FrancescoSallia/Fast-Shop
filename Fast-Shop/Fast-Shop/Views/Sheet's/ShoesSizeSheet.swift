@@ -10,6 +10,8 @@ import SwiftUI
 struct ShoesSizeSheet: View {
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
     var product: Product
 
@@ -30,7 +32,6 @@ struct ShoesSizeSheet: View {
                 }
                 .onTapGesture {
                     viewModel.selectedSize = item.getSizeToString()
-//                    viewModel.showAlertSuccessfullAdded = true
                     viewModel.showHomeDetailSheet = false
 
                     let addNewCartProduct = Product(
@@ -52,10 +53,8 @@ struct ShoesSizeSheet: View {
                         viewModelFirestore.updateUserCart(product: updatedProduct)
 
                         viewModel.selectedSize = ""
-//                        viewModelFirestore.cartList[index] = updatedProduct // hier wird das test product mitgegeben fals die liste leer ist!
                     } else {
                         viewModel.selectedProduct.cartID = UUID().uuidString
-//                        viewModel.user.cart.append(viewModel.selectedProduct)
                         viewModelFirestore.updateUserCart(product: viewModel.selectedProduct)
                         viewModel.selectedSize = ""
                     }
@@ -65,6 +64,13 @@ struct ShoesSizeSheet: View {
                     viewModel.showShoesSizesOnCart = false
                 }
             }
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

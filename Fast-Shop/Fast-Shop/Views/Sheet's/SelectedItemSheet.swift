@@ -11,6 +11,7 @@ struct SelectedItemSheet: View {
     
     @ObservedObject var viewModel = ProductViewModel()
     @ObservedObject var viewModelFirestore = FirestoreViewModel()
+    @ObservedObject var errorHandler: ErrorHandler = .shared
     
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
     
@@ -36,7 +37,6 @@ struct SelectedItemSheet: View {
                 .padding(.bottom)
             }
             .padding(.leading)
-            //FIXME: Mit den Kleidungen funktioniert das mit einfügen im warenkorb und löschen/favorisieren auch wenn man andere größen eingibt. jetzt muss es nur noch bei den anderen kategorien funktionieren!
             
             if viewModel.selectedProduct.category.id == 1 {
                 Text("\(viewModel.selectedProduct.description)")
@@ -187,6 +187,13 @@ struct SelectedItemSheet: View {
             Task {
                 try await viewModel.getCategorieFromID(filterID: "\(viewModel.selectedProduct.id)")
             }
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

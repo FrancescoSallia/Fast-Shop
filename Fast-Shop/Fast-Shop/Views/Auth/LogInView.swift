@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LogInView: View {
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
     var body: some View {
         
         VStack {
@@ -137,6 +139,13 @@ struct LogInView: View {
         } label: {
             Text("Neues Konto erstellen")
                 .foregroundStyle(.orange)
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

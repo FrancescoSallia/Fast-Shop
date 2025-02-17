@@ -10,7 +10,9 @@ import SwiftUI
 struct OldOrderView: View {
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
-    @State var pickerOldOrder: String = "All"
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
+//    @State var pickerOldOrder: String = "All"
     
     var groupedOrders: [(key: String, value: [Product])] {
         let grouped = Dictionary(grouping: viewModelFirestore.oldOrderList) { $0.date ?? "No Date" }
@@ -70,7 +72,13 @@ struct OldOrderView: View {
 //            }
 //
 //        }
-        
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        } 
     }
 }
 

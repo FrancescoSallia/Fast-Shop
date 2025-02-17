@@ -12,6 +12,8 @@ struct CartView: View {
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
 //    @State var sizes: [String] = ["XS", "S", "M", "L", "XL", "XXL"]
     let columns = [GridItem(.fixed(400.0))]
 
@@ -301,6 +303,13 @@ struct CartView: View {
         .sheet(isPresented: $viewModel.showShoesSizesOnCart) {
             ShoesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
                 .presentationDetents([.medium, .large])
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

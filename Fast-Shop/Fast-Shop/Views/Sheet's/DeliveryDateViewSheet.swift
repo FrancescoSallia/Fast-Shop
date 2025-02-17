@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DeliveryDateViewSheet: View {
     @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -86,8 +88,14 @@ struct DeliveryDateViewSheet: View {
 //                }
             }
         }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
-
 }
 
 #Preview {

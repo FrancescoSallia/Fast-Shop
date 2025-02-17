@@ -72,11 +72,13 @@ struct RegisterViewSheet: View {
               .alert(isPresented: $errorHandler.showError) {
                   Alert(title: Text("Error"), message: Text(errorHandler.errorMessage), dismissButton: .default(Text("OK")))
               }
-        
- 
-        
- 
-
+              .alert(isPresented: $errorHandler.showError) {
+                  Alert(
+                      title: Text("Error"),
+                      message: Text(errorHandler.errorMessage),
+                      dismissButton: .default(Text("OK"))
+                  )
+              }
     }
 }
 

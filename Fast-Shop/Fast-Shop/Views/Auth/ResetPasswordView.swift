@@ -36,6 +36,13 @@ struct ResetPasswordView: View {
                 .cornerRadius(3)
         }
         .padding()
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
 }
 

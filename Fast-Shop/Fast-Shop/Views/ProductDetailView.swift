@@ -13,6 +13,7 @@ struct ProductDetailView: View {
     var product: Product
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
     
     let toast = Toast.default(
         image: UIImage(systemName: "checkmark.circle.fill")!,
@@ -132,7 +133,6 @@ struct ProductDetailView: View {
                     .tint(.white)
                 }
             }
-
         }
         .sheet(isPresented: $viewModel.showSizes, content: {
             ClothesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
@@ -147,8 +147,14 @@ struct ProductDetailView: View {
 ////                try await viewModel.getProductsFromAPI()
 //            }
         }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
-
 }
 #Preview {
     ProductDetailView(product: ProductViewModel().testProduct, viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())

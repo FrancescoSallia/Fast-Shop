@@ -12,6 +12,8 @@ struct OrderOverviewView: View {
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
     @State private var navigateToHome = false
 
     var body: some View {
@@ -252,6 +254,13 @@ struct OrderOverviewView: View {
     } //TODO: Die Cart nach dem Erfolgreichen einkauf leeren und in den archiv packen
         .navigationDestination(isPresented: $navigateToHome) {
             CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
   }
 }
