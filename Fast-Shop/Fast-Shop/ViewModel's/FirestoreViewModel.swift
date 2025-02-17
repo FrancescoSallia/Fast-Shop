@@ -11,7 +11,7 @@ import Foundation
 class FirestoreViewModel: ObservableObject  {
     
     let firestore = FireManager.shared
-    @Published var cartList: [Product] = []
+    @Published var cartList: [Product] = []  // reset funktion erstellen
     @Published var favoriteList: [Product] = []
     @Published var adressList: [Adress] = []
     @Published var oldOrderList: [Product] = []
@@ -150,6 +150,14 @@ class FirestoreViewModel: ObservableObject  {
                 return
             }
             self.oldOrderList = oldOrder
+        }
+    }
+    
+    func isProductFavorite(product: Product) -> Bool {
+        if let index = favoriteList.firstIndex(where: { $0.id == product.id }) {
+            return true
+        } else {
+            return false
         }
     }
 }

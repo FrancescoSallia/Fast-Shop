@@ -20,7 +20,6 @@ struct LogInScreenView: View {
                     .ignoresSafeArea()
 
                 VStack {
-
                     ZStack {
                         Group {
                             RoundedRectangle(cornerRadius: 3)
@@ -41,14 +40,16 @@ struct LogInScreenView: View {
 
                     TextField("E-Mail", text: $authViewModel.email)
                         .padding()
-                        .background(Color(uiColor: UIColor.lightText))
+//                        .background(Color(uiColor: UIColor.lightText))
+                        .background(Color.white.opacity(0.5))
                         .cornerRadius(10)
                         .keyboardType(.emailAddress)
                         .padding(.top, 30)
 
                     SecureField("Passwort", text: $authViewModel.password)
                         .padding()
-                        .background(Color(uiColor: UIColor.lightText))
+//                        .background(Color(uiColor: UIColor.lightText))
+                        .background(Color.white.opacity(0.5))
                         .cornerRadius(10)
 
                     HStack {
@@ -91,48 +92,48 @@ struct LogInScreenView: View {
                                 .cornerRadius(3)
                         }
 
-                        HStack(spacing: 25.0) {
-                            Button(action: {
-                                //placeholder
-                            }) {
-
-                                Image("Google")
-                                    .resizable()
-                                    .buttonBorderShape(.circle)
-                                    .frame(maxWidth: 25, maxHeight: 25)
-                                    .padding()
-                                    .background(Color.white)
-                                    .clipShape(.rect(cornerRadius: 100))
-
-                            }
-                            Button(action: {
-                                //placeholder
-                            }) {
-
-                                Image(systemName: "applelogo")
-
-                                    .buttonBorderShape(.circle)
-                                    .frame(maxWidth: 25, maxHeight: 25)
-                                    .padding()
-                                    .background(Color.black)
-                                    .foregroundStyle(.white)
-                                    .clipShape(.rect(cornerRadius: 100))
-                            }
-                            Button(action: {
-                                //placeholder
-                            }) {
-
-                                Image("Facebook")
-                                    .resizable()
-                                    .buttonBorderShape(.circle)
-                                    .frame(maxWidth: 25, maxHeight: 25)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .foregroundStyle(.red)
-                                    .clipShape(.rect(cornerRadius: 100))
-                            }
-                        }
-                        .padding(.top, 35)
+//                        HStack(spacing: 25.0) {
+//                            Button(action: {
+//                                //placeholder
+//                            }) {
+//
+//                                Image("Google")
+//                                    .resizable()
+//                                    .buttonBorderShape(.circle)
+//                                    .frame(maxWidth: 25, maxHeight: 25)
+//                                    .padding()
+//                                    .background(Color.white)
+//                                    .clipShape(.rect(cornerRadius: 100))
+//
+//                            }
+//                            Button(action: {
+//                                //placeholder
+//                            }) {
+//
+//                                Image(systemName: "applelogo")
+//
+//                                    .buttonBorderShape(.circle)
+//                                    .frame(maxWidth: 25, maxHeight: 25)
+//                                    .padding()
+//                                    .background(Color.black)
+//                                    .foregroundStyle(.white)
+//                                    .clipShape(.rect(cornerRadius: 100))
+//                            }
+//                            Button(action: {
+//                                //placeholder
+//                            }) {
+//
+//                                Image("Facebook")
+//                                    .resizable()
+//                                    .buttonBorderShape(.circle)
+//                                    .frame(maxWidth: 25, maxHeight: 25)
+//                                    .padding()
+//                                    .background(Color.blue)
+//                                    .foregroundStyle(.red)
+//                                    .clipShape(.rect(cornerRadius: 100))
+//                            }
+//                        }
+//                        .padding(.top, 35)
                     }
                     .padding(.top, 28)
                 }

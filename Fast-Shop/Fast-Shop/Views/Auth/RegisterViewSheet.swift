@@ -53,7 +53,10 @@ struct RegisterViewSheet: View {
                 
             Button(action: {
                 authViewModel.register()
-                dismiss()
+                guard errorHandler.showError  else {
+                    dismiss()
+                    return
+                }
                 
             }) {
                 Text("Registrieren")
@@ -71,13 +74,6 @@ struct RegisterViewSheet: View {
               .padding()
               .alert(isPresented: $errorHandler.showError) {
                   Alert(title: Text("Error"), message: Text(errorHandler.errorMessage), dismissButton: .default(Text("OK")))
-              }
-              .alert(isPresented: $errorHandler.showError) {
-                  Alert(
-                      title: Text("Error"),
-                      message: Text(errorHandler.errorMessage),
-                      dismissButton: .default(Text("OK"))
-                  )
               }
     }
 }

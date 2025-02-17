@@ -244,7 +244,6 @@ struct OrderOverviewView: View {
         .fullScreenCover(isPresented: $viewModel.showLottieSuccessfullView) {
             LottiesView()
                 .onAppear {
-                    //FIXME: Schauen welche moderne art es gibt ein timer zu stellen.
                     Task {
                         try await Task.sleep(for: .seconds(4))
                           viewModel.showLottieSuccessfullView = false

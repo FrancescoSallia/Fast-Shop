@@ -85,7 +85,6 @@ class AuthViewModel: ObservableObject {
     }
     func resetPassword(email: String) {
         guard !email.isEmpty else {
-            print("Die Emailadresse darf nicht leer sein")
             errorHandler.showError.toggle()
             return
         }

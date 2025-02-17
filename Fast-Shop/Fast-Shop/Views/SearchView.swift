@@ -111,7 +111,6 @@ struct SearchView: View {
                                         HStack {
                                             Text("\(filteredProduct.title)")
                                                 .font(.footnote)
-                                            //frame machen
                                             Button {
                                                 let addNewFavoriteProduct = Product(
                                                     id: filteredProduct.id,
@@ -131,7 +130,7 @@ struct SearchView: View {
                                                     viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                                                 }
                                             } label: {
-                                                Image(systemName: filteredProduct.isFavorite == true ? "bookmark.fill" : "bookmark")
+                                                Image(systemName: viewModelFirestore.isProductFavorite(product: filteredProduct) ? "bookmark.fill" : "bookmark")
                                             }
                                         }
 
