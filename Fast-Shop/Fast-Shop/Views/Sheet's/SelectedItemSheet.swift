@@ -132,16 +132,17 @@ struct SelectedItemSheet: View {
                             size: viewModel.selectedSize
                         )
                         if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-                            viewModel.productIndex = index
+//                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
+//                            viewModel.productIndex = index
+                            let favItem =  viewModelFirestore.favoriteList[index]
+                             viewModelFirestore.deleteUserFavorite(product: favItem)
                         } else {
                             viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                         }
                         viewModel.showSheet = false
 
                     } label: {
-                        
-                        Image(systemName: "bookmark")
+                        Image(systemName: viewModelFirestore.isProductFavorite(product: viewModel.selectedProduct) ? "bookmark.fill" : "bookmark")
                         .tint(.white)
                         .padding()
                         .background(.black)

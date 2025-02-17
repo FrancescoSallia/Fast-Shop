@@ -118,8 +118,10 @@ struct ProductDetailView: View {
                             size: viewModel.selectedSize
                         )
                         if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-                            viewModel.getProductsFromAPI()
+//                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
+//                            viewModel.getProductsFromAPI()
+                            let favItem =  viewModelFirestore.favoriteList[index]
+                             viewModelFirestore.deleteUserFavorite(product: favItem)
                             
                         } else {
                             viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
@@ -128,7 +130,8 @@ struct ProductDetailView: View {
                         viewModel.showHomeDetailSheet = false
 
                     } label: {
-                        Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
+                        Image(systemName: viewModelFirestore.isProductFavorite(product: product) ? "bookmark.fill" : "bookmark")
+//                            .foregroundStyle(.red)
                     }
                     .tint(.white)
                 }

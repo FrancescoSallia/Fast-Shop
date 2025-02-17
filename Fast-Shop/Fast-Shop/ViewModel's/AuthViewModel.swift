@@ -58,6 +58,7 @@ class AuthViewModel: ObservableObject {
                 user = try await manager.loginUser(email: email, password: password)
                 self.email = ""
                 self.password = ""
+                
             } catch {
                 errorHandler.handleError(error: error)
             }

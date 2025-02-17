@@ -48,6 +48,10 @@ struct Fast_ShopApp: App {
             .onAppear {
                 authViewModel.checkLoggedIn()
             }
+//            .onChange(of: authViewModel.user) { newUser in
+//                          // Listener neu starten, wenn sich der User ändert
+//                          viewModelFirestore.restartListeners()
+//                      }
         }
 
     }

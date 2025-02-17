@@ -124,8 +124,10 @@ struct SearchView: View {
                                                 )
                                                 
                                                 if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-                                                    viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-                                                    viewModel.productIndex = index
+//                                                    viewModelFirestore.favoriteList[index].isFavorite?.toggle()
+//                                                    viewModel.productIndex = index
+                                                   let favItem =  viewModelFirestore.favoriteList[index]
+                                                    viewModelFirestore.deleteUserFavorite(product: favItem)
                                                 } else {
                                                     viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                                                 }
