@@ -17,13 +17,13 @@ struct HomeView: View {
         NavigationStack {
             ZStack(alignment: .top) {
                 ScrollView {
-                    VStack {
+                    VStack(spacing: 0) {
                         ForEach(viewModel.allProductsForHomeView) { item in
                                 ZStack {
                                     AsyncImage(url: URL(string: item.images[0])) { pic in
                                         pic
                                             .resizable()
-                                            .frame(maxWidth: .infinity, maxHeight: 700)
+                                            .frame(width: UIScreen.main.bounds.width, height: 680) // Ganze Bildschirmbreite
                                             .onScrollVisibilityChange { isVisible in
                                                 if isVisible {
                                                     viewModel.categorieText = item.category.name
