@@ -46,6 +46,12 @@ struct SettingsView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button("Ausloggen") {
+                            //Den ViewModel wird beim ausloggen zurückgesetzt
+                            viewModelFirestore.cartList = []
+                            viewModelFirestore.favoriteList = []
+                            viewModelFirestore.adressList = []
+                            viewModelFirestore.oldOrderList = []
+                                                        
                             authViewModel.logout()
                         }
                     }

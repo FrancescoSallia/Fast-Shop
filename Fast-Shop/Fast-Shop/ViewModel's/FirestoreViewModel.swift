@@ -15,7 +15,6 @@ class FirestoreViewModel: ObservableObject  {
     @Published var favoriteList: [Product] = []
     @Published var adressList: [Adress] = []
     @Published var oldOrderList: [Product] = []
-    @Published var isFavorited: Bool = false
     
     init() {
         cartSnapshotListener()

@@ -224,8 +224,6 @@ struct OrderOverviewView: View {
                         viewModelFirestore.updateUserOldOrder(product: oldProduct)
                         viewModelFirestore.deleteUserCart(product: product)
                     }
-                    
-
                 }
                 .tint(.white)
                 .textCase(.uppercase)

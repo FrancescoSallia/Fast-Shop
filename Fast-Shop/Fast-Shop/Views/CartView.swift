@@ -283,14 +283,15 @@ struct CartView: View {
                     }
                     .border(Color.primary)
                     .padding(.bottom, -23)
-                    NavigationLink("WEITER") {
+                    NavigationLink("ZUR KASSE") {
                         OrderOverviewView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
                     }
                     .padding()
                     .frame(minWidth: 410)
-                    .background(Color.black)
+                    .background(viewModelFirestore.cartList.isEmpty ? .clear : .black)
                     .tint(.white)
                     .padding()
+                    .disabled(viewModelFirestore.cartList.isEmpty)
                 }
             } else {
                 Spacer()
