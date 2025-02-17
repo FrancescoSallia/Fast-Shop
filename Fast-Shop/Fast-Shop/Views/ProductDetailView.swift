@@ -58,10 +58,6 @@ struct ProductDetailView: View {
                             .padding(.horizontal)
                         }
             }
-            //Wenn eine Ware zum Warenkorb hinzugefügt wurde, erscheint das Alert
-//            if viewModel.showAlertSuccessfullAdded {
-//
-//            }
             
             HStack() {
                 ZStack {
@@ -73,11 +69,11 @@ struct ProductDetailView: View {
                         viewModel.selectedProduct = product
                         if viewModel.selectedProduct.category.id == 1 {
                             viewModel.showSizes = true
-                            print("selected ID 1: \(viewModel.selectedProduct.category.id)")
+                        } else if viewModel.selectedProduct.category.id == 4 {
+                            viewModel.showShoesSizesOnCart = true
                         }
+                        
                         else {
-                            print("selected ID ANDERE: \(viewModel.selectedProduct.category.id)")
-                            
                             let newProduct = Product(
                                 id: viewModel.selectedProduct.id,
                                 title: viewModel.selectedProduct.title,
@@ -122,15 +118,14 @@ struct ProductDetailView: View {
                         )
                         if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
                             viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-                            
                             viewModel.getProductsFromAPI()
                             
                         } else {
-//                            viewModel.user.favorite.append(addNewFavoriteProduct)
                             viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
-                            
                                viewModel.getProductsFromAPI()
                         }
+                        viewModel.showHomeDetailSheet = false
+
                     } label: {
                         Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
                     }
@@ -141,6 +136,10 @@ struct ProductDetailView: View {
         }
         .sheet(isPresented: $viewModel.showSizes, content: {
             ClothesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
+                .presentationDetents([(.medium)])
+        })
+        .sheet(isPresented: $viewModel.showShoesSizesOnCart, content: {
+            ShoesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
                 .presentationDetents([(.medium)])
         })
         .onAppear {

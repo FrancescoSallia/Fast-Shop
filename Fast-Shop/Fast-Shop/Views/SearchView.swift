@@ -127,7 +127,6 @@ struct SearchView: View {
                                                     viewModelFirestore.favoriteList[index].isFavorite?.toggle()
                                                     viewModel.productIndex = index
                                                 } else {
-                                                    
                                                     viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                                                 }
                                             } label: {

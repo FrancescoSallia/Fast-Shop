@@ -176,6 +176,7 @@ struct CartView: View {
                                     image in
                                     image
                                         .resizable()
+                                        .scaledToFill()
                                         .frame(maxWidth: 200, maxHeight: 248)
                                 } placeholder: {
                                     ProgressView()
@@ -185,19 +186,33 @@ struct CartView: View {
                                     HStack(alignment: .lastTextBaseline) {
                                         Spacer()
                                         Button {
-                                            if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == product.id }) {
-                                                let updatedProduct = viewModelFirestore.cartList[index]
-                                                viewModelFirestore.deleteUserFavorite(product: updatedProduct)
+                                            viewModel.selectedProduct = product
+                                            
+                                            if viewModel.selectedProduct.category.id == 1 {
+                                                viewModel.showClothesSizesOnCart = true
+                                            } else if viewModel.selectedProduct.category.id == 4 {
+                                                viewModel.showShoesSizesOnCart = true
                                             } else {
                                                 
-                                                viewModelFirestore.updateUserCart(product: product)
-                                                viewModelFirestore.deleteUserFavorite(product: product)
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == product.id }) {
+                                                    let updatedProduct = viewModelFirestore.cartList[index]
+                                                    viewModelFirestore.deleteUserFavorite(product: updatedProduct)
+                                                } else {
+                                                    viewModelFirestore.updateUserCart(product: product)
+                                                    viewModelFirestore.deleteUserFavorite(product: product)
+                                                }
                                             }
                                         } label: {
                                             Image(systemName: "cart")
                                                 .resizable()
                                                 .frame(
                                                     maxWidth: 18, maxHeight: 22)
+                                                .padding(.top, 8)
                                         }
                                         .padding(.horizontal)
                                         Button {
@@ -223,7 +238,7 @@ struct CartView: View {
                                             .frame(maxWidth: 150, maxHeight: 50)
                                             .padding(.vertical, 5)
                                         Text("\(product.price.formatted()) EUR")
-                                        Text("Size: \(product.size ?? "No Size")")
+//                                        Text("Size: \(product.size ?? "No Size")")
                                     }
                                     .padding(.bottom, 40)
                                     .frame(
@@ -241,7 +256,7 @@ struct CartView: View {
             }
         }
             Spacer()
-                
+
             if viewModel.showCart {
                 VStack {
                     VStack {
@@ -278,6 +293,14 @@ struct CartView: View {
             } else {
                 Spacer()
             }
+        }
+        .sheet(isPresented: $viewModel.showClothesSizesOnCart) {
+            ClothesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
+                .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $viewModel.showShoesSizesOnCart) {
+            ShoesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
+                .presentationDetents([.medium, .large])
         }
     }
 }

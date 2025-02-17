@@ -28,7 +28,6 @@ struct SelectedItemSheet: View {
                             pic
                                 .resizable()
                                 .frame(width: 122, height: 180)
-//                                .foregroundStyle(.red)
                         } placeholder: {
                             ProgressView()
                         }
@@ -98,19 +97,9 @@ struct SelectedItemSheet: View {
                             numberOfProducts: 1
                         )
                         
-////                                        viewModel.selectedProduct = newProduct
-//    //                    viewModel.user.cart.append(newProduct)
-//                        viewModelFirestore.updateUserCart(product: newProduct)
-//                        viewModel.showSheet = false
-//                        
-//    //                    if viewModel.selectedProduct.category.id == 1 {
-//    //                        viewModel.showAlertSuccessfullAdded = true
-//    //                    }
-                        
                         if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == newProduct.id && $0.size == newProduct.size }) {
                             var updatedProduct = viewModelFirestore.cartList[index]
                             updatedProduct.numberOfProducts? += 1
-//                                viewModelFirestore.cartList[index].numberOfProducts? += 1
                             viewModelFirestore.updateUserCart(product: updatedProduct)
 
                         } else {
@@ -203,25 +192,6 @@ struct SelectedItemSheet: View {
 }
 
 #Preview {
-//    let testProduct = Product(
-//        id: 1,
-//        title: "Classic Navy Blue Baseball Cap",
-//        price: 20.0,
-//        description: "Test Description",
-//        images: [
-//        "https://i.imgur.com/R3iobJA.jpeg",
-//        "https://i.imgur.com/Wv2KTsf.jpeg",
-//        "https://i.imgur.com/76HAxcA.jpeg"
-//      ],
-//        category: Category(
-//            id: 1,
-//            name: "Tools",
-//            image: "tools.png",
-//            creationAt: "2025-01-24T08:29:50.000Z",
-//            updatedAt: "2025-01-24T09:42:00.000Z"
-//        )
-//        ,size: "",
-//        numberOfProducts: 0)
 
     SelectedItemSheet(viewModel: ProductViewModel())
         

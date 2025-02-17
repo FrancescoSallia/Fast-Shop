@@ -71,6 +71,8 @@ class ProductViewModel: ObservableObject {
 
     @Published var selectedSize: String = ""
     @Published var showSizes: Bool = false
+    @Published var showClothesSizesOnCart: Bool = false
+    @Published var showShoesSizesOnCart: Bool = false
 
     
     //MARK: Filter Sheet

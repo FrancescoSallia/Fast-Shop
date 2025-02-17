@@ -23,7 +23,7 @@ struct HomeView: View {
                                     AsyncImage(url: URL(string: item.images[0])) { pic in
                                         pic
                                             .resizable()
-                                            .frame(width: 400, height: 700)
+                                            .frame(maxWidth: .infinity, maxHeight: 700)
                                             .onScrollVisibilityChange { isVisible in
                                                 if isVisible {
                                                     viewModel.categorieText = item.category.name

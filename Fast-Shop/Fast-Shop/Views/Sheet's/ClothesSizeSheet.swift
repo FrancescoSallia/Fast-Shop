@@ -53,18 +53,20 @@ struct ClothesSizeSheet: View {
                         updatedProduct.numberOfProducts? += 1
                         viewModelFirestore.updateUserCart(product: updatedProduct)
 
-                        viewModel.selectedSize = ""
 
+                        viewModel.selectedSize = ""
 //                        viewModelFirestore.cartList[index] = updatedProduct // hier wird das test product mitgegeben fals die liste leer ist!
                     } else {
                         viewModel.selectedProduct.cartID = UUID().uuidString
 //                        viewModel.user.cart.append(viewModel.selectedProduct)
                         viewModelFirestore.updateUserCart(product: viewModel.selectedProduct)
-                        viewModel.selectedSize = ""
 
+                        viewModel.selectedSize = ""
                     }
                     viewModel.showSizes = false
                     viewModel.showSheet = false
+                    viewModelFirestore.deleteUserFavorite(product: viewModel.selectedProduct)
+                    viewModel.showClothesSizesOnCart = false
 
                 }
                 

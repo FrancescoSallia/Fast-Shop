@@ -33,7 +33,6 @@ struct ShoesSizeSheet: View {
 //                    viewModel.showAlertSuccessfullAdded = true
                     viewModel.showHomeDetailSheet = false
 
-
                     let addNewCartProduct = Product(
                         id: product.id,
                         title: product.title,
@@ -42,7 +41,6 @@ struct ShoesSizeSheet: View {
                         images: product.images,
                         category: product.category,
                         size: viewModel.selectedSize
-                        
                     )
                     viewModel.selectedProduct = addNewCartProduct
                     
@@ -54,27 +52,22 @@ struct ShoesSizeSheet: View {
                         viewModelFirestore.updateUserCart(product: updatedProduct)
 
                         viewModel.selectedSize = ""
-
 //                        viewModelFirestore.cartList[index] = updatedProduct // hier wird das test product mitgegeben fals die liste leer ist!
                     } else {
                         viewModel.selectedProduct.cartID = UUID().uuidString
 //                        viewModel.user.cart.append(viewModel.selectedProduct)
                         viewModelFirestore.updateUserCart(product: viewModel.selectedProduct)
                         viewModel.selectedSize = ""
-
                     }
                     viewModel.showSizes = false
                     viewModel.showSheet = false
-
+                    viewModelFirestore.deleteUserFavorite(product: viewModel.selectedProduct)
+                    viewModel.showShoesSizesOnCart = false
                 }
-                
             }
-            
         }
     }
-
 }
-
 #Preview {
     ShoesSizeSheet(viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel(), product: ProductViewModel().testProduct)
 }
