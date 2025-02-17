@@ -21,6 +21,8 @@ struct Product: Identifiable, Codable {
     let size: String?
     var numberOfProducts: Int? = 1
     var cartID: String? = UUID().uuidString
+    var oldOrderID: String? = ""
+    var date: String? = ""
 }
 
 

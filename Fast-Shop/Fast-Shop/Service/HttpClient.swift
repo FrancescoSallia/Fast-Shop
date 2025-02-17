@@ -10,9 +10,6 @@ import SwiftUICore
 
 
 class HttpClient {
-    
-//TODO: Soll man hier die fehler auch behandelt werden? ist es für den User relevant das die API nicht funktioniert?
-//    @ObservedObject var errorHandler = ErrorHandler.shared
 
     func getProducts() async throws -> [Product] {
         guard let url = URL(string: "http://localhost:3001/products") else {

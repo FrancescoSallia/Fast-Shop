@@ -10,9 +10,10 @@ import Toast
 
 struct ProductDetailView: View {
     
-    let product: Product
+    var product: Product
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
     
     let toast = Toast.default(
         image: UIImage(systemName: "checkmark.circle.fill")!,
@@ -58,10 +59,6 @@ struct ProductDetailView: View {
                             .padding(.horizontal)
                         }
             }
-            //Wenn eine Ware zum Warenkorb hinzugefügt wurde, erscheint das Alert
-//            if viewModel.showAlertSuccessfullAdded {
-//
-//            }
             
             HStack() {
                 ZStack {
@@ -70,13 +67,14 @@ struct ProductDetailView: View {
                     
                     //FIXME: das alert zeigt zweimal an bei hinzufügen!
                     Button("HINZUFÜGEN") {
+                        viewModel.selectedProduct = product
                         if viewModel.selectedProduct.category.id == 1 {
                             viewModel.showSizes = true
-                            print("selected ID 1: \(viewModel.selectedProduct.category.id)")
+                        } else if viewModel.selectedProduct.category.id == 4 {
+                            viewModel.showShoesSizesOnCart = true
                         }
+                        
                         else {
-                            print("selected ID ANDERE: \(viewModel.selectedProduct.category.id)")
-                            
                             let newProduct = Product(
                                 id: viewModel.selectedProduct.id,
                                 title: viewModel.selectedProduct.title,
@@ -89,8 +87,17 @@ struct ProductDetailView: View {
                                 numberOfProducts: 1
                             )
                             
-                            viewModelFirestore.updateUserCart(product: newProduct)
+                            if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == newProduct.id && $0.size == newProduct.size }) {
+                                var updatedProduct = viewModelFirestore.cartList[index]
+                                updatedProduct.numberOfProducts? += 1
+//                                viewModelFirestore.cartList[index].numberOfProducts? += 1
+                                viewModelFirestore.updateUserCart(product: updatedProduct)
+
+                            } else {
+                                viewModelFirestore.updateUserCart(product: newProduct)
+                            }
                             viewModel.showSheet = false
+                            viewModel.showHomeDetailSheet = false
                         }
                     }
                     .tint(.white)
@@ -111,26 +118,31 @@ struct ProductDetailView: View {
                             size: viewModel.selectedSize
                         )
                         if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-                            
-                            viewModel.getProductsFromAPI()
+//                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
+//                            viewModel.getProductsFromAPI()
+                            let favItem =  viewModelFirestore.favoriteList[index]
+                             viewModelFirestore.deleteUserFavorite(product: favItem)
                             
                         } else {
-//                            viewModel.user.favorite.append(addNewFavoriteProduct)
                             viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
-                            
                                viewModel.getProductsFromAPI()
                         }
+                        viewModel.showHomeDetailSheet = false
+
                     } label: {
-                        Image(systemName: product.isFavorite ?? false ? "bookmark.fill" : "bookmark")
+                        Image(systemName: viewModelFirestore.isProductFavorite(product: product) ? "bookmark.fill" : "bookmark")
+//                            .foregroundStyle(.red)
                     }
                     .tint(.white)
                 }
             }
-
         }
         .sheet(isPresented: $viewModel.showSizes, content: {
-            SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
+            ClothesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
+                .presentationDetents([(.medium)])
+        })
+        .sheet(isPresented: $viewModel.showShoesSizesOnCart, content: {
+            ShoesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
                 .presentationDetents([(.medium)])
         })
         .onAppear {
@@ -138,8 +150,14 @@ struct ProductDetailView: View {
 ////                try await viewModel.getProductsFromAPI()
 //            }
         }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
-
 }
 #Preview {
     ProductDetailView(product: ProductViewModel().testProduct, viewModel: ProductViewModel(), viewModelFirestore: FirestoreViewModel())

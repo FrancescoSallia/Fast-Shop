@@ -25,7 +25,10 @@ struct ResetPasswordView: View {
         .padding()
         Button(action: {
             authViewModel.resetPassword(email: authViewModel.email)
-            dismiss()
+            guard errorHandler.showError  else {
+                dismiss()
+                return
+            }
         }) {
             Text("Passwort Zurücksetzen")
                 .textCase(.uppercase)
@@ -36,6 +39,13 @@ struct ResetPasswordView: View {
                 .cornerRadius(3)
         }
         .padding()
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
 }
 

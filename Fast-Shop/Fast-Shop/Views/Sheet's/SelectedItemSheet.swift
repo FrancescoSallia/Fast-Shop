@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct SelectedItemSheetView: View {
+struct SelectedItemSheet: View {
     
     @ObservedObject var viewModel = ProductViewModel()
     @ObservedObject var viewModelFirestore = FirestoreViewModel()
+    @ObservedObject var errorHandler: ErrorHandler = .shared
     
     let columns = [(GridItem(.flexible())), (GridItem(.flexible()))]
     
@@ -28,7 +29,6 @@ struct SelectedItemSheetView: View {
                             pic
                                 .resizable()
                                 .frame(width: 122, height: 180)
-//                                .foregroundStyle(.red)
                         } placeholder: {
                             ProgressView()
                         }
@@ -37,7 +37,6 @@ struct SelectedItemSheetView: View {
                 .padding(.bottom)
             }
             .padding(.leading)
-            //FIXME: Mit den Kleidungen funktioniert das mit einfügen im warenkorb und löschen/favorisieren auch wenn man andere größen eingibt. jetzt muss es nur noch bei den anderen kategorien funktionieren!
             
             if viewModel.selectedProduct.category.id == 1 {
                 Text("\(viewModel.selectedProduct.description)")
@@ -46,7 +45,7 @@ struct SelectedItemSheetView: View {
                     .padding(.bottom)
                     .padding(.horizontal)
                     .frame(maxHeight: 100)
-                SizeSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
+                ClothesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
                 
             } else if viewModel.selectedProduct.category.id == 2{
 //                Text("Electronik")
@@ -54,7 +53,6 @@ struct SelectedItemSheetView: View {
                     .font(.footnote)
                     .italic()
                     .padding()
-                
             } else if viewModel.selectedProduct.category.id == 3{
 //                Text("Möbel")
                 Text("\(viewModel.selectedProduct.description)")
@@ -68,6 +66,7 @@ struct SelectedItemSheetView: View {
                     .font(.footnote)
                     .italic()
                     .padding()
+                ShoesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
 
             } else if viewModel.selectedProduct.category.id == 5{
 //                Text("Miscellaneous")
@@ -83,7 +82,7 @@ struct SelectedItemSheetView: View {
                     .italic()
                     .padding()
             }
-            if viewModel.selectedProduct.category.id != 1 {
+            if viewModel.selectedProduct.category.id != 1 , viewModel.selectedProduct.category.id != 4 {
                 HStack {
                     Button {
                         let newProduct = Product(
@@ -98,14 +97,17 @@ struct SelectedItemSheetView: View {
                             numberOfProducts: 1
                         )
                         
-                        //                viewModel.selectedProduct = newProduct
-    //                    viewModel.user.cart.append(newProduct)
-                        viewModelFirestore.updateUserCart(product: newProduct)
+                        if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == newProduct.id && $0.size == newProduct.size }) {
+                            var updatedProduct = viewModelFirestore.cartList[index]
+                            updatedProduct.numberOfProducts? += 1
+                            viewModelFirestore.updateUserCart(product: updatedProduct)
+
+                        } else {
+                            viewModelFirestore.updateUserCart(product: newProduct)
+                        }
                         viewModel.showSheet = false
-                        
-    //                    if viewModel.selectedProduct.category.id == 1 {
-    //                        viewModel.showAlertSuccessfullAdded = true
-    //                    }
+                        viewModel.showHomeDetailSheet = false
+                    
                         
                     } label: {
                         HStack {
@@ -130,16 +132,17 @@ struct SelectedItemSheetView: View {
                             size: viewModel.selectedSize
                         )
                         if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-                            viewModel.productIndex = index
+//                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
+//                            viewModel.productIndex = index
+                            let favItem =  viewModelFirestore.favoriteList[index]
+                             viewModelFirestore.deleteUserFavorite(product: favItem)
                         } else {
                             viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                         }
                         viewModel.showSheet = false
 
                     } label: {
-                        
-                        Image(systemName: "bookmark")
+                        Image(systemName: viewModelFirestore.isProductFavorite(product: viewModel.selectedProduct) ? "bookmark.fill" : "bookmark")
                         .tint(.white)
                         .padding()
                         .background(.black)
@@ -159,18 +162,19 @@ struct SelectedItemSheetView: View {
                         size: viewModel.selectedSize
                     )
                     if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-                        viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-                        viewModel.productIndex = index
+//                        viewModelFirestore.favoriteList[index].isFavorite?.toggle()
+//                        viewModel.productIndex = index
+                        let favItem =  viewModelFirestore.favoriteList[index]
+                         viewModelFirestore.deleteUserFavorite(product: favItem)
                     } else {
                         viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                     }
                     viewModel.showSheet = false
 
                 } label: {
-                    
                     HStack {
                         Text("Favorite")
-                        Image(systemName: "bookmark")
+                        Image(systemName: viewModelFirestore.isProductFavorite(product: viewModel.selectedProduct) ? "bookmark.fill" : "bookmark")
                     }
                     .tint(.white)
                     .padding()
@@ -186,30 +190,18 @@ struct SelectedItemSheetView: View {
                 try await viewModel.getCategorieFromID(filterID: "\(viewModel.selectedProduct.id)")
             }
         }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
 }
 
 #Preview {
-//    let testProduct = Product(
-//        id: 1,
-//        title: "Classic Navy Blue Baseball Cap",
-//        price: 20.0,
-//        description: "Test Description",
-//        images: [
-//        "https://i.imgur.com/R3iobJA.jpeg",
-//        "https://i.imgur.com/Wv2KTsf.jpeg",
-//        "https://i.imgur.com/76HAxcA.jpeg"
-//      ],
-//        category: Category(
-//            id: 1,
-//            name: "Tools",
-//            image: "tools.png",
-//            creationAt: "2025-01-24T08:29:50.000Z",
-//            updatedAt: "2025-01-24T09:42:00.000Z"
-//        )
-//        ,size: "",
-//        numberOfProducts: 0)
 
-    SelectedItemSheetView(viewModel: ProductViewModel())
+    SelectedItemSheet(viewModel: ProductViewModel())
         
 }

@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct CartView: View {
+    
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
-    @State var sizes: [String] = ["XS", "S", "M", "L", "XL", "XXL"]
-    //    @State var counter = 0
-    //    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
+//    @State var sizes: [String] = ["XS", "S", "M", "L", "XL", "XXL"]
     let columns = [GridItem(.fixed(400.0))]
 
+    
     var body: some View {
         NavigationStack {
             HStack {
@@ -27,12 +29,9 @@ struct CartView: View {
                 .font(.footnote)
                 .frame(maxWidth: .infinity, maxHeight: 4)
                 .padding()
-                //                .padding(.horizontal, 35)
                 .border(.black)
                 .background(viewModel.showCart ? Color.black : Color.white)
                 .tint(viewModel.showCart ? .white : .black)
-                //                .padding(.leading, -20)
-                //                .padding(-8)
 
                 Button {
                     viewModel.showCart = false
@@ -47,16 +46,12 @@ struct CartView: View {
                 .font(.footnote)
                 .frame(maxWidth: .infinity, maxHeight: 4)
                 .padding()
-                //                .padding(.horizontal, 37)
                 .border(.black)
                 .background(viewModel.showCart ? Color.white : Color.black)
                 .tint(viewModel.showCart ? .black : .white)
                 .padding(-8)
             }
             .padding(.top)
-            //FIXME: bei mehreren items geht die ganze leiste nach oben, schau es dir nochmal an!!
-
-            //FIXME: Die ScrollView verhindert das man auf die Buttons klicken kann!!
             ScrollView {
                 VStack {
                 if viewModel.showCart {
@@ -114,7 +109,7 @@ struct CartView: View {
                                                 .frame(maxWidth: 150, maxHeight: 50)
                                                 .padding(.vertical, 5)
                                             Text("\(product.price.formatted()) EUR")
-                                            Text(product.size ?? "keine Größe")
+                                            Text("Size: \(product.size ?? "No Size")")
                                             
                                             HStack(spacing: 0) {
                                                 Button("-") {
@@ -166,49 +161,10 @@ struct CartView: View {
                                     }
                                     .padding(.top)
                                 }
-//                                .swipeActions {
-//                                    Button(role: .destructive) {
-//                                        viewModelFirestore.cartList.removeAll(where: {
-//                                            $0.cartID == product.cartID
-//                                        })
-//                                        Task {
-//                                            try await viewModel.getProductsFromAPI()
-//                                        }
-//                                    } label: {
-//                                        Label("Delete", systemImage: "trash")
-//                                    }
-//                                    Button {
-//                                        if let addToFavorite = viewModelFirestore.cartList
-//                                            .first(where: {
-//                                                $0.cartID == product.cartID
-//                                            })
-//                                        {
-//                                            viewModel.user.favorite.append(
-//                                                addToFavorite)
-//                                            viewModelFirestore.cartList.removeAll(where: {
-//                                                $0.cartID == addToFavorite.cartID
-//                                            })
-//                                            Task {
-//                                                try await viewModel
-//                                                    .getProductsFromAPI()
-//                                            }
-//                                        }
-//                                    } label: {
-//                                        Label("Favorite", systemImage: "flag")
-//                                    }
-//                                    .tint(.yellow)
-//                                }
                             }
-                        
                     }
-
-//                                    .listStyle(.plain)
-                    //                Spacer()
-                    //                Spacer()
                 } else {
-//                    ForEach(viewModel.user.favorite, id: \.cartID) { product in
                     ForEach(viewModelFirestore.favoriteList, id: \.cartID) { product in
-                        //                  ForEach(viewModel.testProducteArray) { product in
                         ZStack {
                             Rectangle()
                                 .frame(maxWidth: .infinity, maxHeight: 250)
@@ -222,6 +178,7 @@ struct CartView: View {
                                     image in
                                     image
                                         .resizable()
+                                        .scaledToFill()
                                         .frame(maxWidth: 200, maxHeight: 248)
                                 } placeholder: {
                                     ProgressView()
@@ -231,13 +188,33 @@ struct CartView: View {
                                     HStack(alignment: .lastTextBaseline) {
                                         Spacer()
                                         Button {
-                                            viewModelFirestore.updateUserCart(product: product)
-                                            viewModelFirestore.deleteUserFavorite(product: product)
+                                            viewModel.selectedProduct = product
+                                            
+                                            if viewModel.selectedProduct.category.id == 1 {
+                                                viewModel.showClothesSizesOnCart = true
+                                            } else if viewModel.selectedProduct.category.id == 4 {
+                                                viewModel.showShoesSizesOnCart = true
+                                            } else {
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == product.id }) {
+                                                    let updatedProduct = viewModelFirestore.cartList[index]
+                                                    viewModelFirestore.deleteUserFavorite(product: updatedProduct)
+                                                } else {
+                                                    viewModelFirestore.updateUserCart(product: product)
+                                                    viewModelFirestore.deleteUserFavorite(product: product)
+                                                }
+                                            }
                                         } label: {
                                             Image(systemName: "cart")
                                                 .resizable()
                                                 .frame(
                                                     maxWidth: 18, maxHeight: 22)
+                                                .padding(.top, 8)
                                         }
                                         .padding(.horizontal)
                                         Button {
@@ -247,10 +224,11 @@ struct CartView: View {
                                                 .resizable()
                                                 .frame(
                                                     maxWidth: 15, maxHeight: 20)
+
                                         }
                                     }
-                                    .padding(.top, 10)
                                     .padding(.horizontal)
+                                    .padding(.bottom, 30)
                                     .frame(
                                         maxWidth: 200,
                                         alignment: .trailingLastTextBaseline
@@ -262,71 +240,32 @@ struct CartView: View {
                                             .frame(maxWidth: 150, maxHeight: 50)
                                             .padding(.vertical, 5)
                                         Text("\(product.price.formatted()) EUR")
-                                        Text(product.size ?? "keine Größe")
-
+//                                        Text("Size: \(product.size ?? "No Size")")
                                     }
-                                    .padding(.top)
+                                    .padding(.bottom, 40)
                                     .frame(
                                         maxWidth: .infinity, alignment: .leading
                                     )
-
                                 }
-                                //                            .padding(.top)
                             }
                             .padding(.top, 4)  // muss mit rectangle immer angepasst werden
-//                            .swipeActions {
-//                                Button(role: .destructive) {
-//                                    viewModel.user.favorite.removeAll(where: {
-//                                        $0.cartID == product.cartID
-//                                    })
-//                                    Task {
-//                                        try await viewModel.getProductsFromAPI()
-//                                    }
-//                                } label: {
-//                                    Label("Delete", systemImage: "trash")
-//                                }
-//                                Button {
-//                                    if let addToCart = viewModel.user.favorite
-//                                        .first(where: {
-//                                            $0.cartID == product.cartID
-//                                        })
-//                                    {
-//                                        viewModelFirestore.cartList.append(
-//                                            addToCart)
-//                                        viewModel.user.favorite.removeAll(
-//                                            where: {
-//                                                $0.cartID == addToCart.cartID
-//                                            })
-//                                        Task {
-//                                            try await viewModel
-//                                                .getProductsFromAPI()
-//                                        }
-//                                    }
-//                                } label: {
-//                                    Label("Warenkorb", systemImage: "cart")
-//                                }
-//                                .tint(.yellow)
-//                            }
                         }
                     }
                     .onAppear {
                             viewModel.getProductsFromAPI()
-                        
                     }
                 }
-                                }
             }
+        }
             Spacer()
-                
+
             if viewModel.showCart {
                 VStack {
                     VStack {
                         HStack {
                             Text("Total:")
                             Spacer()
-                            //                        Text("\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + $1.price }))€")
                             Text(
-//                                "\(String(format: "%.2f", viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR"
                                 "\(String(format: "%.2f", viewModelFirestore.cartList.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price })) EUR"
                             )
                         }
@@ -344,18 +283,34 @@ struct CartView: View {
                     }
                     .border(Color.primary)
                     .padding(.bottom, -23)
-                    NavigationLink("WEITER") {
+                    NavigationLink("ZUR KASSE") {
                         OrderOverviewView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
                     }
                     .padding()
                     .frame(minWidth: 410)
-                    .background(Color.black)
+                    .background(viewModelFirestore.cartList.isEmpty ? .clear : .black)
                     .tint(.white)
                     .padding()
+                    .disabled(viewModelFirestore.cartList.isEmpty)
                 }
             } else {
                 Spacer()
             }
+        }
+        .sheet(isPresented: $viewModel.showClothesSizesOnCart) {
+            ClothesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
+                .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $viewModel.showShoesSizesOnCart) {
+            ShoesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
+                .presentationDetents([.medium, .large])
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

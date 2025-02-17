@@ -10,16 +10,31 @@ import Foundation
 @MainActor
 class FirestoreViewModel: ObservableObject  {
     
+    
     let firestore = FireManager.shared
-    @Published var cartList: [Product] = []
+
+    @Published var cartList: [Product] = []  // reset funktion erstellen
     @Published var favoriteList: [Product] = []
     @Published var adressList: [Adress] = []
-    @Published var isFavorited: Bool = false
+    @Published var oldOrderList: [Product] = []
     
     init() {
         cartSnapshotListener()
         favoriteSnapshotListener()
         adressSnapshotListener()
+        oldOrderSnapshotListener()
+    }
+    
+    func restartListeners() {  //Die funktion, funktioniert nicht, der snapshoter setzt sich nicht zurück und man muss die app trotzdem immer wieder neustarten um die aktuellen daten des jeweiligen nutzers zu sehen.
+        guard firestore.currentUser != nil else {
+            print("Kein User eingeloggt, Listener werden nicht neu gestartet.")
+            return
+        }
+        print("User eingeloggt, Listener werden neu gestartet.")
+        cartSnapshotListener()
+        favoriteSnapshotListener()
+        adressSnapshotListener()
+        oldOrderSnapshotListener()
     }
     
     func updateUserCart(product: Product) {
@@ -101,7 +116,7 @@ class FirestoreViewModel: ObservableObject  {
             do {
                 try await firestore.updateUserAdress(adress: adress)
             } catch {
-                fatalError("update Cart failed")
+                fatalError("update adress failed")
             }
         }
     }
@@ -128,6 +143,34 @@ class FirestoreViewModel: ObservableObject  {
                 return
             }
             self.adressList = adress
+        }
+    }
+    
+    func updateUserOldOrder(product: Product) {
+        Task {
+            do {
+                try await firestore.updateUserOldOrder(product: product)
+            } catch {
+                fatalError("update old-Order failed")
+            }
+        }
+    }
+    
+    private func oldOrderSnapshotListener() {
+        firestore.oldOrderSnapshotListener { oldOrder, error in
+            if let error = error {
+                print(error)
+                return
+            }
+            self.oldOrderList = oldOrder
+        }
+    }
+    
+    func isProductFavorite(product: Product) -> Bool {
+        if favoriteList.firstIndex(where: { $0.id == product.id }) != nil {
+            return true
+        } else {
+            return false
         }
     }
 }

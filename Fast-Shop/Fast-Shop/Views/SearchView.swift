@@ -29,8 +29,9 @@ struct SearchView: View {
         numberOfProducts: 0)
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @ObservedObject var errorHandler: ErrorHandler = .shared
 
+    let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
         NavigationStack {
@@ -110,7 +111,6 @@ struct SearchView: View {
                                         HStack {
                                             Text("\(filteredProduct.title)")
                                                 .font(.footnote)
-                                            //frame machen
                                             Button {
                                                 let addNewFavoriteProduct = Product(
                                                     id: filteredProduct.id,
@@ -124,14 +124,15 @@ struct SearchView: View {
                                                 )
                                                 
                                                 if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-                                                    viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-                                                    viewModel.productIndex = index
+//                                                    viewModelFirestore.favoriteList[index].isFavorite?.toggle()
+//                                                    viewModel.productIndex = index
+                                                   let favItem =  viewModelFirestore.favoriteList[index]
+                                                    viewModelFirestore.deleteUserFavorite(product: favItem)
                                                 } else {
-                                                    
                                                     viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                                                 }
                                             } label: {
-                                                Image(systemName: filteredProduct.isFavorite == true ? "bookmark.fill" : "bookmark")
+                                                Image(systemName: viewModelFirestore.isProductFavorite(product: filteredProduct) ? "bookmark.fill" : "bookmark")
                                             }
                                         }
 
@@ -153,20 +154,10 @@ struct SearchView: View {
                     }
                 }
             }
-//            .toolbar(content: {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button {
-//                        viewModel.showFilterSheet.toggle()
-//                    } label: {
-//                        Image(systemName: "line.3.horizontal.decrease.circle")
-//                    }
-//                }
-//            })
-//        }
         .sheet(
             isPresented: $viewModel.showSheet,
             content: {
-                SelectedItemSheetView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
+                SelectedItemSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                     .presentationDetents([.height(600)])
             }
         )
@@ -188,6 +179,13 @@ struct SearchView: View {
                 try await viewModel.getCategoriesFromAPI()
                 try await viewModel.getCategorieFromID(filterID: viewModel.filteredID)
             }
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
       }
     }
