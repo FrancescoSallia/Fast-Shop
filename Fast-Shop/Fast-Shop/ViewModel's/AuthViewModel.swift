@@ -58,6 +58,7 @@ class AuthViewModel: ObservableObject {
                 user = try await manager.loginUser(email: email, password: password)
                 self.email = ""
                 self.password = ""
+                
             } catch {
                 errorHandler.handleError(error: error)
             }
@@ -85,7 +86,6 @@ class AuthViewModel: ObservableObject {
     }
     func resetPassword(email: String) {
         guard !email.isEmpty else {
-            print("Die Emailadresse darf nicht leer sein")
             errorHandler.showError.toggle()
             return
         }

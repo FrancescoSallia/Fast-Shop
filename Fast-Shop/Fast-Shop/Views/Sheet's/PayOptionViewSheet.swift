@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct PayOptionViewSheet: View {
+    
+    @ObservedObject var viewModel: ProductViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+    
     let payOptionItems: [String] = ["apple-pay", "klarna", "google-pay", "paypal"]
     let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
-    @ObservedObject var viewModel: ProductViewModel
+
     var body: some View {
         NavigationStack {
         HStack {
@@ -50,36 +54,14 @@ struct PayOptionViewSheet: View {
                 }
             }
         }
-//        VStack {
-//            ZStack {
-//                Rectangle()
-//                    .frame(maxWidth: .infinity, maxHeight: 50)
-//                    .foregroundStyle(.white)
-//                    .border(Color.black)
-//                HStack {
-//                    Text("GESAMT")
-//                        .font(.footnote)
-//                    Spacer()
-////                    Text("129,98 EUR")
-//                    Text("\(String(format: "%.2f",viewModel.user.cart.reduce(0) { $0 + Double($1.numberOfProducts!) * $1.price } + viewModel.deliveryCost)) EUR")
-//                        .textCase(.uppercase)
-//                        .font(.footnote)
-//                }
-//                .padding(.horizontal)
-//                .bold()
-//            }
-//            ZStack {
-//                Rectangle()
-//                    .frame(maxWidth: .infinity, maxHeight: 50)
-//                    .foregroundStyle(.black)
-//                NavigationLink("WEITER", destination: {
-//                    OrderOverviewView(viewModel: viewModel)
-//                })
-//                .tint(.white)
-//            }
-//            .padding(-8)
-//        }
     }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        } 
 }
 }
 

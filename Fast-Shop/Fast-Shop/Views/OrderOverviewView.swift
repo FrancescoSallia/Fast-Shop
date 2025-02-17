@@ -12,6 +12,9 @@ struct OrderOverviewView: View {
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
+    @State private var navigateToHome = false
 
     var body: some View {
         NavigationStack {
@@ -200,7 +203,27 @@ struct OrderOverviewView: View {
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .foregroundStyle(viewModelAdress.selectedAdressOption == "" ? .clear : .black)
                 Button("Zahlung Autorisieren") {
-                    //
+                    viewModel.showLottieSuccessfullView.toggle()
+                    
+                    for product in viewModelFirestore.cartList {
+                        let oldProduct = Product(
+                            fireID: product.fireID,
+                            id: product.id,
+                            title: product.title,
+                            price: product.price,
+                            description: product.description,
+                            images: product.images,
+                            category: product.category,
+                            isFavorite: product.isFavorite,
+                            size: product.size,
+                            numberOfProducts: product.numberOfProducts,
+                            cartID: product.cartID,
+                            oldOrderID: UUID().uuidString,
+                            date: Date().formatted(.iso8601.year().month().day())
+                        )
+                        viewModelFirestore.updateUserOldOrder(product: oldProduct)
+                        viewModelFirestore.deleteUserCart(product: product)
+                    }
                 }
                 .tint(.white)
                 .textCase(.uppercase)
@@ -216,8 +239,28 @@ struct OrderOverviewView: View {
             PayOptionViewSheet(viewModel: viewModel)
                 .presentationDetents([.medium])
         }
-    }
+        .fullScreenCover(isPresented: $viewModel.showLottieSuccessfullView) {
+            LottiesView()
+                .onAppear {
+                    Task {
+                        try await Task.sleep(for: .seconds(4))
+                          viewModel.showLottieSuccessfullView = false
+                          navigateToHome = true
+                    }
+                }
+    } //TODO: Die Cart nach dem Erfolgreichen einkauf leeren und in den archiv packen
+        .navigationDestination(isPresented: $navigateToHome) {
+            CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+  }
 }
-#Preview {
-    OrderOverviewView(viewModel: ProductViewModel(), viewModelAdress: AdressViewModel(), viewModelFirestore: FirestoreViewModel())
-}
+//#Preview {
+//    OrderOverviewView(viewModel: ProductViewModel(), viewModelAdress: AdressViewModel(), viewModelFirestore: FirestoreViewModel(), path: <#Binding<NavigationPath>#>)
+//}

@@ -19,10 +19,13 @@ class ProductViewModel: ObservableObject {
     
     var productIndex: Int = 0
     @Published var products: [Product] = []
+    @Published var allProductsForHomeView: [Product] = []
     @Published var categories: [Category] = []
     @Published var filteredID: String = "1"
     @Published var searchedText: String = ""
     @Published var showSheet: Bool = false
+    @Published var showHomeDetailSheet: Bool = false
+    @Published var showLottieSuccessfullView: Bool = false
     @Published var categorieText: String = ""
 
     @Published var selectedProduct: Product = Product(
@@ -65,70 +68,12 @@ class ProductViewModel: ObservableObject {
         size: "",
         numberOfProducts: 0
     )
-//    @Published var testProducteArray: [Product] = [
-//        Product(
-//        id: 1,
-//        title: "Classic Navy Blue Baseball Cap, Classic Navy Blue Baseball Cap",
-//        price: 20.0,
-//        description: "Test Description",
-//        images: [
-//        "https://i.imgur.com/R3iobJA.jpeg",
-//        "https://i.imgur.com/Wv2KTsf.jpeg",
-//        "https://i.imgur.com/76HAxcA.jpeg"
-//      ],
-//        category: Category(
-//            id: 1,
-//            name: "Tools",
-//            image: "tools.png",
-//            creationAt: "2025-01-24T08:29:50.000Z",
-//            updatedAt: "2025-01-24T09:42:00.000Z"
-//        ), isFavorite: false,
-//        size: "",
-//        numberOfProducts: 0
-//    ),
-//        Product(
-//        id: 2,
-//        title: "Classic Navy Blue Baseball Cap",
-//        price: 20.0,
-//        description: "Test Description",
-//        images: [
-//        "https://i.imgur.com/R3iobJA.jpeg",
-//        "https://i.imgur.com/Wv2KTsf.jpeg",
-//        "https://i.imgur.com/76HAxcA.jpeg"
-//      ],
-//        category: Category(
-//            id: 1,
-//            name: "Tools",
-//            image: "tools.png",
-//            creationAt: "2025-01-24T08:29:50.000Z",
-//            updatedAt: "2025-01-24T09:42:00.000Z"
-//        ), isFavorite: false,
-//        size: "",
-//        numberOfProducts: 0
-//    ),
-//        Product(
-//        id: 3,
-//        title: "Classic Navy Blue Baseball Cap, Classic Navy Blue Baseball Cap",
-//        price: 20.0,
-//        description: "Test Description",
-//        images: [
-//        "https://i.imgur.com/R3iobJA.jpeg",
-//        "https://i.imgur.com/Wv2KTsf.jpeg",
-//        "https://i.imgur.com/76HAxcA.jpeg"
-//      ],
-//        category: Category(
-//            id: 1,
-//            name: "Tools",
-//            image: "tools.png",
-//            creationAt: "2025-01-24T08:29:50.000Z",
-//            updatedAt: "2025-01-24T09:42:00.000Z"
-//        ), isFavorite: false,
-//        size: "",
-//        numberOfProducts: 0
-//    )
-//]
+
     @Published var selectedSize: String = ""
     @Published var showSizes: Bool = false
+    @Published var showClothesSizesOnCart: Bool = false
+    @Published var showShoesSizesOnCart: Bool = false
+    @Published var confirmationDialogDelete: Bool = false
 
     
     //MARK: Filter Sheet
@@ -136,10 +81,7 @@ class ProductViewModel: ObservableObject {
     @Published var maxPrice = 100.0
     @Published var minMaxValues: [CGFloat] = [0.0, 100.0]
     @Published var selectedCategory : FilteredEnum = .allCategories
-    @Published var showFilterSheet: Bool = false
-//    @Published var filterIsActive: Bool = false
-//    @Published var showAlertSuccessfullAdded = false
-    @Published var showProgressView: Bool = true
+
     
     //MARK: User
     @Published var user = FireUser(
@@ -166,9 +108,6 @@ class ProductViewModel: ObservableObject {
     @Published var showOrderViewSheet: Bool = false
     @Published var showPayOptionViewSheet: Bool = false
 
-
-
-
     func deliveryDate(daysToAdd: Int) -> String {
         let calendar = Calendar.current
         var date = Date()
@@ -189,13 +128,13 @@ class ProductViewModel: ObservableObject {
         return dateFormatter.string(from: date)
     }
 
-    
     //MARK: API Calls
     
     func getProductsFromAPI() {
         Task {
             do {
                 self.products = try await client.getProducts()
+                self.allProductsForHomeView = try await client.getProducts()
             } catch {
                 print("viewModel Error: \(error)")
                 errorHandler.handleError(error: error)
@@ -224,13 +163,7 @@ class ProductViewModel: ObservableObject {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
+ 
 //    func getProductsFromAPI() async throws {
 //        let result = try await client.getProducts(firstIndex: productIndex, lastIndex: 10)
 //        self.products.append(contentsOf: result)

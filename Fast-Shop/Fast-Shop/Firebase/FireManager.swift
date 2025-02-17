@@ -52,7 +52,7 @@ class FireManager {
             .addDocument(from: fireUser)
     }
     
-    func updateUserCart(product: Product) async throws {
+    func updateUserCart(product: Product) async throws {     //Fügt ein Product in der liste von Firebase ein
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
@@ -67,10 +67,9 @@ class FireManager {
         } catch {
             print(error)
         }
-       
     }
     
-    func deleteUserCart(product: Product) async throws {
+    func deleteUserCart(product: Product) async throws {    //Löscht ein Product von der liste in Firebase ein
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
@@ -119,7 +118,7 @@ class FireManager {
         }
     }
     
-    func cartSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) {
+    func cartSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) { //Beobachtet ob sich die Liste ändert um es in echtzeit zu akutalisieren
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
@@ -224,6 +223,49 @@ class FireManager {
                         try? oneAdress.data(as: Adress.self)
                     }
                 compleation(adress, nil)
+            }
+    }
+    
+    
+    func updateUserOldOrder(product: Product) async throws {     //Fügt ein Product in der liste von Firebase ein
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        var eigeneID = ""
+        let userRef = store.collection("users").document(uid).collection("Old-Orders")
+        
+        do {
+            eigeneID = product.oldOrderID!
+           try userRef
+                .document(eigeneID)
+                .setData(from: product)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func oldOrderSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) {
+        guard let uid = currentUser?.uid else {
+            fatalError("no current user")
+        }
+        let userRef = store.collection("users").document(uid).collection("Old-Orders")
+        
+        userRef
+            .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
+                if let error = error {
+                    print("Error listening for changes: \(error)")
+                    compleation([], error)
+                    return
+                }
+                guard let snapshot else {
+                    fatalError("snapshot ist leer")
+                }
+                let oldOrder = snapshot
+                    .documents
+                    .compactMap { oldOrder in
+                        try? oldOrder.data(as: Product.self)
+                    }
+                compleation(oldOrder, nil)
             }
     }
 }

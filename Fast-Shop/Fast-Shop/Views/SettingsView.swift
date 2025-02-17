@@ -9,11 +9,12 @@ import SwiftUI
 
 struct SettingsView: View {
     @State private var notificationsEnabled: Bool = true
-    @State private var isDarkMode: Bool = false
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
     @ObservedObject var authViewModel: AuthViewModel
+    @ObservedObject var errorHandler: ErrorHandler = .shared
+
 
     var body: some View {
         NavigationStack {
@@ -22,11 +23,15 @@ struct SettingsView: View {
                     Section(header: Text("Einstellungen")) {
                         Toggle(
                             "Benachrichtigungen", isOn: $notificationsEnabled)
-                        Toggle("Dunkler Modus", isOn: $isDarkMode)
                         NavigationLink(
                             destination: AdressView(viewModel: viewModelAdress, viewModelFirestore: viewModelFirestore)
                         ) {
                             Text("Meine Adressen")
+                        }
+                        NavigationLink(
+                            destination: OldOrderView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
+                        ) {
+                            Text("Meine Bestellungen")
                         }
                     }
 
@@ -34,28 +39,47 @@ struct SettingsView: View {
                         Text(
                             "E-Mail: \(authViewModel.user?.email ?? "Keine User-Email")"
                         )
-                        //                                    Button(action: {}) {
-                        //                                        Text("Account löschen")
-                        //                                            .foregroundColor(.red)
-                        //                                    }
                     }
                 }
                 .navigationTitle("Einstellungen")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button("Ausloggen") {
+                            //Den ViewModel wird beim ausloggen zurückgesetzt
+                            viewModelFirestore.cartList.removeAll()
+                            viewModelFirestore.favoriteList.removeAll()
+                            viewModelFirestore.adressList.removeAll()
+                            viewModelFirestore.oldOrderList.removeAll()
+                                  
                             authViewModel.logout()
+                            viewModelFirestore.restartListeners()
                         }
                     }
                 }
             }
             Button {
-                authViewModel.deleteUser()
+//                authViewModel.deleteUser()
+                viewModel.confirmationDialogDelete.toggle()
             } label: {
                 Text("Account löschen")
                     .foregroundColor(.red)
             }
 
+        }
+        .alert(isPresented: $errorHandler.showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorHandler.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
+            Button("Account Löschen", role: .destructive) {
+                authViewModel.deleteUser()
+            }
+            Button("Abbrechen", role: .cancel) {
+                
+            }
         }
     }
 }

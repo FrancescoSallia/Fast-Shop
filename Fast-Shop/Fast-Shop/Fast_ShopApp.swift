@@ -28,32 +28,30 @@ struct Fast_ShopApp: App {
                     LogInScreenView(authViewModel: authViewModel)
                 } else {
                         TabView {
-                            Tab("Home", systemImage: "house.fill"){
-                                HomeView()
-                                //                        APITestView()
+                            Tab("Home", systemImage: "house.fill") {
+                                HomeView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                             }
-                            Tab("Search", systemImage: "magnifyingglass"){
+                            Tab("Search", systemImage: "magnifyingglass") {
                                 SearchView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
-//                                    .sheet(isPresented: $viewModel.showAlertSuccessfullAdded, content: {
-//                                        IsSuccessfullSheet(viewModel: viewModel)
-//                                            .presentationDetents([.height(60)])
-//                                    })
                             }
-                            Tab("Cart", systemImage: "bag"){
+                            Tab("Cart", systemImage: "bag") {
                                 CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
-                                //                            .toolbarVisibility(showTab ? .hidden : .visible, for: .tabBar)
                             }
-                            Tab("Settings", systemImage: "person"){
+                            .badge(viewModelFirestore.cartList.count)
+                            Tab("Settings", systemImage: "person") {
                                 SettingsView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore, authViewModel: authViewModel)
-                                //                          LogInScreenView()
                             }
-                            
                         }
+                        .tint(.black)
                     }
                 }
             .onAppear {
                 authViewModel.checkLoggedIn()
             }
+//            .onChange(of: authViewModel.user) { newUser in
+//                          // Listener neu starten, wenn sich der User ändert
+//                          viewModelFirestore.restartListeners()
+//                      }
         }
 
     }
