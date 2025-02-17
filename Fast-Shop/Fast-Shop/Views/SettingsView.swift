@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SettingsView: View {
     @State private var notificationsEnabled: Bool = true
-    @State private var isDarkMode: Bool = false
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
@@ -59,7 +58,8 @@ struct SettingsView: View {
                 }
             }
             Button {
-                authViewModel.deleteUser()
+//                authViewModel.deleteUser()
+                viewModel.confirmationDialogDelete.toggle()
             } label: {
                 Text("Account löschen")
                     .foregroundColor(.red)
@@ -72,6 +72,14 @@ struct SettingsView: View {
                 message: Text(errorHandler.errorMessage),
                 dismissButton: .default(Text("OK"))
             )
+        }
+        .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
+            Button("Account Löschen", role: .destructive) {
+                authViewModel.deleteUser()
+            }
+            Button("Abbrechen", role: .cancel) {
+                
+            }
         }
     }
 }

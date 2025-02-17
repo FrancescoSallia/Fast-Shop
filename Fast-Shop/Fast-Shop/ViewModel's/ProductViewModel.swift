@@ -73,6 +73,7 @@ class ProductViewModel: ObservableObject {
     @Published var showSizes: Bool = false
     @Published var showClothesSizesOnCart: Bool = false
     @Published var showShoesSizesOnCart: Bool = false
+    @Published var confirmationDialogDelete: Bool = false
 
     
     //MARK: Filter Sheet
