@@ -37,14 +37,14 @@ struct HomeView: View {
                                         .fontDesign(.monospaced)
                                         .foregroundColor(.black)
                                         .padding()
-                                        .offset(y: 140)
+                                        .offset(y: 170)
                                         .frame(maxWidth: 350, maxHeight: 100)
                                     Text(item.category.name)
                                         .font(.largeTitle)
                                         .fontDesign(.serif)
                                         .foregroundColor(.black)
                                         .padding()
-                                        .offset(y: 180)
+                                        .offset(y: 210)
                                         .italic()
                                 }
                                 .onTapGesture {
