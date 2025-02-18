@@ -45,14 +45,28 @@ class FireManager {
 
 //MARK: Firestore-Section
     
+//    func createFireUser(email: String) async throws {
+//        let fireUser = FireUser(email: email)
+//        try store
+//            .collection("users")
+//            .addDocument(from: fireUser)
+//    }
     func createFireUser(email: String) async throws {
+        // Sicherstellen, dass der User eingeloggt ist und eine UID hat
+        guard let uid = currentUser?.uid else {
+            fatalError("Kein aktueller User oder keine UID vorhanden")
+        }
+
+        let docRef = store.collection("users").document(uid) // Verwende die UID als Dokument-ID
         let fireUser = FireUser(email: email)
-        try store
-            .collection("users")
-            .addDocument(from: fireUser)
+        fireUser.id = uid // Setzt die ID auch im Objekt
+        
+        // Speichern mit der UID als Dokument-ID
+        try docRef.setData(from: fireUser)
+
     }
     
-    func updateUserCart(product: Product) async throws {     //Fügt ein Product in der liste von Firebase ein
+    func updateUserCart(product: Product) async throws { //Fügt ein Product in der liste von Firebase ein
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }

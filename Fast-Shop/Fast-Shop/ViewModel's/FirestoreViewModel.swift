@@ -13,7 +13,7 @@ class FirestoreViewModel: ObservableObject  {
     
     let firestore = FireManager.shared
 
-    @Published var cartList: [Product] = []  // reset funktion erstellen
+    @Published var cartList: [Product] = []  // Dafür muss noch eine reset funktion erstellt werden!
     @Published var favoriteList: [Product] = []
     @Published var adressList: [Adress] = []
     @Published var oldOrderList: [Product] = []
