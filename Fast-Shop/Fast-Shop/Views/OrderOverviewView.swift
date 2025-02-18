@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct OrderOverviewView: View {
+    @Environment(\.dismiss) var dismiss
+
     let dummyArtikeln: [String] = ["tasche", "pants", "tshirt", "ring"]
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
     @ObservedObject var errorHandler: ErrorHandler = .shared
 
-    @State private var navigateToHome = false
+    @State private var navigateToCart = false
 
     var body: some View {
         NavigationStack {
@@ -94,7 +96,7 @@ struct OrderOverviewView: View {
                             if let index = viewModelFirestore.adressList.firstIndex(where: { $0.adressID == viewModelAdress.selectedAdressOption }) {
                                 VStack(alignment: .leading) {
                                     HStack {
-                                        Text("\(viewModelFirestore.adressList[index].firstName)")
+                                        Text("\(viewModelFirestore.adressList[index].firstName) \(viewModelFirestore.adressList[index].secondName)")
                                             .textCase(.uppercase)
                                         Spacer()
                                         Image(systemName: "chevron.right")
@@ -245,13 +247,15 @@ struct OrderOverviewView: View {
                     Task {
                         try await Task.sleep(for: .seconds(4))
                           viewModel.showLottieSuccessfullView = false
-                          navigateToHome = true
+                        dismiss()
+                        dismiss()
+//                          navigateToCart = true
                     }
                 }
     } //TODO: Die Cart nach dem Erfolgreichen einkauf leeren und in den archiv packen
-        .navigationDestination(isPresented: $navigateToHome) {
-            CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
-        }
+//        .navigationDestination(isPresented: $navigateToCart) {
+//            CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
+//        }
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),

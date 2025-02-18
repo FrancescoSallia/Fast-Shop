@@ -26,6 +26,7 @@ struct Fast_ShopApp: App {
                 VStack {
                     if !authViewModel.userIsLoggedIn {
                     LogInScreenView(authViewModel: authViewModel)
+                            .tint(.black)
                 } else {
                         TabView {
                             Tab("Home", systemImage: "house.fill") {
