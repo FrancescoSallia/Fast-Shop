@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UserNotifications
+import FirebaseAuth
 
 @MainActor
 class FirestoreViewModel: ObservableObject  {
@@ -164,5 +166,11 @@ class FirestoreViewModel: ObservableObject  {
         } else {
             return false
         }
+    }
+    
+    
+//MARK: Notification
+    func checkCartAndScheduleNotification() {
+        firestore.checkCartAndScheduleNotification()
     }
 }
