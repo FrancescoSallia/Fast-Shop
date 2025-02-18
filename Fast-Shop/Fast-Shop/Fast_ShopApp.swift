@@ -91,6 +91,7 @@ struct Fast_ShopApp: App {
             .onAppear {
                 authViewModel.checkLoggedIn()
             }
+            .preferredColorScheme(.light)
         }
     }
 }

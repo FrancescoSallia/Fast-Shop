@@ -345,4 +345,19 @@ class FireManager {
                 }
             }
         }
+    // MARK: - Notification Helper
+    private func createNotificationAttachment() -> UNNotificationAttachment? {
+        guard let imageURL = Bundle.main.url(forResource: "cartIcon", withExtension: "png") else {
+            print("Bild nicht gefunden")
+            return nil
+        }
+        
+        do {
+            let attachment = try UNNotificationAttachment(identifier: "cartIcon", url: imageURL, options: nil)
+            return attachment
+        } catch {
+            print("Fehler beim Laden des Bildes: \(error)")
+            return nil
+        }
+    }
 }
