@@ -21,8 +21,18 @@ struct SettingsView: View {
             VStack {
                 Form {
                     Section(header: Text("Einstellungen")) {
-                        Toggle(
-                            "Benachrichtigungen", isOn: $notificationsEnabled)
+                        Toggle(isOn: $notificationsEnabled){
+                            Text("Benachrichtigungen")
+                        }
+                        .onChange(of: notificationsEnabled) { value in
+                            if value {
+                                // Benachrichtigung einplanen, wenn der Toggle eingeschaltet ist
+                                viewModelFirestore.checkCartAndScheduleNotification()
+                            } else {
+                                // Benachrichtigung entfernen, wenn der Toggle ausgeschaltet ist
+                                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["cartReminder"])
+                            }
+                        }
                         NavigationLink(
                             destination: AdressView(viewModel: viewModelAdress, viewModelFirestore: viewModelFirestore)
                         ) {
@@ -45,14 +55,7 @@ struct SettingsView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button("Ausloggen") {
-                            //Den ViewModel wird beim ausloggen zurückgesetzt
-//                            viewModelFirestore.cartList = []
-//                            viewModelFirestore.favoriteList = []
-//                            viewModelFirestore.adressList = []
-//                            viewModelFirestore.oldOrderList = []
-                                  
                             authViewModel.logout()
-//                            viewModelFirestore.restartListeners()
                         }
                     }
                 }
