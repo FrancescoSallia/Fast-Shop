@@ -134,7 +134,8 @@ class FireManager {
     
     func cartSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) { //Beobachtet ob sich die Liste ändert um es in echtzeit zu akutalisieren
         guard let uid = currentUser?.uid else {
-            fatalError("no current user")
+            compleation([], nil)
+            return
         }
         let userRef = store.collection("users").document(uid).collection("Cart")
         
@@ -159,8 +160,8 @@ class FireManager {
     
     func favoriteSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) {
         guard let uid = currentUser?.uid else {
-            fatalError("no current user")
-        }
+            compleation([], nil)
+            return        }
         let userRef = store.collection("users").document(uid).collection("Favorite")
         
         userRef
@@ -217,7 +218,8 @@ class FireManager {
     
     func adressSnapshotListener(compleation: @escaping ([Adress], Error?) -> Void) {
         guard let uid = currentUser?.uid else {
-            fatalError("no current user")
+            compleation([], nil)
+            return
         }
         let userRef = store.collection("users").document(uid).collection("Adress")
         
@@ -260,7 +262,8 @@ class FireManager {
     
     func oldOrderSnapshotListener(compleation: @escaping ([Product], Error?) -> Void) {
         guard let uid = currentUser?.uid else {
-            fatalError("no current user")
+            compleation([], nil)
+            return
         }
         let userRef = store.collection("users").document(uid).collection("Old-Orders")
         

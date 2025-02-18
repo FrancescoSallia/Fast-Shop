@@ -44,6 +44,9 @@ struct Fast_ShopApp: App {
                             }
                         }
                         .tint(.black)
+                        .onAppear {
+                            viewModelFirestore.restartListeners()
+                        }
                     }
                 }
             .onAppear {

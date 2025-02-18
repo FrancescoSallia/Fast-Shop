@@ -18,13 +18,6 @@ class FirestoreViewModel: ObservableObject  {
     @Published var adressList: [Adress] = []
     @Published var oldOrderList: [Product] = []
     
-    init() {
-        cartSnapshotListener()
-        favoriteSnapshotListener()
-        adressSnapshotListener()
-        oldOrderSnapshotListener()
-    }
-    
     func restartListeners() {  //Die funktion, funktioniert nicht, der snapshoter setzt sich nicht zurück und man muss die app trotzdem immer wieder neustarten um die aktuellen daten des jeweiligen nutzers zu sehen.
         guard firestore.currentUser != nil else {
             print("Kein User eingeloggt, Listener werden nicht neu gestartet.")
@@ -87,7 +80,6 @@ class FirestoreViewModel: ObservableObject  {
             }
             
         }
-        
     }
     
     private func cartSnapshotListener() {

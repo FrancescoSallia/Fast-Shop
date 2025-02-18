@@ -20,7 +20,6 @@ class AuthViewModel: ObservableObject {
     private var manager = FireManager.shared
     private let errorHandler = ErrorHandler.shared
 
-    
     init() {
         checkLoggedIn()
     }
