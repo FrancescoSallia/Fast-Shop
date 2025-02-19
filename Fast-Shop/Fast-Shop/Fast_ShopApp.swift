@@ -49,8 +49,6 @@ struct Fast_ShopApp: App {
     @StateObject var viewModelAdress = AdressViewModel()
     @StateObject var authViewModel = AuthViewModel()
     @StateObject var viewModelFirestore = FirestoreViewModel()
-    @State private var selectedTab = 0
-
 
     var body: some Scene {
         WindowGroup {
@@ -59,7 +57,7 @@ struct Fast_ShopApp: App {
                     LogInScreenView(authViewModel: authViewModel)
                             .tint(.black)
                 } else {
-                    TabView(selection: $selectedTab) {
+                    TabView(selection: $viewModel.selectedTab) {
                         Tab("Home", systemImage: "house.fill", value: 0) {
                                 HomeView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                             }
@@ -84,7 +82,7 @@ struct Fast_ShopApp: App {
                         }
                         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("NavigateToCart"))) { _ in  // onReceive schaut nach änderungen vom publisher um änderungen zu aktualisieren
                             // Wenn die Notification ankommt, auf Cart umschalten beim drauf tippen
-                            selectedTab = 2
+                            viewModel.selectedTab = 2
                         }
                     }
                 }

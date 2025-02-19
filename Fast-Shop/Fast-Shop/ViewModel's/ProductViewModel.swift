@@ -27,6 +27,8 @@ class ProductViewModel: ObservableObject {
     @Published var showHomeDetailSheet: Bool = false
     @Published var showLottieSuccessfullView: Bool = false
     @Published var categorieText: String = ""
+    @Published var selectedTab = 0
+
 
     @Published var selectedProduct: Product = Product(
         id: 1,
