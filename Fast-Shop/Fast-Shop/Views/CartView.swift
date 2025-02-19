@@ -176,7 +176,6 @@ var body: some View {
                   image in
                   image
                       .resizable()
-//                      .scaledToFill()
                       .frame(maxWidth: 200, maxHeight: 248)
               } placeholder: {
                   ProgressView()

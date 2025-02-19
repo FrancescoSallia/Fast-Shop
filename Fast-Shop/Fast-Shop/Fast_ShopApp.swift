@@ -99,18 +99,18 @@ struct Fast_ShopApp: App {
                                 .foregroundColor(.black)
                                 .cornerRadius(10)
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .shadow(radius: 6)
                             
                         }  else if viewModel.showToastCartRemoved {  // Nur wenn explizit entfernt wurde!
-                            HStack {
-                                Text("Artikel wurde vom Warenkorb entfernt!")
-                                Image(systemName: "cart.badge.minus")
-                            }
+                                Text("Artikel wurde vom Warenkorb entfernt! ✅")
+                            
                                 .font(.subheadline)
                                 .padding()
                                 .background(Color.white)
                                 .foregroundColor(.black)
                                 .cornerRadius(10)
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .shadow(radius: 6)
                             
                         } else if viewModel.showToastFavorite {
                             HStack {
@@ -123,6 +123,7 @@ struct Fast_ShopApp: App {
                                 .foregroundColor(.black)
                                 .cornerRadius(10)
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .shadow(radius: 6)
                             
                         } else if viewModel.showToastFavoriteRemoved {  // Nur wenn explizit entfernt wurde!
                             HStack {
@@ -135,6 +136,7 @@ struct Fast_ShopApp: App {
                                 .foregroundColor(.black)
                                 .cornerRadius(10)
                                 .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .shadow(radius: 6)
                         }
                     }
                      .padding(.bottom, 92)
