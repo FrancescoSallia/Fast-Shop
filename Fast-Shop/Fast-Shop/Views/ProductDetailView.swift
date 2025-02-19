@@ -97,6 +97,7 @@ struct ProductDetailView: View {
                             }
                             viewModel.showSheet = false
                             viewModel.showHomeDetailSheet = false
+                            viewModel.showToast = true
                         }
                     }
                     .tint(.white)
@@ -156,6 +157,31 @@ struct ProductDetailView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+//        .overlay(
+//            VStack {
+//                Spacer()
+//                if viewModel.showToast {
+//                    Text("Artikel wurde zum Warenkorb hinzugefügt! ✅")
+//                        .font(.subheadline)
+//                        .padding()
+//                        .background(Color.white)
+//                        .foregroundColor(.black)
+//                        .cornerRadius(10)
+//                        .transition(.move(edge: .bottom).combined(with: .opacity))
+//                }
+//            }
+//             .padding(.bottom, 92)
+//        )
+//        .onChange(of: viewModel.showToast) { newValue in
+//            if newValue {
+//                Task {
+//                    try await Task.sleep(for: .seconds(2))
+//                    withAnimation {
+//                        viewModel.showToast = false
+//                    }
+//                }
+//            }
+//        }
     }
 }
 #Preview {

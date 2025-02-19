@@ -122,7 +122,11 @@ struct SelectedItemSheet: View {
                         }
                         viewModel.showSheet = false
                         viewModel.showHomeDetailSheet = false
-                    
+                        
+                    // Toast 
+                        withAnimation {
+                            viewModel.showToast = true
+                        }
                         
                     } label: {
                         HStack {
@@ -205,6 +209,13 @@ struct SelectedItemSheet: View {
                 try await viewModel.getCategorieFromID(filterID: "\(viewModel.selectedProduct.id)")
             }
         }
+//        .onAppear {
+//            Task {
+//                try await Task.sleep(for: .seconds(2))
+//                viewModel.showToast = false
+//            }
+//        }
+
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),
