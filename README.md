@@ -11,7 +11,7 @@ Im Gegensatz zu anderen Plattformen setzt Fast-Shop auf maximale Einfachheit und
 Füge hier am Ende die Screenshots deiner App ein (achte hierbei auf die Guidelines).
 
 <p>
-  <img src="./img/Warenkorb.png" width="200">
+  <img src="./gifs/home.gif"width="200">
   <img src="./img/Home.png" width="200">
   <img src="./img/Search.png" width="200">
 </p>
