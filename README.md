@@ -12,6 +12,8 @@ Füge hier am Ende die Screenshots deiner App ein (achte hierbei auf die Guideli
 
 <p>
   <img src="./gifs/searching.gif" width="200">
+	
+![Image](https://github.com/user-attachments/assets/38496f9c-ba6c-4730-aa77-6f4bb42c6e6a)
   <img src="./img/SearchView.png" width="200">
   <img src="./img/Search.png" width="200">
 </p>
