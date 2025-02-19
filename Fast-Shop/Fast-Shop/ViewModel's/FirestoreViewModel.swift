@@ -32,6 +32,16 @@ class FirestoreViewModel: ObservableObject  {
         oldOrderSnapshotListener()
     }
     
+    func deleteUserCollection() {
+        Task {
+            do {
+                try await firestore.deleteUserCollection()
+            } catch {
+                fatalError("User Collection delete failed")
+            }
+        }
+    }
+    
     func updateUserCart(product: Product) {
         Task {
             do {

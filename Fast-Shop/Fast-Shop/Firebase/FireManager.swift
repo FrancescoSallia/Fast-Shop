@@ -66,6 +66,16 @@ class FireManager {
 
     }
     
+    func deleteUserCollection() async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("Kein aktueller User oder keine UID vorhanden")
+        }
+        try await store
+            .collection("users")
+            .document(uid)
+            .delete()
+    }
+    
     func updateUserCart(product: Product) async throws { //Fügt ein Product in der liste von Firebase ein
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
