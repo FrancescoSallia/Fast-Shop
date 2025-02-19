@@ -6,26 +6,21 @@
 //
 
 import Foundation
+import UserNotifications
+import FirebaseAuth
 
 @MainActor
 class FirestoreViewModel: ObservableObject  {
     
-    
     let firestore = FireManager.shared
 
-    @Published var cartList: [Product] = []  // reset funktion erstellen
+    @Published var cartList: [Product] = []  // Dafür muss noch eine reset funktion erstellt werden!
     @Published var favoriteList: [Product] = []
     @Published var adressList: [Adress] = []
     @Published var oldOrderList: [Product] = []
+
     
-    init() {
-        cartSnapshotListener()
-        favoriteSnapshotListener()
-        adressSnapshotListener()
-        oldOrderSnapshotListener()
-    }
-    
-    func restartListeners() {  //Die funktion, funktioniert nicht, der snapshoter setzt sich nicht zurück und man muss die app trotzdem immer wieder neustarten um die aktuellen daten des jeweiligen nutzers zu sehen.
+    func restartListeners() {
         guard firestore.currentUser != nil else {
             print("Kein User eingeloggt, Listener werden nicht neu gestartet.")
             return
@@ -37,11 +32,20 @@ class FirestoreViewModel: ObservableObject  {
         oldOrderSnapshotListener()
     }
     
+    func deleteUserCollection() {
+        Task {
+            do {
+                try await firestore.deleteUserCollection()
+            } catch {
+                fatalError("User Collection delete failed")
+            }
+        }
+    }
+    
     func updateUserCart(product: Product) {
         Task {
             do {
                 try await firestore.updateUserCart(product: product)
-                //                getCartProducts()
             } catch {
                 fatalError("update Cart failed")
             }
@@ -53,7 +57,6 @@ class FirestoreViewModel: ObservableObject  {
             let deleteProduct = cartList[index]
             Task {
                 do {
-                    print("delete ID: \(deleteProduct)")
                     try await firestore.deleteUserCart(product: deleteProduct)
                 } catch {
                     fatalError("delete Favorite item failed")
@@ -67,7 +70,6 @@ class FirestoreViewModel: ObservableObject  {
         Task {
             do {
                 try await firestore.updateUserFavorite(product: product)
-                //                getCartProducts()
             } catch {
                 fatalError("update Cart failed")
             }
@@ -79,15 +81,12 @@ class FirestoreViewModel: ObservableObject  {
             let deleteProduct = favoriteList[index]
             Task {
                 do {
-                    print("delete ID: \(deleteProduct)")
                     try await firestore.deleteUserFavorite(product: deleteProduct)
                 } catch {
                     fatalError("delete Favorite item failed")
                 }
             }
-            
         }
-        
     }
     
     private func cartSnapshotListener() {
@@ -107,7 +106,6 @@ class FirestoreViewModel: ObservableObject  {
                 return
             }
             self.favoriteList = products
-            
         }
     }
     
@@ -126,7 +124,6 @@ class FirestoreViewModel: ObservableObject  {
             let deleteAdress = adressList[index]
             Task {
                 do {
-                    print("delete Adress: \(deleteAdress)")
                     try await firestore.deleteUserAdress(adress: deleteAdress)
                 } catch {
                     fatalError("delete Favorite item failed")
@@ -172,5 +169,10 @@ class FirestoreViewModel: ObservableObject  {
         } else {
             return false
         }
+    }
+    
+//MARK: Notification
+    func checkCartAndScheduleNotification() {
+        firestore.checkCartAndScheduleNotification()
     }
 }

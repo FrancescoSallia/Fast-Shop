@@ -38,7 +38,9 @@ struct SelectedItemSheet: View {
             }
             .padding(.leading)
             
-            if viewModel.selectedProduct.category.id == 1 {
+            if viewModel.selectedProduct.category.id == 1,
+               !viewModel.selectedProduct.title.lowercased().contains("cap")  {
+                
                 Text("\(viewModel.selectedProduct.description)")
                     .font(.footnote)
                     .italic()
@@ -46,6 +48,15 @@ struct SelectedItemSheet: View {
                     .padding(.horizontal)
                     .frame(maxHeight: 100)
                 ClothesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: viewModel.selectedProduct)
+                
+            } else if viewModel.selectedProduct.category.id == 1,
+                      viewModel.selectedProduct.title.lowercased().contains("cap") {
+                Text("\(viewModel.selectedProduct.description)")
+                    .font(.footnote)
+                    .italic()
+                    .padding(.bottom)
+                    .padding(.horizontal)
+                    .frame(maxHeight: 100)
                 
             } else if viewModel.selectedProduct.category.id == 2{
 //                Text("Electronik")
@@ -82,7 +93,11 @@ struct SelectedItemSheet: View {
                     .italic()
                     .padding()
             }
-            if viewModel.selectedProduct.category.id != 1 , viewModel.selectedProduct.category.id != 4 {
+            if viewModel.selectedProduct.category.id != 1 &&
+               viewModel.selectedProduct.category.id != 4 ||
+               (viewModel.selectedProduct.category.id == 1 &&
+               viewModel.selectedProduct.title.lowercased().contains("cap")) {
+               
                 HStack {
                     Button {
                         let newProduct = Product(
@@ -107,7 +122,11 @@ struct SelectedItemSheet: View {
                         }
                         viewModel.showSheet = false
                         viewModel.showHomeDetailSheet = false
-                    
+                        
+                    // Toast
+                        withAnimation {
+                            viewModel.showToastCart = true
+                        }
                         
                     } label: {
                         HStack {
@@ -136,8 +155,11 @@ struct SelectedItemSheet: View {
 //                            viewModel.productIndex = index
                             let favItem =  viewModelFirestore.favoriteList[index]
                              viewModelFirestore.deleteUserFavorite(product: favItem)
+                            viewModel.showToastFavoriteRemoved.toggle()
+
                         } else {
                             viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
+                            viewModel.showToastFavorite.toggle()
                         }
                         viewModel.showSheet = false
 
@@ -190,6 +212,13 @@ struct SelectedItemSheet: View {
                 try await viewModel.getCategorieFromID(filterID: "\(viewModel.selectedProduct.id)")
             }
         }
+//        .onAppear {
+//            Task {
+//                try await Task.sleep(for: .seconds(2))
+//                viewModel.showToast = false
+//            }
+//        }
+
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),

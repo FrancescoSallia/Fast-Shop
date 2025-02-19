@@ -40,17 +40,21 @@ struct LogInScreenView: View {
 
                     TextField("E-Mail", text: $authViewModel.email)
                         .padding()
-//                        .background(Color(uiColor: UIColor.lightText))
                         .background(Color.white.opacity(0.5))
                         .cornerRadius(10)
                         .keyboardType(.emailAddress)
                         .padding(.top, 30)
+                        .onSubmit {
+                            return
+                        }
 
                     SecureField("Passwort", text: $authViewModel.password)
                         .padding()
-//                        .background(Color(uiColor: UIColor.lightText))
                         .background(Color.white.opacity(0.5))
                         .cornerRadius(10)
+                        .onSubmit {
+                            authViewModel.login()
+                        }
 
                     HStack {
                         NavigationLink("Passwort vergessen?") {

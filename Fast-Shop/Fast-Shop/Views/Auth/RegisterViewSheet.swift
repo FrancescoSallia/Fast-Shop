@@ -12,7 +12,6 @@ struct RegisterViewSheet: View {
 
     @ObservedObject var authViewModel: AuthViewModel
     @ObservedObject private var errorHandler = ErrorHandler.shared
-    @State var acceptTerms: Bool = false
     
     var body: some View {
         
@@ -28,6 +27,9 @@ struct RegisterViewSheet: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     .border(.primary)
+                    .onSubmit {
+                        return
+                    }
             }
             VStack(alignment: .leading) {
                 Text("Passwort")
@@ -36,6 +38,9 @@ struct RegisterViewSheet: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     .border(.primary)
+                    .onSubmit {
+                        return
+                    }
             }
             VStack(alignment: .leading) {
                 Text("Passwort wiederholen")
@@ -44,9 +49,12 @@ struct RegisterViewSheet: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     .border(.primary)
+                    .onSubmit {
+                        authViewModel.register()
+                    }
             }
                   
-                  Toggle(isOn: $acceptTerms) {
+            Toggle(isOn: $authViewModel.acceptTerms) {
                       Text("Ich akzeptiere die AGB")
                   }
                   .padding(.horizontal)
@@ -64,10 +72,10 @@ struct RegisterViewSheet: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(acceptTerms ? Color.primary.opacity(0.9) : .secondary.opacity(0.5))
+                    .background(authViewModel.acceptTerms ? Color.primary.opacity(0.9) : .secondary.opacity(0.5))
                     .cornerRadius(3)
             }
-                  .disabled(!acceptTerms)
+            .disabled(!authViewModel.acceptTerms)
                   
                   Spacer()
               }

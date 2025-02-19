@@ -8,8 +8,37 @@
 import SwiftUI
 import FirebaseCore
 
+
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: [.alert, .badge, .sound],
+            completionHandler: { _, _ in }
+        )
+        
+        return true
+    }
+    
+    // MARK: - UNUserNotificationCenterDelegate
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        
+        if response.actionIdentifier == "SHOW_CART_ACTION" || response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+            if let targetView = userInfo["targetView"] as? String, targetView == "CartView" {
+                // Sende eine Notification, um zur CartView zu navigieren
+                NotificationCenter.default.post(name: Notification.Name("NavigateToCart"), object: nil)
+            }
+        }
+        completionHandler()
+    }
+}
+
+
 @main
 struct Fast_ShopApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
     
     init() {
 //        FirebaseConfiguration.shared.setLoggerLevel(.min)
@@ -26,60 +55,134 @@ struct Fast_ShopApp: App {
                 VStack {
                     if !authViewModel.userIsLoggedIn {
                     LogInScreenView(authViewModel: authViewModel)
+                            .tint(.black)
                 } else {
-                        TabView {
-                            Tab("Home", systemImage: "house.fill") {
+                    TabView(selection: $viewModel.selectedTab) {
+                        Tab("Home", systemImage: "house.fill", value: 0) {
                                 HomeView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                             }
-                            Tab("Search", systemImage: "magnifyingglass") {
+                        
+                            Tab("Search", systemImage: "magnifyingglass", value: 1) {
                                 SearchView(viewModel: viewModel, viewModelFirestore: viewModelFirestore)
                             }
-                            Tab("Cart", systemImage: "bag") {
+                        
+                            Tab("Cart", systemImage: "bag", value: 2) {
                                 CartView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
                             }
                             .badge(viewModelFirestore.cartList.count)
-                            Tab("Settings", systemImage: "person") {
+                        
+                            Tab("Settings", systemImage: "person", value: 3) {
                                 SettingsView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore, authViewModel: authViewModel)
                             }
                         }
                         .tint(.black)
+                        .onAppear {
+                            viewModelFirestore.restartListeners()
+                            viewModelFirestore.checkCartAndScheduleNotification() //Prüft ob was im Warenkorb drinne ist um Die notification zu Starten
+                        }
+                        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("NavigateToCart"))) { _ in  // onReceive schaut nach änderungen vom publisher um änderungen zu aktualisieren
+                            // Wenn die Notification ankommt, auf Cart umschalten beim drauf tippen
+                            viewModel.selectedTab = 2
+                        }
+                    }
+                }
+                .overlay(
+                    VStack {
+                        Spacer()
+                        if viewModel.showToastCart {
+                            Text("Artikel wurde zum Warenkorb hinzugefügt! ✅")
+                                .font(.subheadline)
+                                .padding()
+                                .background(Color.white)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .shadow(radius: 6)
+                            
+                        }  else if viewModel.showToastCartRemoved {  // Nur wenn explizit entfernt wurde!
+                                Text("Artikel wurde vom Warenkorb entfernt! ✅")
+                            
+                                .font(.subheadline)
+                                .padding()
+                                .background(Color.white)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .shadow(radius: 6)
+                            
+                        } else if viewModel.showToastFavorite {
+                            HStack {
+                                Text("Artikel wurde zu Favoriten hinzugefügt!")
+                                Image(systemName: "bookmark.fill")
+                            }
+                                .font(.subheadline)
+                                .padding()
+                                .background(Color.white)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .shadow(radius: 6)
+                            
+                        } else if viewModel.showToastFavoriteRemoved {  // Nur wenn explizit entfernt wurde!
+                            HStack {
+                                Text("Artikel wurde von den Favoriten entfernt!")
+                                Image(systemName: "bookmark")
+                            }
+                                .font(.subheadline)
+                                .padding()
+                                .background(Color.white)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                                .shadow(radius: 6)
+                        }
+                    }
+                     .padding(.bottom, 92)
+                )
+                .onChange(of: viewModel.showToastCart) { newValue in
+                    if newValue {
+                        Task {
+                            try await Task.sleep(for: .seconds(2))
+                            withAnimation {
+                                viewModel.showToastCart = false
+                            }
+                        }
+                    }
+                }
+                .onChange(of: viewModel.showToastFavorite) { newValue in
+                    if newValue {
+                        Task {
+                            try await Task.sleep(for: .seconds(2))
+                            withAnimation {
+                                viewModel.showToastFavorite = false
+                            }
+                        }
+                    }
+                }
+                .onChange(of: viewModel.showToastFavoriteRemoved) { newValue in
+                    if newValue {
+                        Task {
+                            try await Task.sleep(for: .seconds(2))
+                            withAnimation {
+                                viewModel.showToastFavoriteRemoved = false
+                            }
+                        }
+                    }
+                }
+                .onChange(of: viewModel.showToastCartRemoved) { newValue in
+                    if newValue {
+                        Task {
+                            try await Task.sleep(for: .seconds(2))
+                            withAnimation {
+                                viewModel.showToastCartRemoved = false
+                            }
+                        }
                     }
                 }
             .onAppear {
                 authViewModel.checkLoggedIn()
             }
-//            .onChange(of: authViewModel.user) { newUser in
-//                          // Listener neu starten, wenn sich der User ändert
-//                          viewModelFirestore.restartListeners()
-//                      }
+            .preferredColorScheme(.light)
         }
-
     }
 }
-//    .overlay {
-//        if showTab {
-//            withAnimation {
-//                Text("TEST")
-//                    .font(.largeTitle)
-//            }
-//        }
-//    }
-
-
-
-//HomeView(viewModel: viewModel, isScrolling: $showTab)
-//    .tabItem {
-//        Label("Home", systemImage: "house")
-//    }
-//SearchView(viewModel: viewModel)
-//    .tabItem {
-//        Label("Search", systemImage: "magnifyingglass")
-//    }
-//CardView(viewModel: viewModel)
-//    .tabItem {
-//        Label("Cart", systemImage: "bag")
-//    }
-//SettingsView()
-//    .tabItem {
-//        Label("Settings", systemImage: "person")
-//    }

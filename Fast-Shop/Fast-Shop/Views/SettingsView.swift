@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var notificationsEnabled: Bool = true
+    
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
@@ -21,8 +21,18 @@ struct SettingsView: View {
             VStack {
                 Form {
                     Section(header: Text("Einstellungen")) {
-                        Toggle(
-                            "Benachrichtigungen", isOn: $notificationsEnabled)
+                        Toggle(isOn: $authViewModel.notificationsEnabled){
+                            Text("Benachrichtigungen")
+                        }
+                        .onChange(of: authViewModel.notificationsEnabled) { value in
+                            if value {
+                                // Benachrichtigung einplanen, wenn der Toggle eingeschaltet ist
+                                viewModelFirestore.checkCartAndScheduleNotification()
+                            } else {
+                                // Benachrichtigung entfernen, wenn der Toggle ausgeschaltet ist
+                                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["cartReminder"])
+                            }
+                        }
                         NavigationLink(
                             destination: AdressView(viewModel: viewModelAdress, viewModelFirestore: viewModelFirestore)
                         ) {
@@ -45,26 +55,18 @@ struct SettingsView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button("Ausloggen") {
-                            //Den ViewModel wird beim ausloggen zurückgesetzt
-                            viewModelFirestore.cartList.removeAll()
-                            viewModelFirestore.favoriteList.removeAll()
-                            viewModelFirestore.adressList.removeAll()
-                            viewModelFirestore.oldOrderList.removeAll()
-                                  
                             authViewModel.logout()
-                            viewModelFirestore.restartListeners()
                         }
                     }
                 }
             }
             Button {
-//                authViewModel.deleteUser()
                 viewModel.confirmationDialogDelete.toggle()
             } label: {
                 Text("Account löschen")
                     .foregroundColor(.red)
+                    .padding(.bottom)
             }
-
         }
         .alert(isPresented: $errorHandler.showError) {
             Alert(
@@ -76,6 +78,7 @@ struct SettingsView: View {
         .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
             Button("Account Löschen", role: .destructive) {
                 authViewModel.deleteUser()
+                viewModelFirestore.deleteUserCollection()
             }
             Button("Abbrechen", role: .cancel) {
                 

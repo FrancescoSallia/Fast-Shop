@@ -21,6 +21,9 @@ struct ResetPasswordView: View {
                 .frame(maxWidth: .infinity)
                 .padding()
                 .border(.primary)
+                .onSubmit {
+                    return
+                }
         }
         .padding()
         Button(action: {

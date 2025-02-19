@@ -20,32 +20,4 @@ class AdressViewModel: ObservableObject {
     @Published var location: String = ""
     @Published var selectedAdressOption: String = ""
     
-    let testAdressArray: [Adress] = [
-        Adress(
-            firstName: "Test",
-            secondName: "secondname",
-            street: "musterstrasse",
-            houseNumber: "123a",
-            plz: "11223",
-            location: "Berlin"
-        ),
-        Adress(
-            firstName: "Test2",
-            secondName: "secondname2",
-            street: "musterstrasse2",
-            houseNumber: "123a",
-            plz: "11223",
-            location: "München"
-        ),
-        Adress(
-            firstName: "John",
-            secondName: "mustermann",
-            street: "musterstrasse45",
-            houseNumber: "173b",
-            plz: "13478",
-            location: "Hamburg"
-        )
-        
-    ]
-
 }

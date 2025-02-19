@@ -64,6 +64,7 @@ struct AdressView: View {
 
 
                 }
+                .tint(.red)
             }
              .listStyle(.plain)
                 HStack {
