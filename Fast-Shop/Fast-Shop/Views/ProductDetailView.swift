@@ -65,10 +65,14 @@ struct ProductDetailView: View {
                     Rectangle()
                         .frame(width: 300, height: 50)
                     
-                    //FIXME: das alert zeigt zweimal an bei hinzufügen!
                     Button("HINZUFÜGEN") {
+                        
                         viewModel.selectedProduct = product
-                        if viewModel.selectedProduct.category.id == 1 && !viewModel.selectedProduct.title.lowercased().contains("cap") {
+                        
+                        if viewModel.selectedProduct.category.id == 1 &&
+                            !viewModel.selectedProduct.title.lowercased()
+                            .contains("cap") {
+                            
                             viewModel.showSizes = true
                         } else if viewModel.selectedProduct.category.id == 4 {
                             viewModel.showShoesSizesOnCart = true
@@ -86,18 +90,23 @@ struct ProductDetailView: View {
                                 numberOfProducts: 1
                             )
                             
-                            if let index = viewModelFirestore.cartList.firstIndex(where: { $0.id == newProduct.id && $0.size == newProduct.size }) {
-                                var updatedProduct = viewModelFirestore.cartList[index]
-                                updatedProduct.numberOfProducts? += 1
-//                                viewModelFirestore.cartList[index].numberOfProducts? += 1
-                                viewModelFirestore.updateUserCart(product: updatedProduct)
+                            if let index = viewModelFirestore.cartList.firstIndex(
+                                where: {
+                                    $0.id == newProduct.id && $0.size == newProduct.size
+                                }
+                            )
+                            {
+                              var updatedProduct = viewModelFirestore.cartList[index]
+                              updatedProduct.numberOfProducts? += 1
+//                              viewModelFirestore.cartList[index].numberOfProducts? += 1
+                              viewModelFirestore.updateUserCart(product: updatedProduct)
 
                             } else {
                                 viewModelFirestore.updateUserCart(product: newProduct)
                             }
                             viewModel.showSheet = false
                             viewModel.showHomeDetailSheet = false
-                            viewModel.showToast = true
+                            viewModel.showToastCart = true
                         }
                     }
                     .tint(.white)
@@ -117,21 +126,30 @@ struct ProductDetailView: View {
                             isFavorite: true,
                             size: viewModel.selectedSize
                         )
-                        if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-//                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-//                            viewModel.getProductsFromAPI()
-                            let favItem =  viewModelFirestore.favoriteList[index]
-                             viewModelFirestore.deleteUserFavorite(product: favItem)
+                        if let index = viewModelFirestore.favoriteList.firstIndex(
+                            where: {
+                                $0.id == addNewFavoriteProduct.id
+                            }
+                        )
+                        {
+                          let favItem =  viewModelFirestore.favoriteList[index]
+                           viewModelFirestore.deleteUserFavorite(product: favItem)
+                          viewModel.showToastFavoriteRemoved = true
                             
                         } else {
                             viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
                                viewModel.getProductsFromAPI()
+                            viewModel.showToastFavorite.toggle()
                         }
                         viewModel.showHomeDetailSheet = false
 
                     } label: {
-                        Image(systemName: viewModelFirestore.isProductFavorite(product: product) ? "bookmark.fill" : "bookmark")
-//                            .foregroundStyle(.red)
+                        Image(systemName: viewModelFirestore.isProductFavorite(
+                            product: product
+                        )
+                              ? "bookmark.fill"
+                              : "bookmark"
+                        )
                     }
                     .tint(.white)
                 }
@@ -145,11 +163,6 @@ struct ProductDetailView: View {
             ShoesSizeSheet(viewModel: viewModel, viewModelFirestore: viewModelFirestore, product: product)
                 .presentationDetents([(.medium)])
         })
-        .onAppear {
-//            Task {
-////                try await viewModel.getProductsFromAPI()
-//            }
-        }
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),
@@ -157,31 +170,6 @@ struct ProductDetailView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-//        .overlay(
-//            VStack {
-//                Spacer()
-//                if viewModel.showToast {
-//                    Text("Artikel wurde zum Warenkorb hinzugefügt! ✅")
-//                        .font(.subheadline)
-//                        .padding()
-//                        .background(Color.white)
-//                        .foregroundColor(.black)
-//                        .cornerRadius(10)
-//                        .transition(.move(edge: .bottom).combined(with: .opacity))
-//                }
-//            }
-//             .padding(.bottom, 92)
-//        )
-//        .onChange(of: viewModel.showToast) { newValue in
-//            if newValue {
-//                Task {
-//                    try await Task.sleep(for: .seconds(2))
-//                    withAnimation {
-//                        viewModel.showToast = false
-//                    }
-//                }
-//            }
-//        }
     }
 }
 #Preview {

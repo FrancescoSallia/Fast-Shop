@@ -98,7 +98,10 @@ class ProductViewModel: ObservableObject {
     
     //MARK: Cart
     @Published var showCart = true
-    @Published var showToast = false
+    @Published var showToastCart = false
+    @Published var showToastCartRemoved = false
+    @Published var showToastFavorite = false
+    @Published var showToastFavoriteRemoved = false
     
     //MARK: Calender & Delivery
     @Published var selectedDeliveryPrice: String = "0.00"

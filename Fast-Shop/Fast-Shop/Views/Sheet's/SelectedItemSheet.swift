@@ -123,9 +123,9 @@ struct SelectedItemSheet: View {
                         viewModel.showSheet = false
                         viewModel.showHomeDetailSheet = false
                         
-                    // Toast 
+                    // Toast
                         withAnimation {
-                            viewModel.showToast = true
+                            viewModel.showToastCart = true
                         }
                         
                     } label: {
@@ -155,8 +155,11 @@ struct SelectedItemSheet: View {
 //                            viewModel.productIndex = index
                             let favItem =  viewModelFirestore.favoriteList[index]
                              viewModelFirestore.deleteUserFavorite(product: favItem)
+                            viewModel.showToastFavoriteRemoved.toggle()
+
                         } else {
                             viewModelFirestore.updateUserFavorite(product: addNewFavoriteProduct)
+                            viewModel.showToastFavorite.toggle()
                         }
                         viewModel.showSheet = false
 

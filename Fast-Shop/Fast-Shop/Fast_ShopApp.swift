@@ -91,8 +91,44 @@ struct Fast_ShopApp: App {
                 .overlay(
                     VStack {
                         Spacer()
-                        if viewModel.showToast {
+                        if viewModel.showToastCart {
                             Text("Artikel wurde zum Warenkorb hinzugefügt! ✅")
+                                .font(.subheadline)
+                                .padding()
+                                .background(Color.white)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                            
+                        }  else if viewModel.showToastCartRemoved {  // Nur wenn explizit entfernt wurde!
+                            HStack {
+                                Text("Artikel wurde vom Warenkorb entfernt!")
+                                Image(systemName: "cart.badge.minus")
+                            }
+                                .font(.subheadline)
+                                .padding()
+                                .background(Color.white)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                            
+                        } else if viewModel.showToastFavorite {
+                            HStack {
+                                Text("Artikel wurde zu Favoriten hinzugefügt!")
+                                Image(systemName: "bookmark.fill")
+                            }
+                                .font(.subheadline)
+                                .padding()
+                                .background(Color.white)
+                                .foregroundColor(.black)
+                                .cornerRadius(10)
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
+                            
+                        } else if viewModel.showToastFavoriteRemoved {  // Nur wenn explizit entfernt wurde!
+                            HStack {
+                                Text("Artikel wurde von den Favoriten entfernt!")
+                                Image(systemName: "bookmark")
+                            }
                                 .font(.subheadline)
                                 .padding()
                                 .background(Color.white)
@@ -103,12 +139,42 @@ struct Fast_ShopApp: App {
                     }
                      .padding(.bottom, 92)
                 )
-                .onChange(of: viewModel.showToast) { newValue in
+                .onChange(of: viewModel.showToastCart) { newValue in
                     if newValue {
                         Task {
                             try await Task.sleep(for: .seconds(2))
                             withAnimation {
-                                viewModel.showToast = false
+                                viewModel.showToastCart = false
+                            }
+                        }
+                    }
+                }
+                .onChange(of: viewModel.showToastFavorite) { newValue in
+                    if newValue {
+                        Task {
+                            try await Task.sleep(for: .seconds(2))
+                            withAnimation {
+                                viewModel.showToastFavorite = false
+                            }
+                        }
+                    }
+                }
+                .onChange(of: viewModel.showToastFavoriteRemoved) { newValue in
+                    if newValue {
+                        Task {
+                            try await Task.sleep(for: .seconds(2))
+                            withAnimation {
+                                viewModel.showToastFavoriteRemoved = false
+                            }
+                        }
+                    }
+                }
+                .onChange(of: viewModel.showToastCartRemoved) { newValue in
+                    if newValue {
+                        Task {
+                            try await Task.sleep(for: .seconds(2))
+                            withAnimation {
+                                viewModel.showToastCartRemoved = false
                             }
                         }
                     }

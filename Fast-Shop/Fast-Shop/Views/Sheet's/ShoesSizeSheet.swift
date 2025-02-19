@@ -62,7 +62,7 @@ struct ShoesSizeSheet: View {
                     viewModel.showSheet = false
                     viewModelFirestore.deleteUserFavorite(product: viewModel.selectedProduct)
                     viewModel.showShoesSizesOnCart = false
-                    viewModel.showToast.toggle()
+                    viewModel.showToastCart.toggle()
                 }
             }
         }

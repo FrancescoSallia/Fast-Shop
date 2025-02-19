@@ -132,11 +132,15 @@ struct SearchView: View {
                 viewModelFirestore.deleteUserFavorite(
                     product: favItem
                 )
+                viewModel.showToastFavoriteRemoved.toggle()
             } else {
                 viewModelFirestore.updateUserFavorite(
                     product: addNewFavoriteProduct
                 )
+                viewModel.showToastFavorite.toggle()
+
             }
+            
         } label: {
             Image(systemName: viewModelFirestore.isProductFavorite(
                 product: filteredProduct
