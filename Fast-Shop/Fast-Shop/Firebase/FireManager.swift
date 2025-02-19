@@ -23,7 +23,9 @@ class FireManager {
     private let auth = Auth.auth()
     let store = Firestore.firestore()
     
+    
 //MARK: Auth-Section
+    
     func registerUser(email: String, password: String) async throws -> User {
         let result = try await auth.createUser(withEmail: email, password: password)
         return result.user
@@ -40,17 +42,10 @@ class FireManager {
     }
     func resetPassword(email: String) {
         auth.sendPasswordReset(withEmail: email)
-        
     }
 
 //MARK: Firestore-Section
-    
-//    func createFireUser(email: String) async throws {
-//        let fireUser = FireUser(email: email)
-//        try store
-//            .collection("users")
-//            .addDocument(from: fireUser)
-//    }
+
     func createFireUser(email: String) async throws {
         // Sicherstellen, dass der User eingeloggt ist und eine UID hat
         guard let uid = currentUser?.uid else {
@@ -70,6 +65,7 @@ class FireManager {
         guard let uid = currentUser?.uid else {
             fatalError("Kein aktueller User oder keine UID vorhanden")
         }
+        
         try await store
             .collection("users")
             .document(uid)
@@ -80,6 +76,7 @@ class FireManager {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
+        
         var eigeneID = ""
         let userRef = store.collection("users").document(uid).collection("Cart")
         
@@ -97,6 +94,7 @@ class FireManager {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
+        
         let userRef = store.collection("users").document(uid).collection("Cart")
         
         do {
@@ -112,7 +110,6 @@ class FireManager {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
-//        let productData = productToDictionary(product: product)
         var eigeneID = ""
         let userRef = store.collection("users").document(uid).collection("Favorite")
         
@@ -124,13 +121,13 @@ class FireManager {
         } catch {
             print(error)
         }
-       
     }
     
     func deleteUserFavorite(product: Product) async throws {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
+        
         let userRef = store.collection("users").document(uid).collection("Favorite")
         
         do {
@@ -148,7 +145,6 @@ class FireManager {
             return
         }
         let userRef = store.collection("users").document(uid).collection("Cart")
-        
         userRef
             .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
                 if let error = error {
@@ -173,7 +169,6 @@ class FireManager {
             compleation([], nil)
             return        }
         let userRef = store.collection("users").document(uid).collection("Favorite")
-        
         userRef
             .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
                 if let error = error {
@@ -193,11 +188,11 @@ class FireManager {
             }
     }
     
-    
     func updateUserAdress(adress: Adress) async throws {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
+        
         var eigeneID = ""
         let userRef = store.collection("users").document(uid).collection("Adress")
         
@@ -215,6 +210,7 @@ class FireManager {
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
+        
         let userRef = store.collection("users").document(uid).collection("Adress")
         
         do {
@@ -231,8 +227,8 @@ class FireManager {
             compleation([], nil)
             return
         }
-        let userRef = store.collection("users").document(uid).collection("Adress")
         
+        let userRef = store.collection("users").document(uid).collection("Adress")
         userRef
             .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
                 if let error = error {
@@ -252,11 +248,11 @@ class FireManager {
             }
     }
     
-    
     func updateUserOldOrder(product: Product) async throws {     //Fügt ein Product in der liste von Firebase ein
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }
+        
         var eigeneID = ""
         let userRef = store.collection("users").document(uid).collection("Old-Orders")
         
@@ -275,8 +271,8 @@ class FireManager {
             compleation([], nil)
             return
         }
-        let userRef = store.collection("users").document(uid).collection("Old-Orders")
         
+        let userRef = store.collection("users").document(uid).collection("Old-Orders")
         userRef
             .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
                 if let error = error {
@@ -303,6 +299,7 @@ class FireManager {
         guard let uid = currentUser?.uid else {
             return
         }
+        
         store
             .collection("users").document(uid).collection("Cart").getDocuments { (snapshot, error) in
                 if let error = error {

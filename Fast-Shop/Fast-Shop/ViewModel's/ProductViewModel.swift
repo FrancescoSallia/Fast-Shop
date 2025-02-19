@@ -17,7 +17,6 @@ class ProductViewModel: ObservableObject {
     private let client = HttpClient()
     private let errorHandler = ErrorHandler.shared
     
-    var productIndex: Int = 0
     @Published var products: [Product] = []
     @Published var allProductsForHomeView: [Product] = []
     @Published var categories: [Category] = []
@@ -168,43 +167,4 @@ class ProductViewModel: ObservableObject {
             product.title.lowercased().contains(searchedText.lowercased())
         }
     }
-    
- 
-//    func getProductsFromAPI() async throws {
-//        let result = try await client.getProducts(firstIndex: productIndex, lastIndex: 10)
-//        self.products.append(contentsOf: result)
-//        self.products = try await client.getProducts(firstIndex: productIndex, lastIndex: productIndex + 10)
-//        productIndex += 10
-//        if result.count == 0 {
-//            showProgressView = false
-//        }
-//    }
-
-//    func getProductsFromAPI() async throws {
-//        self.products = try await client.getProducts()
-//    }
-    
-    
-//    func getCategorieFilteredFromAPI() async throws {
-//        if searchedText.isEmpty && filterIsActive == false {
-//            try await getCategorieFromID(filterID: filteredID)
-//        } else if filterIsActive == true {
-//            try await minMaxPriceFiltered()
-//        }
-//        else {
-//            self.products = try await client.searchTitle(title: searchedText)
-//        }
-//    }
-    
-//   func minMaxPriceFiltered() async throws {
-//       self.products = try await client.minMaxPriceFiltered(searchText: searchedText, preisArray: minMaxValues, selectedCategory: filteredID)
-//    }
-    
-//    func isLastItem(product: Product) -> Bool {
-//        if let index = self.products.lastIndex(where: {$0.id == product.id}) {
-//            return index == self.products.count - 1
-//        }
-//        return false
-//    }
-  
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var notificationsEnabled: Bool = true //FIXME:  stell sicher das beim ausloggen es auf false gesetzt wird
+    
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
@@ -21,10 +21,10 @@ struct SettingsView: View {
             VStack {
                 Form {
                     Section(header: Text("Einstellungen")) {
-                        Toggle(isOn: $notificationsEnabled){
+                        Toggle(isOn: $authViewModel.notificationsEnabled){
                             Text("Benachrichtigungen")
                         }
-                        .onChange(of: notificationsEnabled) { value in
+                        .onChange(of: authViewModel.notificationsEnabled) { value in
                             if value {
                                 // Benachrichtigung einplanen, wenn der Toggle eingeschaltet ist
                                 viewModelFirestore.checkCartAndScheduleNotification()
@@ -61,11 +61,11 @@ struct SettingsView: View {
                 }
             }
             Button {
-//                authViewModel.deleteUser()
                 viewModel.confirmationDialogDelete.toggle()
             } label: {
                 Text("Account löschen")
                     .foregroundColor(.red)
+                    .padding(.bottom)
             }
         }
         .alert(isPresented: $errorHandler.showError) {

@@ -12,10 +12,14 @@ import SwiftUI
 
 @MainActor
 class AuthViewModel: ObservableObject {
+    
     @Published var user: User?
     @Published var email = ""
     @Published var password = ""
     @Published var repeatedPassword = ""
+    @Published var acceptTerms: Bool = false
+    @Published var notificationsEnabled: Bool = true //FIXME:  stell sicher das beim ausloggen es auf false gesetzt wird
+    @Published var focusedField: TextFieldFocusEnum? = nil
     
     private var manager = FireManager.shared
     private let errorHandler = ErrorHandler.shared
@@ -27,6 +31,7 @@ class AuthViewModel: ObservableObject {
     var userIsLoggedIn: Bool {
         user != nil
     }
+    
     func checkLoggedIn() {
         manager.currentUser?.reload()
         user = manager.currentUser
@@ -34,7 +39,6 @@ class AuthViewModel: ObservableObject {
     
     func register() {
         guard !email.isEmpty  && !password.isEmpty && password == repeatedPassword else {
-//            print("Fehler beim Registrieren")
             errorHandler.handleError(error: ErrorEnum.custom("Error registering, check the text fields again"))
             return
         }
@@ -45,6 +49,7 @@ class AuthViewModel: ObservableObject {
                 self.email = ""
                 self.password = ""
                 self.repeatedPassword = ""
+                
             } catch {
                 errorHandler.handleError(error: error)
             }
@@ -54,6 +59,7 @@ class AuthViewModel: ObservableObject {
     func login() {
         Task {
             do {
+                notificationsEnabled = true
                 user = try await manager.loginUser(email: email, password: password)
                 self.email = ""
                 self.password = ""
@@ -66,6 +72,7 @@ class AuthViewModel: ObservableObject {
     
     func logout() {
         do {
+            notificationsEnabled = false
             try manager.logoutUser()
             user = nil
         } catch {
@@ -83,6 +90,7 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
     func resetPassword(email: String) {
         guard !email.isEmpty else {
             errorHandler.showError.toggle()
@@ -91,6 +99,4 @@ class AuthViewModel: ObservableObject {
         manager.resetPassword(email: email)
         self.email = ""
     }
-
-
 }

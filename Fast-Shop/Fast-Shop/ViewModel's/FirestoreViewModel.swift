@@ -12,15 +12,15 @@ import FirebaseAuth
 @MainActor
 class FirestoreViewModel: ObservableObject  {
     
-    
     let firestore = FireManager.shared
 
     @Published var cartList: [Product] = []  // Dafür muss noch eine reset funktion erstellt werden!
     @Published var favoriteList: [Product] = []
     @Published var adressList: [Adress] = []
     @Published var oldOrderList: [Product] = []
+
     
-    func restartListeners() {  //Die funktion, funktioniert nicht, der snapshoter setzt sich nicht zurück und man muss die app trotzdem immer wieder neustarten um die aktuellen daten des jeweiligen nutzers zu sehen.
+    func restartListeners() {
         guard firestore.currentUser != nil else {
             print("Kein User eingeloggt, Listener werden nicht neu gestartet.")
             return
@@ -46,7 +46,6 @@ class FirestoreViewModel: ObservableObject  {
         Task {
             do {
                 try await firestore.updateUserCart(product: product)
-                //                getCartProducts()
             } catch {
                 fatalError("update Cart failed")
             }
@@ -71,7 +70,6 @@ class FirestoreViewModel: ObservableObject  {
         Task {
             do {
                 try await firestore.updateUserFavorite(product: product)
-                //                getCartProducts()
             } catch {
                 fatalError("update Cart failed")
             }
@@ -88,7 +86,6 @@ class FirestoreViewModel: ObservableObject  {
                     fatalError("delete Favorite item failed")
                 }
             }
-            
         }
     }
     
@@ -109,7 +106,6 @@ class FirestoreViewModel: ObservableObject  {
                 return
             }
             self.favoriteList = products
-            
         }
     }
     
@@ -174,7 +170,6 @@ class FirestoreViewModel: ObservableObject  {
             return false
         }
     }
-    
     
 //MARK: Notification
     func checkCartAndScheduleNotification() {
