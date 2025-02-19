@@ -68,13 +68,12 @@ struct ProductDetailView: View {
                     //FIXME: das alert zeigt zweimal an bei hinzufügen!
                     Button("HINZUFÜGEN") {
                         viewModel.selectedProduct = product
-                        if viewModel.selectedProduct.category.id == 1 {
+                        if viewModel.selectedProduct.category.id == 1 && !viewModel.selectedProduct.title.lowercased().contains("cap") {
                             viewModel.showSizes = true
                         } else if viewModel.selectedProduct.category.id == 4 {
                             viewModel.showShoesSizesOnCart = true
-                        }
-                        
-                        else {
+                            
+                        } else {
                             let newProduct = Product(
                                 id: viewModel.selectedProduct.id,
                                 title: viewModel.selectedProduct.title,

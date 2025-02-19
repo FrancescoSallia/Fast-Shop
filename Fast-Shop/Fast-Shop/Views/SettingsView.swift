@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var notificationsEnabled: Bool = true
+    @State private var notificationsEnabled: Bool = true //FIXME:  stell sicher das beim ausloggen es auf false gesetzt wird
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel

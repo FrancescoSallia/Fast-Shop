@@ -48,7 +48,6 @@ class FirestoreViewModel: ObservableObject  {
             let deleteProduct = cartList[index]
             Task {
                 do {
-                    print("delete ID: \(deleteProduct)")
                     try await firestore.deleteUserCart(product: deleteProduct)
                 } catch {
                     fatalError("delete Favorite item failed")
@@ -74,7 +73,6 @@ class FirestoreViewModel: ObservableObject  {
             let deleteProduct = favoriteList[index]
             Task {
                 do {
-                    print("delete ID: \(deleteProduct)")
                     try await firestore.deleteUserFavorite(product: deleteProduct)
                 } catch {
                     fatalError("delete Favorite item failed")
@@ -120,7 +118,6 @@ class FirestoreViewModel: ObservableObject  {
             let deleteAdress = adressList[index]
             Task {
                 do {
-                    print("delete Adress: \(deleteAdress)")
                     try await firestore.deleteUserAdress(adress: deleteAdress)
                 } catch {
                     fatalError("delete Favorite item failed")

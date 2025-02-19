@@ -186,7 +186,7 @@ var body: some View {
                 Button {
                     viewModel.selectedProduct = product
                     
-                    if viewModel.selectedProduct.category.id == 1 {
+                    if viewModel.selectedProduct.category.id == 1 && !viewModel.selectedProduct.title.lowercased().contains("cap") {
                         viewModel.showClothesSizesOnCart = true
                     } else if viewModel.selectedProduct.category.id == 4 {
                         viewModel.showShoesSizesOnCart = true
