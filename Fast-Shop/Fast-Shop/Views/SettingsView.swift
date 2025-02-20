@@ -15,7 +15,6 @@ struct SettingsView: View {
     @ObservedObject var authViewModel: AuthViewModel
     @ObservedObject var errorHandler: ErrorHandler = .shared
 
-
     var body: some View {
         NavigationStack {
             VStack {
