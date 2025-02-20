@@ -13,7 +13,7 @@ Im Gegensatz zu anderen Plattformen setzt Fast-Shop auf maximale Einfachheit und
 ![Image](https://github.com/user-attachments/assets/1e666fb0-b7b2-4a2d-8b46-48fd3452e233)
 ![Image](https://github.com/user-attachments/assets/cb67e0dd-904a-4a48-8f0c-524784c74c55) ![Image](https://github.com/user-attachments/assets/14f2b00d-e544-4413-bc70-eb5f102579b2) 
   <!--<img src="./img/SearchView.png" width="200"> -->
- <img src="https://github.com/user-attachments/assets/3e06fcd3-b6ec-4ea0-90b5-ebd0d153da86" width="200"> 
+ <img src="./sheet.gif" width="200"> 
 
 </p>
 
