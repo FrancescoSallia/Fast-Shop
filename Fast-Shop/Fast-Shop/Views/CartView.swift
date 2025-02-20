@@ -51,6 +51,7 @@ var body: some View {
             .padding(-8)
         }
             .padding(.top)
+        
    ScrollView {
        VStack {
        if viewModel.showCart {
@@ -232,7 +233,6 @@ var body: some View {
                                       .resizable()
                                       .frame(
                                           maxWidth: 15, maxHeight: 20)
-
                               }
                           }
                           .padding(.horizontal)
@@ -256,7 +256,7 @@ var body: some View {
                           )
                       }
                   }
-                                .padding(.top, 4)  // muss mit rectangle immer angepasst werden
+                    .padding(.top, 4)  // muss mit rectangle immer angepasst werden
                             }
                         }
                         .onAppear {
