@@ -18,7 +18,6 @@ class FirestoreViewModel: ObservableObject  {
     @Published var favoriteList: [Product] = []
     @Published var adressList: [Adress] = []
     @Published var oldOrderList: [Product] = []
-
     
     func restartListeners() {
         guard firestore.currentUser != nil else {

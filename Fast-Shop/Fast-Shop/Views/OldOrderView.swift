@@ -12,8 +12,7 @@ struct OldOrderView: View {
     @ObservedObject var viewModelFirestore: FirestoreViewModel
     @ObservedObject var errorHandler: ErrorHandler = .shared
 
-//    @State var pickerOldOrder: String = "All"
-    
+    //Gruppiert die eingekauften Producte nach Tagen
     var groupedOrders: [(key: String, value: [Product])] {
         let grouped = Dictionary(grouping: viewModelFirestore.oldOrderList) { $0.date ?? "No Date" }
         return grouped.sorted { $0.key > $1.key }
@@ -61,17 +60,7 @@ struct OldOrderView: View {
                 }
             }
         }
-        .navigationTitle("Old-Orders")
-        
-//        .toolbar {
-//            Picker(selection: $pickerOldOrder) {
-//                <#code#>
-//            } label: {
-//                Image(systemName: "line.3.horizontal.decrease")
-//                    .tint(.black)
-//            }
-//
-//        }
+        .navigationTitle("Meine Bestellungen")
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),
