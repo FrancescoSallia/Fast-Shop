@@ -67,6 +67,7 @@ struct SettingsView: View {
                     .padding(.bottom)
             }
         }
+        .navigationTitle("Einstellungen")
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),

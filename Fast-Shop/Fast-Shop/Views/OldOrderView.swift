@@ -60,7 +60,7 @@ struct OldOrderView: View {
                 }
             }
         }
-        .navigationTitle("Meine Bestellungen")
+//        .navigationTitle("Meine Bestellungen")
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),
