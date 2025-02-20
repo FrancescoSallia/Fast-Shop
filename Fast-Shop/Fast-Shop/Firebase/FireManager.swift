@@ -325,7 +325,8 @@ class FireManager {
             let content = UNMutableNotificationContent()
             content.title = "Produkte im Warenkorb!"
             content.body = "Du hast noch Produkte im Warenkorb. Schließe deine Bestellung ab!"
-            content.sound = UNNotificationSound.default
+//            content.sound = UNNotificationSound.default
+            content.sound = UNNotificationSound.criticalSoundNamed(UNNotificationSoundName.init("shine.wav"))
             content.userInfo = ["targetView": "CartView"] // Ziel-View definieren, zum Navigieren beim drauf tippen
 
             // Action hinzufügen
