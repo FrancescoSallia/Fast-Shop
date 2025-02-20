@@ -9,11 +9,12 @@ Im Gegensatz zu anderen Plattformen setzt Fast-Shop auf maximale Einfachheit und
 
 <p>
 
-![Image](https://github.com/user-attachments/assets/3e06fcd3-b6ec-4ea0-90b5-ebd0d153da86)  ![Image](https://github.com/user-attachments/assets/f7494ab8-9582-4ed1-8b07-9a77d9a380fc) ![Image](https://github.com/user-attachments/assets/38496f9c-ba6c-4730-aa77-6f4bb42c6e6a) ![Image](https://github.com/user-attachments/assets/1c81eeeb-5477-4716-a9ff-68d4a8fd8b74) 
+![GIF](https://github.com/user-attachments/assets/3e06fcd3-b6ec-4ea0-90b5-ebd0d153da86.gif)  ![Image](https://github.com/user-attachments/assets/f7494ab8-9582-4ed1-8b07-9a77d9a380fc) ![Image](https://github.com/user-attachments/assets/38496f9c-ba6c-4730-aa77-6f4bb42c6e6a) ![Image](https://github.com/user-attachments/assets/1c81eeeb-5477-4716-a9ff-68d4a8fd8b74) 
 ![Image](https://github.com/user-attachments/assets/1e666fb0-b7b2-4a2d-8b46-48fd3452e233)
 ![Image](https://github.com/user-attachments/assets/cb67e0dd-904a-4a48-8f0c-524784c74c55) ![Image](https://github.com/user-attachments/assets/14f2b00d-e544-4413-bc70-eb5f102579b2) 
   <!--<img src="./img/SearchView.png" width="200"> -->
  <!-- <img src="./img/Search.png" width="200"> -->
+
 </p>
 
 
