@@ -2,18 +2,16 @@
 
 **Dein schneller Weg zum Shopping**
 
-Fast-Shop ist die ideale Lösung für alle, die schnell und unkompliziert Kleidung einkaufen möchten. Die App richtet sich an modebewusste Menschen, die keine Zeit oder Lust haben, stundenlang nach passenden Outfits zu suchen. Fast-Shop vereinfacht den gesamten Einkaufsprozess durch eine benutzerfreundliche Oberfläche, intelligente Filter und personalisierte Empfehlungen, die genau auf den individuellen Stil zugeschnitten sind.
+Fast-Shop ist die ideale Lösung für alle, die schnell und unkompliziert Mode, Elektronik und Lifestyle-Produkte einkaufen möchten. Die App richtet sich an Menschen, die Wert auf Stil, Qualität und Effizienz legen – ohne dabei stundenlang nach den passenden Artikeln suchen zu müssen. Fast-Shop vereinfacht den gesamten Einkaufsprozess durch eine benutzerfreundliche Oberfläche und intelligente Filter, mit denen die gewünschten Produkte schnell gefunden werden.
 
-Im Gegensatz zu anderen Plattformen setzt Fast-Shop auf maximale Einfachheit und Geschwindigkeit: Keine unnötigen Schritte, sondern ein Einkaufserlebnis, das sich auf das Wesentliche konzentriert. Egal ob für den Alltag, besondere Anlässe oder spontane Shopping-Launen – Fast-Shop macht Mode zugänglich, schnell und stressfrei.
+Im Gegensatz zu anderen Plattformen setzt Fast-Shop auf maximale Einfachheit und Geschwindigkeit: Keine unnötigen Schritte, sondern ein Einkaufserlebnis, das sich auf das Wesentliche konzentriert. Ob stylische Kleidung, leistungsstarke Laptops, Gaming-Controller, Mountainbikes oder exklusive Parfums – Fast-Shop bietet eine vielseitige Auswahl und macht Shopping schnell, bequem und stressfrei.
 <br><br><br>
 
 <p>
-
-![Image](https://github.com/user-attachments/assets/3e06fcd3-b6ec-4ea0-90b5-ebd0d153da86)  ![Image](https://github.com/user-attachments/assets/f7494ab8-9582-4ed1-8b07-9a77d9a380fc) ![Image](https://github.com/user-attachments/assets/38496f9c-ba6c-4730-aa77-6f4bb42c6e6a) ![Image](https://github.com/user-attachments/assets/1c81eeeb-5477-4716-a9ff-68d4a8fd8b74) 
-![Image](https://github.com/user-attachments/assets/1e666fb0-b7b2-4a2d-8b46-48fd3452e233)
-![Image](https://github.com/user-attachments/assets/cb67e0dd-904a-4a48-8f0c-524784c74c55) ![Image](https://github.com/user-attachments/assets/14f2b00d-e544-4413-bc70-eb5f102579b2) 
   <!--<img src="./img/SearchView.png" width="200"> -->
- <img src="./sheet.gif" width="200"> 
+ <img src="./gifs/login.gif" width="200"> <img src="./gifs/home.gif" width="200">  <img src="./gifs/searching.gif" width="200"> 
+ <img src="./gifs/search.gif" width="200"> <img src="./gifs/detail.gif" width="200">  <img src="./gifs/favorite.gif" width="200"> 
+ <img src="./gifs/ordering.gif" width="200">  <img src="./gifs/oldorders.gif" width="200"> 
 
 </p>
 
