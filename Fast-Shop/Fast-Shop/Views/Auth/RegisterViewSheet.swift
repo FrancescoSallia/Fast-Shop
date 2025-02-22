@@ -61,6 +61,7 @@ struct RegisterViewSheet: View {
                 
             Button(action: {
                 authViewModel.register()
+                authViewModel.acceptTerms.toggle()
                 guard errorHandler.showError  else {
                     dismiss()
                     return

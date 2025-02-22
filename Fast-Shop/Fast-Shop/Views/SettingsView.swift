@@ -57,6 +57,7 @@ struct SettingsView: View {
                             authViewModel.logout()
                         }
                     }
+                    
                 }
             }
             Button {
@@ -77,8 +78,8 @@ struct SettingsView: View {
         }
         .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
             Button("Account Löschen", role: .destructive) {
-                authViewModel.deleteUser()
                 viewModelFirestore.deleteUserCollection()
+                authViewModel.deleteUser()
             }
             Button("Abbrechen", role: .cancel) {
                 
