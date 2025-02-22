@@ -18,7 +18,7 @@ class AuthViewModel: ObservableObject {
     @Published var password = ""
     @Published var repeatedPassword = ""
     @Published var acceptTerms: Bool = false
-    @Published var notificationsEnabled: Bool = true //FIXME:  stell sicher das beim ausloggen es auf false gesetzt wird
+    @Published var notificationsEnabled: Bool = true
     @Published var focusedField: TextFieldFocusEnum? = nil
     
     private var manager = FireManager.shared
@@ -59,8 +59,8 @@ class AuthViewModel: ObservableObject {
     func login() {
         Task {
             do {
-                notificationsEnabled = true
                 user = try await manager.loginUser(email: email, password: password)
+                notificationsEnabled = true
                 self.email = ""
                 self.password = ""
                 
