@@ -23,8 +23,8 @@ struct SettingsView: View {
                         Toggle(isOn: $authViewModel.notificationsEnabled){
                             Text("Benachrichtigungen")
                         }
-                        .onChange(of: authViewModel.notificationsEnabled) { value in
-                            if value {
+                        .onChange(of: authViewModel.notificationsEnabled) { _, newValue in
+                            if newValue {
                                 // Benachrichtigung einplanen, wenn der Toggle eingeschaltet ist
                                 viewModelFirestore.checkCartAndScheduleNotification()
                             } else {
@@ -54,6 +54,7 @@ struct SettingsView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button("Ausloggen") {
+                            viewModel.selectedTab = 0
                             authViewModel.logout()
                         }
                     }

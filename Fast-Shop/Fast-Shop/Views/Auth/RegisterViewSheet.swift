@@ -86,7 +86,6 @@ struct RegisterViewSheet: View {
               }
     }
 }
-
 #Preview {
     RegisterViewSheet(authViewModel: AuthViewModel())
 }
