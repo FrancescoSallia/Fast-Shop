@@ -34,7 +34,8 @@ struct DeliveryDateViewSheet: View {
                             .frame(width: 25, height: 25)
                             .onTapGesture {
                                 viewModel.selectedDeliveryOption = 0
-                                viewModel.selectedDeliveryPrice = "KOSTENLOS"
+//                                viewModel.selectedDeliveryPrice = "KOSTENLOS"
+                                viewModel.selectedDeliveryPrice = "0.00"
                                 viewModel.showOrderViewSheet = false
                             }
 
