@@ -50,7 +50,12 @@ struct RegisterViewSheet: View {
                     .padding()
                     .border(.primary)
                     .onSubmit {
-                        authViewModel.register()
+                        if authViewModel.acceptTerms {
+                            authViewModel.register()
+                        } else {
+                            errorHandler.errorMessage = "Bitte akzeptieren Sie die AGB"
+                            errorHandler.showError = true
+                        }
                     }
             }
                   
@@ -61,6 +66,7 @@ struct RegisterViewSheet: View {
                 
             Button(action: {
                 authViewModel.register()
+                authViewModel.acceptTerms.toggle()
                 guard errorHandler.showError  else {
                     dismiss()
                     return
@@ -85,7 +91,6 @@ struct RegisterViewSheet: View {
               }
     }
 }
-
 #Preview {
     RegisterViewSheet(authViewModel: AuthViewModel())
 }
