@@ -10,16 +10,13 @@ import SwiftUI
 struct OrderOverviewView: View {
     @Environment(\.dismiss) var dismiss
 
-    let dummyArtikeln: [String] = ["tasche", "pants", "tshirt", "ring"]
     @ObservedObject var viewModel: ProductViewModel
     @ObservedObject var viewModelAdress: AdressViewModel
     @ObservedObject var viewModelFirestore: FirestoreViewModel
     @ObservedObject var errorHandler: ErrorHandler = .shared
 
-    @State private var navigateToCart = false
-
     var body: some View {
-        NavigationStack {
+       NavigationStack {
             VStack {
           Text("\(viewModelFirestore.cartList.count) Artikel")
               .font(.footnote)
@@ -179,7 +176,6 @@ struct OrderOverviewView: View {
                         .textCase(.uppercase)
                     Spacer()
                     Text("\(viewModel.selectedDeliveryPrice) EUR")
-                    //                    Text("0,00 EUR")
                 }
                 .padding(.horizontal)
                 HStack{
@@ -253,7 +249,7 @@ struct OrderOverviewView: View {
                   message: Text(errorHandler.errorMessage),
                   dismissButton: .default(Text("OK"))
             )
-        }
+    }
   }
 }
 #Preview {
