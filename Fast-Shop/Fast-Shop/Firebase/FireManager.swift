@@ -161,6 +161,9 @@ class FireManager {
                         try? product.data(as: Product.self)
                     }
                 compleation(products, nil)
+              
+                // Prüft nach jeder Änderung, ob eine Notification geplant oder entfernt werden muss
+                self.checkCartAndScheduleNotification()
             }
     }
     

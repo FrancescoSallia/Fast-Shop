@@ -70,7 +70,6 @@ struct LogInScreenView: View {
                     }
 
                     VStack {
-
                         NavigationLink(
                             destination: {
                                 RegisterViewSheet(authViewModel: authViewModel)
@@ -95,7 +94,9 @@ struct LogInScreenView: View {
                                 .background(Color.black.opacity(0.85))
                                 .cornerRadius(3)
                         }
-
+                        .navigationTitle("Fast-Shop")
+                        .toolbar(.hidden, for: .navigationBar)
+                        
 //                        HStack(spacing: 25.0) {
 //                            Button(action: {
 //                                //placeholder

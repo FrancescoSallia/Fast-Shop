@@ -139,7 +139,7 @@ struct Fast_ShopApp: App {
                     }
                      .padding(.bottom, 92)
                 )
-                .onChange(of: viewModel.showToastCart) { newValue in
+                .onChange(of: viewModel.showToastCart) { _, newValue in
                     if newValue {
                         Task {
                             try await Task.sleep(for: .seconds(2))
@@ -149,7 +149,7 @@ struct Fast_ShopApp: App {
                         }
                     }
                 }
-                .onChange(of: viewModel.showToastFavorite) { newValue in
+                .onChange(of: viewModel.showToastFavorite) { _, newValue in
                     if newValue {
                         Task {
                             try await Task.sleep(for: .seconds(2))
@@ -159,7 +159,7 @@ struct Fast_ShopApp: App {
                         }
                     }
                 }
-                .onChange(of: viewModel.showToastFavoriteRemoved) { newValue in
+                .onChange(of: viewModel.showToastFavoriteRemoved) { _, newValue in
                     if newValue {
                         Task {
                             try await Task.sleep(for: .seconds(2))
@@ -169,7 +169,7 @@ struct Fast_ShopApp: App {
                         }
                     }
                 }
-                .onChange(of: viewModel.showToastCartRemoved) { newValue in
+                .onChange(of: viewModel.showToastCartRemoved) {_, newValue in
                     if newValue {
                         Task {
                             try await Task.sleep(for: .seconds(2))

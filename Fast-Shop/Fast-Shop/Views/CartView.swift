@@ -265,6 +265,9 @@ var body: some View {
                     }
                 }
             }
+            .navigationTitle("Warenkorb")
+            .toolbar(.hidden, for: .navigationBar)
+            
               Spacer()
                 if viewModel.showCart {
                     VStack {

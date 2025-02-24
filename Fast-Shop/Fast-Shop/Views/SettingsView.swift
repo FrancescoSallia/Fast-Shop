@@ -23,8 +23,8 @@ struct SettingsView: View {
                         Toggle(isOn: $authViewModel.notificationsEnabled){
                             Text("Benachrichtigungen")
                         }
-                        .onChange(of: authViewModel.notificationsEnabled) { value in
-                            if value {
+                        .onChange(of: authViewModel.notificationsEnabled) { _, newValue in
+                            if newValue {
                                 // Benachrichtigung einplanen, wenn der Toggle eingeschaltet ist
                                 viewModelFirestore.checkCartAndScheduleNotification()
                             } else {
@@ -54,9 +54,11 @@ struct SettingsView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button("Ausloggen") {
+                            viewModel.selectedTab = 0
                             authViewModel.logout()
                         }
                     }
+                    
                 }
             }
             Button {
@@ -67,6 +69,7 @@ struct SettingsView: View {
                     .padding(.bottom)
             }
         }
+        .navigationTitle("Einstellungen")
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),
@@ -76,8 +79,8 @@ struct SettingsView: View {
         }
         .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
             Button("Account Löschen", role: .destructive) {
-                authViewModel.deleteUser()
                 viewModelFirestore.deleteUserCollection()
+                authViewModel.deleteUser()
             }
             Button("Abbrechen", role: .cancel) {
                 
