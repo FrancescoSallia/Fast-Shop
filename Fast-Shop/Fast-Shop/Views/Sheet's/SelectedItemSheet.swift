@@ -151,8 +151,7 @@ struct SelectedItemSheet: View {
                             size: viewModel.selectedSize
                         )
                         if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-//                            viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-//                            viewModel.productIndex = index
+                            
                             let favItem =  viewModelFirestore.favoriteList[index]
                              viewModelFirestore.deleteUserFavorite(product: favItem)
                             viewModel.showToastFavoriteRemoved.toggle()
@@ -184,8 +183,7 @@ struct SelectedItemSheet: View {
                         size: viewModel.selectedSize
                     )
                     if let index = viewModelFirestore.favoriteList.firstIndex(where: { $0.id == addNewFavoriteProduct.id }) {
-//                        viewModelFirestore.favoriteList[index].isFavorite?.toggle()
-//                        viewModel.productIndex = index
+                        
                         let favItem =  viewModelFirestore.favoriteList[index]
                          viewModelFirestore.deleteUserFavorite(product: favItem)
                     } else {
@@ -212,13 +210,6 @@ struct SelectedItemSheet: View {
                 try await viewModel.getCategorieFromID(filterID: "\(viewModel.selectedProduct.id)")
             }
         }
-//        .onAppear {
-//            Task {
-//                try await Task.sleep(for: .seconds(2))
-//                viewModel.showToast = false
-//            }
-//        }
-
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),

@@ -65,7 +65,7 @@ struct ProductDetailView: View {
                     Rectangle()
                         .frame(width: 300, height: 50)
                     
-                    Button("HINZUFÜGEN") {
+                    Button {
                         
                         viewModel.selectedProduct = product
                         
@@ -98,7 +98,6 @@ struct ProductDetailView: View {
                             {
                               var updatedProduct = viewModelFirestore.cartList[index]
                               updatedProduct.numberOfProducts? += 1
-//                              viewModelFirestore.cartList[index].numberOfProducts? += 1
                               viewModelFirestore.updateUserCart(product: updatedProduct)
 
                             } else {
@@ -107,6 +106,12 @@ struct ProductDetailView: View {
                             viewModel.showSheet = false
                             viewModel.showHomeDetailSheet = false
                             viewModel.showToastCart = true
+                        }
+                    } label: {
+                        HStack {
+                            Text("HINZUFÜGEN")
+                            Image(systemName: "cart.fill")
+                                .offset(x: 12)
                         }
                     }
                     .tint(.white)

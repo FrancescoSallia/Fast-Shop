@@ -14,10 +14,11 @@ class FirestoreViewModel: ObservableObject  {
     
     let firestore = FireManager.shared
 
-    @Published var cartList: [Product] = []  // Dafür muss noch eine reset funktion erstellt werden!
+    @Published var cartList: [Product] = []  
     @Published var favoriteList: [Product] = []
     @Published var adressList: [Adress] = []
     @Published var oldOrderList: [Product] = []
+    @Published var deleteAccount: Bool = false
     
     func restartListeners() {
         guard firestore.currentUser != nil else {

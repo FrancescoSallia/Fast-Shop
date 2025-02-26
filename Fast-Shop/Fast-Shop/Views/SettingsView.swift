@@ -79,8 +79,15 @@ struct SettingsView: View {
         }
         .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
             Button("Account Löschen", role: .destructive) {
-                viewModelFirestore.deleteUserCollection()
-                authViewModel.deleteUser()
+                viewModelFirestore.deleteAccount = true
+            }
+            .onChange(of: viewModelFirestore.deleteAccount) {
+                Task {
+                        viewModelFirestore.deleteUserCollection()
+                        try await Task.sleep(for: .seconds(4))
+                        authViewModel.deleteUser()
+                        viewModel.selectedTab = 0
+                }
             }
             Button("Abbrechen", role: .cancel) {
                 
