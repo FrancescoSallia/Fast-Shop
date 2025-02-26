@@ -80,10 +80,15 @@ struct testingView: View {
         List {
             ForEach(testProducteArray) { item in
                 HStack {
-                    AsyncImage(url: URL(string: item.images.first ?? "NO Image")) { pic in
-                        pic
-                            .image?.resizable()
-                            .frame(maxWidth: 160, maxHeight: 230)
+                    ZStack {
+                        Image("Google")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(
+                                maxWidth: 200,
+                                maxHeight: 250)
+                        Image(systemName: "xmark")
+                            .offset(x: 56, y: 60)
                     }
                     VStack {
                         Text(item.title)

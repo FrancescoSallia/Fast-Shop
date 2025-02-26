@@ -77,7 +77,7 @@ struct OrderOverviewView: View {
             }
             .padding(.bottom)
             HStack {
-                if viewModelAdress.selectedAdressOption == "" {
+                if viewModelAdress.selectedAdressOption == "" || viewModelFirestore.adressList.isEmpty {
                     HStack {
                         Text("Wähle eine Lieferadresse aus um fortzufahren!")
                             .foregroundStyle(.red)
@@ -195,7 +195,7 @@ struct OrderOverviewView: View {
         ZStack {
             Rectangle()
                 .frame(maxWidth: .infinity, maxHeight: 50)
-                .foregroundStyle(viewModelAdress.selectedAdressOption == "" ? .clear : .black)
+                .foregroundStyle(viewModelAdress.selectedAdressOption == "" || viewModelFirestore.adressList.isEmpty ? .clear : .black)
             Button("Zahlung Autorisieren") {
                 viewModel.showLottieSuccessfullView.toggle()
                 
@@ -221,7 +221,7 @@ struct OrderOverviewView: View {
             }
             .tint(.white)
             .textCase(.uppercase)
-            .disabled(viewModelAdress.selectedAdressOption == "" ? true : false)
+            .disabled(viewModelAdress.selectedAdressOption == "" || viewModelFirestore.adressList.isEmpty ? true : false)
         }
     }
         .sheet(isPresented: $viewModel.showOrderViewSheet) {

@@ -61,15 +61,118 @@ class FireManager {
 
     }
     
+//MARK: Delete all User Collections Section
     func deleteUserCollection() async throws {
         guard let uid = currentUser?.uid else {
             fatalError("Kein aktueller User oder keine UID vorhanden")
         }
+        //Ruft alle privaten functionen auf, damit die subCollections erstmal gelöscht werden, danach die endgültige user collection!
+        try await allUserCollectionDelete()
         
         try await store
             .collection("users")
             .document(uid)
             .delete()
+    }
+    
+     private func allUserCollectionDelete() async throws {
+        
+            do {
+                try await deleteUserCollectionAdress()
+                try await deleteUserCollectionCart()
+                try await deleteUserCollectionFavorite()
+                try await deleteUserCollectionOldOrders()
+            } catch {
+                print("Fehler beim Löschen einer der User Collections: \(error) schau in die private funktion von FireManager rein")
+            }
+    }
+    
+    private func deleteUserCollectionCart() async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("Kein aktueller User oder keine UID vorhanden")
+        }
+        
+        let userRef = store.collection("users").document(uid).collection("Cart")
+        
+        // Abrufen aller Dokumente in der Cart-Collection
+        let snapshot = try await userRef.getDocuments()
+        
+        // Löschen jedes Dokuments in der Cart-Collection
+        for document in snapshot.documents {
+            // Löschen des Dokuments anhand der Dokument-ID
+            do {
+                try await document.reference.delete()
+                print("Dokument mit ID \(document.documentID) gelöscht")
+            } catch {
+                print("FEHLER BEIM LÖSCHEN DER CartList: \(error)")
+            }
+        }
+    }
+    
+    private func deleteUserCollectionFavorite() async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("Kein aktueller User oder keine UID vorhanden")
+        }
+        
+        let userRef = store.collection("users").document(uid).collection("Favorite")
+        
+        // Abrufen aller Dokumente in der Cart-Collection
+        let snapshot = try await userRef.getDocuments()
+        
+        // Löschen jedes Dokuments in der Cart-Collection
+        for document in snapshot.documents {
+            // Löschen des Dokuments anhand der Dokument-ID
+            do {
+                try await document.reference.delete()
+                print("Dokument mit ID \(document.documentID) gelöscht")
+            } catch {
+                print("FEHLER BEIM LÖSCHEN DER FavoritenList: \(error)")
+            }
+        }
+    }
+    
+    private func deleteUserCollectionAdress() async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("Kein aktueller User oder keine UID vorhanden")
+        }
+        
+        let userRef = store.collection("users").document(uid).collection("Adress")
+        
+        // Abrufen aller Dokumente in der Cart-Collection
+        let snapshot = try await userRef.getDocuments()
+        
+        // Löschen jedes Dokuments in der Cart-Collection
+        for document in snapshot.documents {
+            // Löschen des Dokuments anhand der Dokument-ID
+            do {
+                try await document.reference.delete()
+                print("Dokument mit ID \(document.documentID) gelöscht")
+            } catch {
+                print("FEHLER BEIM LÖSCHEN DER AdressList: \(error)")
+            }
+        }
+    }
+    
+    private func deleteUserCollectionOldOrders() async throws {
+        guard let uid = currentUser?.uid else {
+            fatalError("Kein aktueller User oder keine UID vorhanden")
+        }
+        
+        let userRef = store.collection("users").document(uid).collection("Old-Orders")
+        
+        // Abrufen aller Dokumente in der Cart-Collection
+        let snapshot = try await userRef.getDocuments()
+        
+        // Löschen jedes Dokuments in der Cart-Collection
+        for document in snapshot.documents {
+            // Löschen des Dokuments anhand der Dokument-ID
+            do {
+                try await document.reference.delete()
+                print("Old Orders-Dokument mit ID \(document.documentID) gelöscht")
+            } catch {
+                print("FEHLER BEIM LÖSCHEN DER OLD ORDERS: \(error)")
+            }
+        }
     }
     
     func updateUserCart(product: Product) async throws { //Fügt ein Product in der liste von Firebase ein
@@ -85,12 +188,13 @@ class FireManager {
            try userRef
                 .document(eigeneID)
                 .setData(from: product)
+            print("fireID: \(eigeneID)")
         } catch {
             print(error)
         }
     }
     
-    func deleteUserCart(product: Product) async throws {    //Löscht ein Product von der liste in Firebase ein
+    func deleteUserCart(product: Product) async throws {    //Löscht ein Product von der liste in Firebase raus
         guard let uid = currentUser?.uid else {
             fatalError("no current user")
         }

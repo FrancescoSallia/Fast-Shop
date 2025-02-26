@@ -23,28 +23,29 @@ struct OldOrderView: View {
             ForEach(groupedOrders, id: \.key) { (date, products) in
                 Section(header: Text(date)) {
                     ForEach(products, id: \.cartID) { item in
-                        HStack {
-                            AsyncImage(url: URL(string:item.images[0])) { pic in
-                                pic
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(
-                                        maxWidth: 200,
-                                        maxHeight: 250)
-                            } placeholder: {
-                                ProgressView()
+                            HStack {
+                                AsyncImage(url: URL(string:item.images[0])) { pic in
+                                    pic
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(
+                                            maxWidth: 200,
+                                            maxHeight: 250)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                VStack(alignment: .leading) {
+                                    Text(item.title)
+                                        .font(.headline)
+                                    Text(item.size == "" ? "" : "Size: \(item.size!)")
+                                        .font(.subheadline)
+                                        .padding(.top, 4)
+                                    Text("Menge: \(item.numberOfProducts!)")
+                                        .font(.subheadline)
+                                    Text("Preis: \(String(format: "%.2f", item.price)) EUR")
+//                                        .font(.subheadline)
+                                }
                             }
-                            VStack(alignment: .leading) {
-                                Text(item.title)
-                                    .font(.headline)
-                                Text(item.size == "" ? "" : "Size: \(item.size!)")
-                                    .font(.subheadline)
-                                    .padding(.vertical)
-                                Text("Preis: \(String(format: "%.2f", item.price)) EUR")
-                                    .font(.subheadline)
-                            }
-                        }
-
                     }
                     HStack {
                         Text("Gesamt: ")
@@ -60,7 +61,6 @@ struct OldOrderView: View {
                 }
             }
         }
-//        .navigationTitle("Meine Bestellungen")
         .alert(isPresented: $errorHandler.showError) {
             Alert(
                 title: Text("Error"),
