@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		741373122D94116E00EF127C /* FastShopBackground.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 741373112D94116E00EF127C /* FastShopBackground.mp4 */; };
 		741B95302D479F1600A0C9D3 /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 741B952F2D479F1600A0C9D3 /* MultiSlider */; };
 		744D71802D5E62EE00C079E3 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 744D717F2D5E62EE00C079E3 /* Lottie */; };
 		744D71842D5E66BB00C079E3 /* animationSuccessfull.json in Resources */ = {isa = PBXBuildFile; fileRef = 744D71832D5E66BB00C079E3 /* animationSuccessfull.json */; };
 		7454D0E92D5B7BB20042AF04 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 7454D0E82D5B7BB20042AF04 /* Toast */; };
-		745AACDA2D50F0B60071A584 /* FastShopBackground.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 745AACD92D50F0B60071A584 /* FastShopBackground.mp4 */; };
 		7462B9752D54ED1A002058A7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7462B9742D54ED1A002058A7 /* FirebaseAuth */; };
 		7462B9772D54ED1A002058A7 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 7462B9762D54ED1A002058A7 /* FirebaseCore */; };
 		7462B9792D54ED1A002058A7 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 7462B9782D54ED1A002058A7 /* FirebaseDatabase */; };
@@ -19,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		741373112D94116E00EF127C /* FastShopBackground.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FastShopBackground.mp4; sourceTree = "<group>"; };
 		744D71832D5E66BB00C079E3 /* animationSuccessfull.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = animationSuccessfull.json; sourceTree = "<group>"; };
 		745AACD92D50F0B60071A584 /* FastShopBackground.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FastShopBackground.mp4; sourceTree = "<group>"; };
 		748DEC2E2D2EAA1100EE76D3 /* Fast-Shop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fast-Shop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +70,7 @@
 				748DEC302D2EAA1100EE76D3 /* Fast-Shop */,
 				748DEC2F2D2EAA1100EE76D3 /* Products */,
 				745AACD92D50F0B60071A584 /* FastShopBackground.mp4 */,
+				741373112D94116E00EF127C /* FastShopBackground.mp4 */,
 				744D71832D5E66BB00C079E3 /* animationSuccessfull.json */,
 			);
 			sourceTree = "<group>";
@@ -158,7 +160,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				745AACDA2D50F0B60071A584 /* FastShopBackground.mp4 in Resources */,
+				741373122D94116E00EF127C /* FastShopBackground.mp4 in Resources */,
 				744D71842D5E66BB00C079E3 /* animationSuccessfull.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,7 +311,7 @@
 				INFOPLIST_FILE = "Fast-Shop/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -343,7 +345,7 @@
 				INFOPLIST_FILE = "Fast-Shop/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
