@@ -32,7 +32,7 @@ class FirestoreViewModel: ObservableObject  {
         oldOrderSnapshotListener()
     }
     
-    func deleteUserCollection() {
+    func deleteUserCollection() async throws {
         Task {
             do {
                 try await firestore.deleteUserCollection()
@@ -52,7 +52,7 @@ class FirestoreViewModel: ObservableObject  {
         }
     }
     
-    func deleteUserCart(product: Product) {
+    func deleteUserCart(product: Product) async {
         if let index = cartList.firstIndex(where: { $0.id == product.id}) {
             let deleteProduct = cartList[index]
             Task {
@@ -143,7 +143,7 @@ class FirestoreViewModel: ObservableObject  {
         }
     }
     
-    func updateUserOldOrder(product: Product) {
+    func updateUserOldOrder(product: Product) async {
         Task {
             do {
                 try await firestore.updateUserOldOrder(product: product)

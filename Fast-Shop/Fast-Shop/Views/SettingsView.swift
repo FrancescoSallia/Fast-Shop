@@ -83,10 +83,10 @@ struct SettingsView: View {
             }
             .onChange(of: viewModelFirestore.deleteAccount) {
                 Task {
-                        viewModelFirestore.deleteUserCollection()
+                        try await viewModelFirestore.deleteUserCollection()
                         try await Task.sleep(for: .seconds(4))
-                        authViewModel.deleteUser()
                         viewModel.selectedTab = 0
+                        authViewModel.deleteUser()
                 }
             }
             Button("Abbrechen", role: .cancel) {

@@ -215,8 +215,10 @@ struct OrderOverviewView: View {
                         oldOrderID: UUID().uuidString,
                         date: Date().formatted(.iso8601.year().month().day())
                     )
-                    viewModelFirestore.updateUserOldOrder(product: oldProduct)
-                    viewModelFirestore.deleteUserCart(product: product)
+                    Task {
+                        await viewModelFirestore.updateUserOldOrder(product: oldProduct)
+                        await viewModelFirestore.deleteUserCart(product: product)
+                    }
                 }
             }
             .tint(.white)

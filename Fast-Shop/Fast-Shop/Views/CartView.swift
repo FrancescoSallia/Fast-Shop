@@ -76,7 +76,9 @@ var body: some View {
                           Spacer()
                           Button {
                               viewModelFirestore.updateUserFavorite(product: product)
-                              viewModelFirestore.deleteUserCart(product: product)
+                              Task {
+                                  await viewModelFirestore.deleteUserCart(product: product)
+                              }
                               viewModel.showToastFavorite = true
                           } label: {
                               Image(systemName: "bookmark")
@@ -86,7 +88,9 @@ var body: some View {
                           }
                           .padding(.horizontal)
                           Button {
-                              viewModelFirestore.deleteUserCart(product: product)
+                              Task {
+                                  await viewModelFirestore.deleteUserCart(product: product)
+                              }
                               viewModel.showToastCartRemoved = true
                           } label: {
                               Image(systemName: "xmark")

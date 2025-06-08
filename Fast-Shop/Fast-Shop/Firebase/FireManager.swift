@@ -276,7 +276,7 @@ class FireManager {
             compleation([], nil)
             return        }
         let userRef = store.collection("users").document(uid).collection("Favorite")
-        userRef
+          userRef
             .addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
                 if let error = error {
                     print("Error listening for changes: \(error)")
