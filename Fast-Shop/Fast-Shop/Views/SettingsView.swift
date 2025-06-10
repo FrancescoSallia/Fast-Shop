@@ -100,17 +100,33 @@ struct SettingsView: View {
                     }
                     Spacer()
                     Button("Löschen") {
-                        authViewModel.isLoading = true
+//                        authViewModel.isLoading = true
+//                        Task {
+//                        let successfull = await authViewModel.reauthenticateUser()
+//                        
+//                        if successfull {
+//                                do {
+//                                    try await viewModelFirestore.deleteUserCollection()
+//                                    try await Task.sleep(for: .seconds(4))
+//                                    viewModel.selectedTab = 0
+//                                    try await authViewModel.deleteUser()
+//                                    
+//                                } catch {
+//                                    errorHandler.handleError(error: error)
+//                                    print("Fehler im successfull If statement (SettingsView)")
+//                                }
+//                                authViewModel.isLoading = false
+//                            } else {
+//                                errorHandler.handleError(error: ErrorEnum.custom("Falsches Passwort"))
+//                                authViewModel.isLoading = false
+//                                authViewModel.showingReauthSheet = false
+//                                authViewModel.password = ""
+//                            }
+//                        }
                         Task {
-                            do {
-                                try await viewModelFirestore.deleteUserCollection()
-                                try await Task.sleep(for: .seconds(4))
+                           await authViewModel.verifyAndDeleteUser(viewModelFirestore: viewModelFirestore) {
                                 viewModel.selectedTab = 0
-                                await authViewModel.reauthenticateAndDeleteUser()
-                            } catch {
-                                errorHandler.handleError(error: error)
                             }
-                            authViewModel.isLoading = false
                         }
                     }
                     .disabled(authViewModel.password.isEmpty || authViewModel.isLoading)
@@ -129,7 +145,7 @@ struct SettingsView: View {
                     message: Text(errorHandler.errorMessage),
                     dismissButton: .default(Text("OK"))
                 )
-        }
+            }
         }
 //        .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
 //            Button("Account Löschen", role: .destructive) {

@@ -85,34 +85,29 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-//    func deleteUser() async {
-//        Task {
-//            do {
-//                try await manager.deleteUser(user: user!)
-//                user = nil
-//            } catch {
-//                print("Error deleting user: \(error)")
-//                errorHandler.handleError(error: error)
-//            }
-//        }
-//    }
-    
-    // der user muss sich nochmal authentifizieren bevor er sein account löschen kann
-    func reauthenticateAndDeleteUser() async {
+   private func deleteUser() async throws {
         Task {
             do {
-                // Re-authenticate user
-                try await manager.reAuthenticateUser(currentPassword: self.password)
-                
-                // Now it's safe to delete the user
                 try await manager.deleteUser(user: user!)
                 self.user = nil
                 self.password = ""
-                
             } catch {
-                print("Re-authentication or deletion failed: \(error)")
-                errorHandler.handleError(error: error)
+                print("Error deleting user: \(error)")
+//                errorHandler.handleError(error: error)
             }
+        }
+    }
+    
+    // der user muss sich nochmal authentifizieren bevor er sein account löschen kann
+   private func reauthenticateUser() async -> Bool {
+        do {
+            // Re-authenticate user
+            try await manager.reAuthenticateUser(currentPassword: self.password)
+            return true
+        } catch {
+            print("Re-authentication or deletion failed: \(error)")
+            //          errorHandler.handleError(error: error)
+            return false
         }
     }
     
@@ -124,4 +119,32 @@ class AuthViewModel: ObservableObject {
         manager.resetPassword(email: email)
         self.email = ""
     }
+    
+    
+    func verifyAndDeleteUser(viewModelFirestore: FirestoreViewModel, selectedTab: @escaping () -> Void) async { //escaping ist eine callback funktion bei der du eine funktion oder ein wert von außen aufrufen kannst
+            self.isLoading = true
+            Task {
+            let successfull = await reauthenticateUser()
+            
+            if successfull {
+                    do {
+                        try await viewModelFirestore.deleteUserCollection()
+                        try await Task.sleep(for: .seconds(4))
+                        selectedTab()
+                        try await deleteUser()
+                        showingReauthSheet.toggle()
+                        
+                    } catch {
+                        errorHandler.handleError(error: error)
+                        print("Fehler im successfull If statement (SettingsView)")
+                    }
+                    isLoading = false
+                } else {
+                    errorHandler.handleError(error: ErrorEnum.custom("Falsches Passwort"))
+                    self.isLoading = false
+                    self.showingReauthSheet = false
+                    self.password = ""
+                }
+            }
+        }
 }
