@@ -20,6 +20,9 @@ class AuthViewModel: ObservableObject {
     @Published var acceptTerms: Bool = false
     @Published var notificationsEnabled: Bool = true
     @Published var focusedField: TextFieldFocusEnum? = nil
+    @Published var showingReauthSheet = false
+    @Published var isLoading: Bool = false
+
     
     private var manager = FireManager.shared
     private let errorHandler = ErrorHandler.shared
@@ -72,6 +75,8 @@ class AuthViewModel: ObservableObject {
     
     func logout() {
         do {
+            self.email = ""
+            self.password = ""
             notificationsEnabled = false
             try manager.logoutUser()
             user = nil
@@ -80,12 +85,32 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func deleteUser() {
+//    func deleteUser() async {
+//        Task {
+//            do {
+//                try await manager.deleteUser(user: user!)
+//                user = nil
+//            } catch {
+//                print("Error deleting user: \(error)")
+//                errorHandler.handleError(error: error)
+//            }
+//        }
+//    }
+    
+    // der user muss sich nochmal authentifizieren bevor er sein account löschen kann
+    func reauthenticateAndDeleteUser() async {
         Task {
             do {
+                // Re-authenticate user
+                try await manager.reAuthenticateUser(currentPassword: self.password)
+                
+                // Now it's safe to delete the user
                 try await manager.deleteUser(user: user!)
-                user = nil
+                self.user = nil
+                self.password = ""
+                
             } catch {
+                print("Re-authentication or deletion failed: \(error)")
                 errorHandler.handleError(error: error)
             }
         }

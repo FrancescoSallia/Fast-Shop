@@ -61,13 +61,13 @@ struct SettingsView: View {
                     
                 }
             }
-            Button {
-                viewModel.confirmationDialogDelete.toggle()
-            } label: {
-                Text("Account löschen")
-                    .foregroundColor(.red)
-                    .padding(.bottom)
-            }
+//            Button {
+//                viewModel.confirmationDialogDelete.toggle()
+//            } label: {
+//                Text("Account löschen")
+//                    .foregroundColor(.red)
+//                    .padding(.bottom)
+//            }
         }
         .navigationTitle("Einstellungen")
         .alert(isPresented: $errorHandler.showError) {
@@ -77,29 +77,83 @@ struct SettingsView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
-            Button("Account Löschen", role: .destructive) {
-//                viewModelFirestore.deleteAccount = true
-                
-                Task {  //dieser teil wurde zum testen hinzugefügt, falls es zu fehlern kommt setz es nochmal zurück ab zeile 91 denn wieder einkommentieren und diese zeile von 84 - 89 löschen!
-                    try await viewModelFirestore.deleteUserCollection()
-                    try await Task.sleep(for: .seconds(4))
-                    viewModel.selectedTab = 0
-                    authViewModel.deleteUser()
+        Button {
+            authViewModel.showingReauthSheet = true
+        } label: {
+            Text("Account löschen")
+                .foregroundColor(.red)
+                .padding(.bottom)
+        }
+        .sheet(isPresented: $authViewModel.showingReauthSheet) {
+            VStack(spacing: 20) {
+                Text("Bitte Passwort zur Bestätigung eingeben")
+                    .font(.headline)
+
+                SecureField("Passwort", text: $authViewModel.password)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+
+                HStack {
+                    Button("Abbrechen") {
+                        authViewModel.showingReauthSheet = false
+                        authViewModel.password = ""
+                    }
+                    Spacer()
+                    Button("Löschen") {
+                        authViewModel.isLoading = true
+                        Task {
+                            do {
+                                try await viewModelFirestore.deleteUserCollection()
+                                try await Task.sleep(for: .seconds(4))
+                                viewModel.selectedTab = 0
+                                await authViewModel.reauthenticateAndDeleteUser()
+                            } catch {
+                                errorHandler.handleError(error: error)
+                            }
+                            authViewModel.isLoading = false
+                        }
+                    }
+                    .disabled(authViewModel.password.isEmpty || authViewModel.isLoading)
+                }
+                .padding()
+                if authViewModel.isLoading {
+                    ProgressView("Bitte warten...")
+                        .padding()
                 }
             }
-//            .onChange(of: viewModelFirestore.deleteAccount) {
-//                Task {
-//                        try await viewModelFirestore.deleteUserCollection()
-//                        try await Task.sleep(for: .seconds(4))
-//                        viewModel.selectedTab = 0
-//                        authViewModel.deleteUser()
+            .padding()
+            
+            .alert(isPresented: $errorHandler.showError) {
+                Alert(
+                    title: Text("Error"),
+                    message: Text(errorHandler.errorMessage),
+                    dismissButton: .default(Text("OK"))
+                )
+        }
+        }
+//        .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
+//            Button("Account Löschen", role: .destructive) {
+////                viewModelFirestore.deleteAccount = true
+//                
+//                Task {  //dieser teil wurde zum testen hinzugefügt, falls es zu fehlern kommt setz es nochmal zurück ab zeile 91 denn wieder einkommentieren und diese zeile von 84 - 89 löschen!
+//                    try await viewModelFirestore.deleteUserCollection()
+//                    try await Task.sleep(for: .seconds(4))
+//                    viewModel.selectedTab = 0
+//                    await authViewModel.deleteUser()
 //                }
 //            }
-            Button("Abbrechen", role: .cancel) {
-                
-            }
-        }
+////            .onChange(of: viewModelFirestore.deleteAccount) {
+////                Task {
+////                        try await viewModelFirestore.deleteUserCollection()
+////                        try await Task.sleep(for: .seconds(4))
+////                        viewModel.selectedTab = 0
+////                        authViewModel.deleteUser()
+////                }
+////            }
+//            Button("Abbrechen", role: .cancel) {
+//                
+//            }
+//        }
     }
 }
 

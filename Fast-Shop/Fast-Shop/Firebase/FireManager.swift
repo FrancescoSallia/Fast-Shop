@@ -43,6 +43,16 @@ class FireManager {
     func resetPassword(email: String) {
         auth.sendPasswordReset(withEmail: email)
     }
+    
+    func reAuthenticateUser(currentPassword: String) async throws {
+        
+        guard let email = currentUser?.email else {
+            fatalError("Kein aktueller User oder keine E-Mail vorhanden")
+        }
+        
+        let credential = EmailAuthProvider.credential(withEmail: email, password: currentPassword)
+        try await auth.currentUser?.reauthenticate(with: credential)
+    }
 
 //MARK: Firestore-Section
 
