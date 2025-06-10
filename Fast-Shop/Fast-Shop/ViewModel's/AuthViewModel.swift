@@ -93,7 +93,7 @@ class AuthViewModel: ObservableObject {
                 self.password = ""
             } catch {
                 print("Error deleting user: \(error)")
-//                errorHandler.handleError(error: error)
+                errorHandler.handleError(error: error)
             }
         }
     }
@@ -106,7 +106,7 @@ class AuthViewModel: ObservableObject {
             return true
         } catch {
             print("Re-authentication or deletion failed: \(error)")
-            //          errorHandler.handleError(error: error)
+            errorHandler.handleError(error: error)
             return false
         }
     }
@@ -140,9 +140,9 @@ class AuthViewModel: ObservableObject {
                     }
                     isLoading = false
                 } else {
-                    errorHandler.handleError(error: ErrorEnum.custom("Falsches Passwort"))
+                    errorHandler.handleError(error: ErrorEnum.wrongPassword)
                     self.isLoading = false
-                    self.showingReauthSheet = false
+//                    self.showingReauthSheet = false
                     self.password = ""
                 }
             }

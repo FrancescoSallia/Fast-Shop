@@ -100,29 +100,6 @@ struct SettingsView: View {
                     }
                     Spacer()
                     Button("Löschen") {
-//                        authViewModel.isLoading = true
-//                        Task {
-//                        let successfull = await authViewModel.reauthenticateUser()
-//                        
-//                        if successfull {
-//                                do {
-//                                    try await viewModelFirestore.deleteUserCollection()
-//                                    try await Task.sleep(for: .seconds(4))
-//                                    viewModel.selectedTab = 0
-//                                    try await authViewModel.deleteUser()
-//                                    
-//                                } catch {
-//                                    errorHandler.handleError(error: error)
-//                                    print("Fehler im successfull If statement (SettingsView)")
-//                                }
-//                                authViewModel.isLoading = false
-//                            } else {
-//                                errorHandler.handleError(error: ErrorEnum.custom("Falsches Passwort"))
-//                                authViewModel.isLoading = false
-//                                authViewModel.showingReauthSheet = false
-//                                authViewModel.password = ""
-//                            }
-//                        }
                         Task {
                            await authViewModel.verifyAndDeleteUser(viewModelFirestore: viewModelFirestore) {
                                 viewModel.selectedTab = 0
@@ -146,30 +123,8 @@ struct SettingsView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
+            .presentationDetents([.medium])
         }
-//        .confirmationDialog("Delete Account?", isPresented: $viewModel.confirmationDialogDelete) {
-//            Button("Account Löschen", role: .destructive) {
-////                viewModelFirestore.deleteAccount = true
-//                
-//                Task {  //dieser teil wurde zum testen hinzugefügt, falls es zu fehlern kommt setz es nochmal zurück ab zeile 91 denn wieder einkommentieren und diese zeile von 84 - 89 löschen!
-//                    try await viewModelFirestore.deleteUserCollection()
-//                    try await Task.sleep(for: .seconds(4))
-//                    viewModel.selectedTab = 0
-//                    await authViewModel.deleteUser()
-//                }
-//            }
-////            .onChange(of: viewModelFirestore.deleteAccount) {
-////                Task {
-////                        try await viewModelFirestore.deleteUserCollection()
-////                        try await Task.sleep(for: .seconds(4))
-////                        viewModel.selectedTab = 0
-////                        authViewModel.deleteUser()
-////                }
-////            }
-//            Button("Abbrechen", role: .cancel) {
-//                
-//            }
-//        }
     }
 }
 

@@ -15,6 +15,7 @@ enum ErrorEnum: LocalizedError {
     case noProducts
     case emailAlreadyInUse
     case weakPassword
+    case wrongPassword
     case unknownError
     case custom(String)
 
@@ -27,6 +28,8 @@ enum ErrorEnum: LocalizedError {
                 self = .emailAlreadyInUse
             case .weakPassword:
                 self = .weakPassword
+            case .wrongPassword:
+                self = .wrongPassword
             default:
                 self = .unknownError
             }
@@ -45,6 +48,8 @@ enum ErrorEnum: LocalizedError {
             return "This email address is already in use."
         case .weakPassword:
             return "Please choose a stronger password."
+        case .wrongPassword:
+            return "Wrong Password. Please try again."
         case .unknownError:
             return "An unknown error has occurred."
         case .custom(let message):
