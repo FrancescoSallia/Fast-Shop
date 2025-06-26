@@ -41,7 +41,6 @@ struct Fast_ShopApp: App {
 
     
     init() {
-//        FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
     }
     
