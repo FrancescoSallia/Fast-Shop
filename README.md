@@ -20,7 +20,7 @@ Im Gegensatz zu anderen Plattformen setzt Fast-Shop auf maximale Einfachheit und
 <!-- Hier kommen alle Features rein, welche deine App bietet. -->
 
 - [x] Schnellfilter
-- [x] Favoresierung
+- [x] Favorisierung
 - [x] Intelligente Suchfunktion
 - [x] Warenkorb-Erinnerungen
 
