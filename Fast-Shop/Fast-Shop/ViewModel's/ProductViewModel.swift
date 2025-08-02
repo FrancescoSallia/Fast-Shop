@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 @MainActor
 class ProductViewModel: ObservableObject {
@@ -135,16 +136,34 @@ class ProductViewModel: ObservableObject {
 
     //MARK: API Calls
     
+//    func getProductsFromAPI() {
+//        Task {
+//            do {
+//                self.products = try await client.getProducts()
+//                self.allProductsForHomeView = try await client.getProducts()
+//            } catch {
+//                print("viewModel Error: \(error)")
+//                errorHandler.handleError(error: error)
+//            }
+//        }
+//    }
+    
+    private var cancellables = Set<AnyCancellable>()
+
     func getProductsFromAPI() {
-        Task {
-            do {
-                self.products = try await client.getProducts()
-                self.allProductsForHomeView = try await client.getProducts()
-            } catch {
-                print("viewModel Error: \(error)")
-                errorHandler.handleError(error: error)
+        client.getProducts()
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    self.errorHandler.handleError(error: error)
+                }
+            } receiveValue: { [weak self] products in
+                self?.allProductsForHomeView = products
             }
-        }
+            .store(in: &cancellables)
     }
     
     func getCategoriesFromAPI() async throws {
