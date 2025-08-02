@@ -7,23 +7,45 @@
 
 import Foundation
 import SwiftUICore
+import Combine
 
 
 class HttpClient {
 
-    func getProducts() async throws -> [Product] {
+//    func getProducts() async throws -> [Product] {
+//        guard let url = URL(string: "http://localhost:3001/products") else {
+////        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products") else {
+//            throw ErrorEnum.invalidURL
+//        }
+//        do {
+//            let (data, _) = try await URLSession.shared.data(from: url)
+//            let products = try JSONDecoder().decode([Product].self, from: data)
+//            return products
+//        } catch {
+//            throw error
+//        }
+//    }
+    
+    
+    
+    func getProducts() -> AnyPublisher<[Product], Error> {
         guard let url = URL(string: "http://localhost:3001/products") else {
 //        guard let url = URL(string: "https://api.escuelajs.co/api/v1/products") else {
-            throw ErrorEnum.invalidURL
+            return Fail(error: URLError(.badURL))
+                .eraseToAnyPublisher()
         }
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let products = try JSONDecoder().decode([Product].self, from: data)
-            return products
-        } catch {
-            throw error
-        }
+        
+        return URLSession.shared.dataTaskPublisher(for: url)
+            .map(\.data)
+            .decode(type: [Product].self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
+    
+    
+    
+    
+    
     
     func getCategories() async throws -> [Category] {
         guard let url = URL(string: "http://localhost:3001/categories") else {

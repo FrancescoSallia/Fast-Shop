@@ -271,7 +271,7 @@ class FireManager {
                 }
                 let products = snapshot
                     .documents
-                    .compactMap { product in
+                    .compactMap { product in //Ungültige (nil) werden automatisch rausgefiltert mit compactMap.
                         try? product.data(as: Product.self)
                     }
                 compleation(products, nil)
@@ -402,7 +402,7 @@ class FireManager {
                 }
                 let oldOrder = snapshot
                     .documents
-                    .compactMap { oldOrder in
+                    .compactMap { oldOrder in //Ungültige (nil) werden automatisch rausgefiltert mit compactMap.
                         try? oldOrder.data(as: Product.self)
                     }
                 compleation(oldOrder, nil)
