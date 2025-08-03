@@ -11,7 +11,7 @@ import Combine
 @MainActor
 class ProductViewModel: ObservableObject {
     
-    init() {
+    init(client: APIClientProtocol = HttpClient()) {
         getProductsFromAPI()
     }
     
@@ -148,7 +148,7 @@ class ProductViewModel: ObservableObject {
 //        }
 //    }
     
-    private var cancellables = Set<AnyCancellable>()
+    /*private*/ var cancellables = Set<AnyCancellable>()
 
     func getProductsFromAPI() {
         client.getProducts()

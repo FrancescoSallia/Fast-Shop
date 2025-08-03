@@ -10,7 +10,7 @@ import SwiftUICore
 import Combine
 
 
-class HttpClient {
+class HttpClient: APIClientProtocol {
 
 //    func getProducts() async throws -> [Product] {
 //        guard let url = URL(string: "http://localhost:3001/products") else {
