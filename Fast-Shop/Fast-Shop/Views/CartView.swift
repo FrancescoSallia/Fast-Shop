@@ -166,6 +166,7 @@ var body: some View {
                  }
              }
         }
+         .padding(.horizontal)
        } else {
            ForEach(viewModelFirestore.favoriteList, id: \.cartID) { product in
                ZStack {
@@ -297,6 +298,7 @@ var body: some View {
                         }
                         .border(Color.primary)
                         .padding(.bottom, -23)
+                        .padding()
                         NavigationLink("ZUR KASSE") {
                             OrderOverviewView(viewModel: viewModel, viewModelAdress: viewModelAdress, viewModelFirestore: viewModelFirestore)
                         }
