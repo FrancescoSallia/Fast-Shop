@@ -18,10 +18,21 @@
 		7462B97B2D54ED1A002058A7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 7462B97A2D54ED1A002058A7 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7470353F2E3FA21200D72671 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 748DEC262D2EAA1100EE76D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 748DEC2D2D2EAA1100EE76D3;
+			remoteInfo = "Fast-Shop";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		741373112D94116E00EF127C /* FastShopBackground.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FastShopBackground.mp4; sourceTree = "<group>"; };
 		744D71832D5E66BB00C079E3 /* animationSuccessfull.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = animationSuccessfull.json; sourceTree = "<group>"; };
 		745AACD92D50F0B60071A584 /* FastShopBackground.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FastShopBackground.mp4; sourceTree = "<group>"; };
+		7470353B2E3FA21200D72671 /* Fast-ShopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Fast-ShopTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		748DEC2E2D2EAA1100EE76D3 /* Fast-Shop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fast-Shop.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -36,6 +47,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		7470353C2E3FA21200D72671 /* Fast-ShopTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Fast-ShopTests";
+			sourceTree = "<group>";
+		};
 		748DEC302D2EAA1100EE76D3 /* Fast-Shop */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -47,6 +63,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		747035382E3FA21200D72671 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		748DEC2B2D2EAA1100EE76D3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -68,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				748DEC302D2EAA1100EE76D3 /* Fast-Shop */,
+				7470353C2E3FA21200D72671 /* Fast-ShopTests */,
 				748DEC2F2D2EAA1100EE76D3 /* Products */,
 				745AACD92D50F0B60071A584 /* FastShopBackground.mp4 */,
 				741373112D94116E00EF127C /* FastShopBackground.mp4 */,
@@ -79,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				748DEC2E2D2EAA1100EE76D3 /* Fast-Shop.app */,
+				7470353B2E3FA21200D72671 /* Fast-ShopTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,6 +111,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7470353A2E3FA21200D72671 /* Fast-ShopTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 747035432E3FA21200D72671 /* Build configuration list for PBXNativeTarget "Fast-ShopTests" */;
+			buildPhases = (
+				747035372E3FA21200D72671 /* Sources */,
+				747035382E3FA21200D72671 /* Frameworks */,
+				747035392E3FA21200D72671 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				747035402E3FA21200D72671 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7470353C2E3FA21200D72671 /* Fast-ShopTests */,
+			);
+			name = "Fast-ShopTests";
+			packageProductDependencies = (
+			);
+			productName = "Fast-ShopTests";
+			productReference = 7470353B2E3FA21200D72671 /* Fast-ShopTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		748DEC2D2D2EAA1100EE76D3 /* Fast-Shop */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 748DEC3C2D2EAA1200EE76D3 /* Build configuration list for PBXNativeTarget "Fast-Shop" */;
@@ -122,9 +170,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					7470353A2E3FA21200D72671 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 748DEC2D2D2EAA1100EE76D3;
+					};
 					748DEC2D2D2EAA1100EE76D3 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -151,11 +203,19 @@
 			projectRoot = "";
 			targets = (
 				748DEC2D2D2EAA1100EE76D3 /* Fast-Shop */,
+				7470353A2E3FA21200D72671 /* Fast-ShopTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		747035392E3FA21200D72671 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		748DEC2C2D2EAA1100EE76D3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -168,6 +228,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		747035372E3FA21200D72671 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		748DEC2A2D2EAA1100EE76D3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -177,7 +244,53 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		747035402E3FA21200D72671 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 748DEC2D2D2EAA1100EE76D3 /* Fast-Shop */;
+			targetProxy = 7470353F2E3FA21200D72671 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		747035412E3FA21200D72671 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JCB2N2AHH4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.francesco.Fast-ShopTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fast-Shop.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Fast-Shop";
+			};
+			name = Debug;
+		};
+		747035422E3FA21200D72671 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JCB2N2AHH4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.francesco.Fast-ShopTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fast-Shop.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Fast-Shop";
+			};
+			name = Release;
+		};
 		748DEC3A2D2EAA1200EE76D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -314,6 +427,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -348,6 +462,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -368,6 +483,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		747035432E3FA21200D72671 /* Build configuration list for PBXNativeTarget "Fast-ShopTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				747035412E3FA21200D72671 /* Debug */,
+				747035422E3FA21200D72671 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		748DEC292D2EAA1100EE76D3 /* Build configuration list for PBXProject "Fast-Shop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
