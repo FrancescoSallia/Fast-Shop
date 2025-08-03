@@ -47,6 +47,10 @@ Dient als Abstraktionsschicht für Datenzugriffe. Koordiniert die Kommunikation 
 Beinhaltet die API-Schnittstellen und Netzwerkanfragen zur lokalen MockAPI sowie die Firebase-Datenbankkonfiguration.
 <br>
 
+## Tests
+Um die Zuverlässigkeit der App sicherzustellen, wurden umfangreiche Unit-Tests mit XCTest durchgeführt. Dabei wurde insbesondere die Integration von Combine-Streams geprüft, um reaktive Datenflusslogiken und API-Aufrufe korrekt zu validieren.
+##
+
 Für die Datenspeicherung wird <b>Firebase Firestore</b> verwendet, eine flexible, cloudbasierte NoSQL-Datenbank.
 
 Warum Firebase Firestore?
@@ -85,6 +89,8 @@ Verwendete Endpunkte der MockAPI:
 
 Die Daten der MockAPI werden im Repository abgefragt und im ViewModel verarbeitet, bevor sie an die View weitergegeben werden.
 
+##
+
 Warum eine eigene MockAPI?
 
 ✅ Stabilität – Keine unerwarteten Änderungen durch externe Nutzer.
@@ -102,4 +108,5 @@ Für die Benutzer-Authentifizierung (z. B. Anmeldung mit E-Mail).
 - [ ] Mehrere Zahlungsmöglichkeiten einbinden
 - [ ] One-Click-Bestellung für wiederkehrende Käufer
 - [ ] Wunschlisten teilen mit Freunden oder Familie
+- [ ] Erweiterung der Testabdeckung mit weiteren XCTest- und Combine-basierten Integrationstests
 - [ ] ...
