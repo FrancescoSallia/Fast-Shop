@@ -11,12 +11,13 @@ import Combine
 @MainActor
 class ProductViewModel: ObservableObject {
     
+    private var client: APIClientProtocol = HttpClient()
+    private let errorHandler = ErrorHandler.shared
+    
     init(client: APIClientProtocol = HttpClient()) {
+        self.client = client
         getProductsFromAPI()
     }
-    
-    private let client = HttpClient()
-    private let errorHandler = ErrorHandler.shared
     
     @Published var products: [Product] = []
     @Published var allProductsForHomeView: [Product] = []

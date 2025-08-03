@@ -12,11 +12,13 @@ import Combine
 final class Fast_ShopTests: XCTestCase {
     
     var viewModel: ProductViewModel!
+    var mockClient = MockClient()
     
     @MainActor
     override func setUp() {
         super.setUp()
-        viewModel = ProductViewModel()
+        mockClient = MockClient()
+        viewModel = ProductViewModel(client: mockClient)
     }
     
     @MainActor
@@ -45,8 +47,8 @@ final class Fast_ShopTests: XCTestCase {
     @MainActor
     func testGetProductsFromAPI_setsAllProductsForHomeView() {
         let expectation = XCTestExpectation(description: "Wait for Combine to finish")
-        let mockClient = MockClient()
-        viewModel = ProductViewModel(client: mockClient)
+//        let mockClient = MockClient()
+//        viewModel = ProductViewModel(client: mockClient)
         mockClient.mockProducts = [Product(
             id: 1,
             title: "Classic Navy Blue Baseball Cap",
@@ -72,8 +74,8 @@ final class Fast_ShopTests: XCTestCase {
         viewModel.$allProductsForHomeView
             .dropFirst() // skip initial leerer Wert
             .sink { products in
-                XCTAssertEqual(products.count, 51)
-                XCTAssertEqual(products.first?.title, "Majestic Mountain Graphic T-Shirt")
+                XCTAssertEqual(products.count, 1)
+                XCTAssertEqual(products.first?.title, "Classic Navy Blue Baseball Cap")
                 expectation.fulfill()
             }
             .store(in: &viewModel.cancellables) // wichtig!
